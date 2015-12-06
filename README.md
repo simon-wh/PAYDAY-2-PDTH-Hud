@@ -1,2 +1,2 @@
-# PAYDAY-2-PDTH-Hud
-Payday: The Heist HUD modification for Payday 2
+# PAYDAY 2 PD:TH Hud
+Recreation of PD:TH's Hud in Payday 2
