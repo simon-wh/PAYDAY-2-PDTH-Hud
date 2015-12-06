@@ -1,0 +1,67 @@
+{
+	"name" : "PAYDAY: The Heist HUD",
+	"description" : "Brings back the HUD from PD:TH. If you want to find more awesome mods visit http://lastbullet.net",
+	"author" : "LASTBULLET_GREAT BIG BUSHY BEARD",
+	"contact" : "simon@pd2stats.com",
+	"version" : "3.3",
+	"priority" : 44,
+	"hooks" : [
+		{ "hook_id" : "lib/managers/menu/newsfeedgui", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/experiencemanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/menu/items/menuitemchallenge", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/setups/setup", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/units/weapons/newraycastweaponbase", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/units/weapons/raycastweaponbase", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/explosionmanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/menu/profileboxgui", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/savefilemanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/criminalsmanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/statisticsmanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/states/ingamearrested", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/states/ingamebleedout", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/units/beings/player/playerdamage", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/units/beings/player/playerequipment", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/units/enemies/cop/logics/coplogictrade", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/units/equipment/sentry_gun/sentrygunbase", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/units/interactions/interactionext", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/units/props/moneywrapbase", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/units/weapons/trip_mine/tripminebase", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/hud/hudhint", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/hud/hudtemp", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/menumanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/moneymanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/units/props/securitycamera", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/hud/hudassaultcorner", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/hud/hudinteraction", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/hudmanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/hudmanagerpd2", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/blackmarketmanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/hud/hudteammate", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/hud/hudpresenter", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/menu/menuscenemanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/menu/blackmarketgui", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "core/lib/managers/coreenvironmentcontrollermanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "core/lib/managers/coresequencemanager", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/tweak_data/tweakdata", "script_path" : "PDTHHUDCore.lua" }
+	],
+	"updates" : [
+		{
+			"revision" : 54,
+			"identifier" : "pdth_hud"
+		},
+		{
+			"revision" : "./assets/mod_overrides/PDTH Hud/revision.txt",
+			"identifier" : "pdth_hud_mod_overrides",
+			"install_dir" : "assets/mod_overrides/",
+			"install_folder" : "PDTH Hud",
+			"display_name" : "PDTH Hud mod_overrides"
+		}
+	],
+    "libraries" : [
+        {
+            "display_name" : "BeardLib",
+            "identifier" : "beardlib",
+            "optional" : "true"
+        }
+    ]
+}

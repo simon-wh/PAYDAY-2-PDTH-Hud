@@ -1,0 +1,5 @@
+Currently this addons folder can be used to add new portraits to PDTH Hud.
+
+Look at the 'test.txt' as an example of some of the variables, you can also look at 'og_hoxton.json' to see a fully setup Portrait addition.
+
+For the file to work it MUST have the extension 'json' if it doesn't it will not work.
