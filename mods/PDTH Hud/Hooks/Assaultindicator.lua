@@ -6,6 +6,14 @@ function HUDAssaultCorner:init(hud, full_hud)
 	local size = 200
     self._assault_color = Color.red / 2
 	self._vip_assault_color = Color(1, 1, 1, 0)
+    --LightFX
+    self._assault_color_fx = Color.red
+    self._vip_assault_color_fx = Color(1, 1, 1, 0)
+    self._fx_color =Color.red
+    
+    self._assaut_flashing = false
+    self._PoNR_flashing = false
+    
 	local assault_panel = self._hud_panel:panel({
 		visible = false,
 		name = "assault_panel",
@@ -245,7 +253,7 @@ function HUDAssaultCorner:_start_assault(text_list)
     icon_assaultbox:set_color(self._assault_color)
     control_assault_title:set_color(self._assault_color)
 	icon_assaultbox:animate(callback(self, self, "flash_assault_title"))
-	control_assault_title:animate(callback(self, self, "flash_assault_title"))
+	--control_assault_title:animate(callback(self, self, "flash_assault_title"))
 	
 end
 
@@ -255,8 +263,10 @@ function HUDAssaultCorner:sync_set_assault_mode(mode)
 	end
 	self._assault_mode = mode
 	local color = self._assault_color
+    self._fx_color = self._assault_color_fx
 	if mode == "phalanx" then
 		color = self._vip_assault_color
+        self._fx_color = self._vip_assault_color_fx
 	end
 	self._current_assault_color = color
 	--self._bg_box:child("left_top"):set_color(color)
@@ -282,7 +292,7 @@ function HUDAssaultCorner:_end_assault()
 	local num_hostages = self._hud_panel:child("num_hostages")
 	num_hostages:set_alpha(1)
 	if not self._assault then
-		return
+		do return end
 	end
 	self._assault = false
 	local function close_done()
@@ -290,6 +300,7 @@ function HUDAssaultCorner:_end_assault()
 		icon_assaultbox:stop()
 		icon_assaultbox:animate(callback(self, self, "_hide_icon_assaultbox"))
 	end
+    self._assaut_flashing = false
 	--control_assault_title:set_visible(false)
 	control_assault_title:stop()
 	--icon_assaultbox:set_visible(false)
@@ -384,6 +395,11 @@ function HUDAssaultCorner:_hide_icon_assaultbox(icon_assaultbox)
 		icon_assaultbox:set_alpha(alpha)
 	end
 	icon_assaultbox:set_alpha(0)
+    
+    if BetterLightFX then
+        BetterLightFX:SetColor(0, 0, 0, 0, nil)
+    end
+    
 	self:_show_hostages()
 	icon_assaultbox:stop()
 end
@@ -407,6 +423,7 @@ function HUDAssaultCorner:_animate_show_noreturn(point_of_no_return_panel, delay
 	point_of_no_return_timer:set_visible(false)
 	wait(delay_time)
 	point_of_no_return_panel:set_visible(true)
+    self._PoNR_flashing = true
 	icon_noreturnbox:stop()
 	icon_noreturnbox:animate(callback(self, self, "_show_icon_assaultbox"))
 	local function open_done()
@@ -430,6 +447,7 @@ function HUDAssaultCorner:feed_point_of_no_return_timer(time, is_inside)
 end
 
 function HUDAssaultCorner:flash_point_of_no_return_timer(beep)
+    self._PoNR_flashing = true
 	local point_of_no_return_panel = self._hud_panel:child("point_of_no_return_panel")
 	local function flash_timer(o)
 		local t = 0
@@ -440,8 +458,17 @@ function HUDAssaultCorner:flash_point_of_no_return_timer(beep)
 			local g = math.lerp(0 or self._point_of_no_return_color.g, 0.8, n)
 			local b = math.lerp(0 or self._point_of_no_return_color.b, 0.2, n)
 			o:set_color(Color(r, g, b))
+            
+            if BetterLightFX then
+                BetterLightFX:SetCurrentState("PointOfNoReturn")
+                BetterLightFX:SetColor(r, g, b, 1, "PointOfNoReturn")
+            end
+            
 			o:set_font_size(math.lerp(tweak_data.hud_corner.noreturn_size * pdth_hud.loaded_options.Ingame.Hud_scale , (tweak_data.hud_corner.noreturn_size * pdth_hud.loaded_options.Ingame.Hud_scale) * 1.25, n))
 		end
+        if BetterLightFX then
+            BetterLightFX:SetCurrentState(nil)
+        end
 	end
 
 	local point_of_no_return_timer = point_of_no_return_panel:child("point_of_no_return_timer")
@@ -450,9 +477,37 @@ end
 
 
 function HUDAssaultCorner:flash_assault_title(o)
+    
+    if not self._assault and self._assaut_flashing then
+        do return end
+    end
+    
+    log("Assault Fashing Started")
+    self._assaut_flashing = true
+    local assault_panel = nil
+    local control_assault_title = nil
+    
+    assault_panel = self._hud_panel:child("assault_panel")
+    if assault_panel then
+        control_assault_title = assault_panel:child("control_assault_title")
+    end
+    local current_fx_alpha = 255
+    
 	while true do
-		o:set_color( o:color():with_alpha( 0.5 + (math.sin( Application:time()*750 )+1)/4 ) )
+        local alpha_d = 0.5 + (math.sin( Application:time()*750 )+1)/4  
+        local new_fx = math.floor((alpha_d) * 255)
+		o:set_color( o:color():with_alpha( alpha_d ) )
+        if control_assault_title then
+            control_assault_title:set_color( o:color():with_alpha( alpha_d ) )
+        end
+        
+        if BetterLightFX then
+            BetterLightFX:SetColor(self._fx_color.red, self._fx_color.green, self._fx_color.blue, current_fx_alpha, nil )
+        end
+        
+        current_fx_alpha = new_fx
 		coroutine.yield()
+        --wait(0.3)
 	end
 end
   	
@@ -464,3 +519,4 @@ function HUDAssaultCorner:flash_assault_rect(o)
 	end
 end
 end
+
