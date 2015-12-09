@@ -1,7 +1,6 @@
 if pdth_hud.loaded_options.Ingame.MainHud then
 function HUDManager:_create_teammates_panel( hud )
 	hud = hud or managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
-    local full_hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
 	self._hud.teammate_panels_data = self._hud.teammate_panels_data or {}
 	self._teammate_panels = {}
 	if hud.panel:child( "teammates_panel" ) then	
@@ -30,7 +29,7 @@ function HUDManager:_create_teammates_panel( hud )
 			teammates_panel:set_h(hud.panel:h())
 			teammates_panel:set_y(0)
 		end
-		local teammate = HUDTeammate:new( i, teammates_panel, is_player, pw, full_hud.panel )
+		local teammate = HUDTeammate:new( i, teammates_panel, is_player, pw )
 		
 		local x = math.floor((pw + small_gap) * (i-1) + (i == HUDManager.PLAYER_PANEL and player_gap or 0))
 		local xmod = math.floor((pw + small_gap) * (1-1) + (i == HUDManager.PLAYER_PANEL and player_gap or 0) + 43)

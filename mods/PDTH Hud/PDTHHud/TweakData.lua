@@ -1,3 +1,5 @@
+PDTHHTweak = true
+
 tweak_data.weapon.hk21.challenges = {}
 tweak_data.weapon.hk21.challenges.group = "rifle"
 tweak_data.weapon.hk21.challenges.weapon = "hk21"
@@ -675,16 +677,6 @@ tweak_data.hud_icons.equipment_elevator_key = {
 	texture_rect = {
 		192,
 		96,
-		48,
-		48
-	}
-}
-
-tweak_data.hud_icons.equipment_blow_torch = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		944,
-		49,
 		48,
 		48
 	}

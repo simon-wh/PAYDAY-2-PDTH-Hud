@@ -1,7 +1,7 @@
 if pdth_hud.loaded_options.Ingame.MainHud then
 HUDTeammate = HUDTeammate or class()
 
-function HUDTeammate:init(i, teammates_panel, is_player, width, full_hud)
+function HUDTeammate:init(i, teammates_panel, is_player, width)
 	local teammates_panels = teammates_panel
 	self._id = i
 	local small_gap = 8
@@ -154,28 +154,27 @@ function HUDTeammate:init(i, teammates_panel, is_player, width, full_hud)
 	local mask_pad = 2 * pdth_hud.loaded_options.Ingame.Hud_scale
 	local mask_pad_x = 3 * pdth_hud.loaded_options.Ingame.Hud_scale
 	local y = teammate_panel:h() - name:h() - size + mask_pad
+	local mask = teammate_panel:bitmap({
+		visible = false,
+		name = "mask",
+		layer = 1,
+		color = Color.white,
+		texture = texture,
+		texture_rect = rect,
+		x = -mask_pad_x,
+		w = size,
+		h = size,
+		y = -35
+	})
 	local radial_size = main_player and 64 or 64
 	local radial_health_panel = self._player_panel:panel({
 		name = "radial_health_panel",
-		layer = 11,
-		w = 64 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 129 * pdth_hud.loaded_options.Ingame.Hud_scale
-	})
-    radial_health_panel:set_bottom(self._player_panel:bottom())
-    radial_health_panel:set_left(self._player_panel:left())
-    --[[local stored_health = full_hud:bitmap({
-		name = "stored_health",
 		layer = 10,
-        color = Color.blue,
-		w = (64 * pdth_hud.loaded_options.Ingame.Hud_scale) + 10,
-		h = (129 * pdth_hud.loaded_options.Ingame.Hud_scale) + 10,
+		w = 64 * pdth_hud.loaded_options.Ingame.Hud_scale,
+		h = 129 * pdth_hud.loaded_options.Ingame.Hud_scale,
 		x = 0,
-		y = 0
-	})]]--
-    
-    --stored_health:set_bottom(full_hud:bottom() + 20)
-    --stored_health:set_left(full_hud:left() + 20)
-    
+		y = mask:y()
+	})
 	radial_health_panel:set_bottom(self._player_panel:h())
 	if not main_player then
 		radial_health_panel:set_x(32 * pdth_hud.loaded_options.Ingame.Hud_scale)
@@ -184,6 +183,7 @@ function HUDTeammate:init(i, teammates_panel, is_player, width, full_hud)
 		radial_health_panel:set_w(16 * pdth_hud.loaded_options.Ingame.Hud_scale)
 		radial_health_panel:set_h(32.5 * pdth_hud.loaded_options.Ingame.Hud_scale)
 		radial_health_panel:set_bottom(gradient:bottom() - ((gradient:h() - radial_health_panel:h()) / 2))
+		mask:set_bottom(radial_health_panel:bottom() - 4)
 	end
 	local radial_bg = radial_health_panel:bitmap({
 		name = "radial_bg",
@@ -193,7 +193,7 @@ function HUDTeammate:init(i, teammates_panel, is_player, width, full_hud)
 		w = self.health_w,
 		h = self.health_h,
 		x = 0,
-		y = 0,
+		y = -60 * pdth_hud.loaded_options.Ingame.Hud_scale,
 		layer = 0
 	})
 
@@ -205,8 +205,8 @@ function HUDTeammate:init(i, teammates_panel, is_player, width, full_hud)
 		w = self.health_w,
 		h = self.health_h,
 		x = 0,
-		y = 0,
-		layer = 1
+		y = -60 * pdth_hud.loaded_options.Ingame.Hud_scale,
+		layer = 2
 	})
 	local radial_shield = radial_health_panel:bitmap({
 		name = "radial_shield",
@@ -215,63 +215,9 @@ function HUDTeammate:init(i, teammates_panel, is_player, width, full_hud)
 		w = self.health_w,
 		h = self.health_h,
 		x = 0,
-		y = 0,
-		layer = 3
+		y = -60 * pdth_hud.loaded_options.Ingame.Hud_scale,
+		layer = 1
 	})
-    
-    local pnlPerk = self._player_panel:panel({
-		name = "pnlPerk",
-        visible = false,
-		layer = 11,
-		w = 64 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 129 * pdth_hud.loaded_options.Ingame.Hud_scale
-	})
-    
-    pnlPerk:set_w(radial_health_panel:w())
-    pnlPerk:set_h(pnlPerk:w() / 5)
-    
-    pnlPerk:set_bottom(radial_health_panel:top() - 2)
-    pnlPerk:set_left(radial_health_panel:left())
-    
-    local bmpPerkBackground = pnlPerk:bitmap({
-		name = "bmpPerkBackground",
-		visible = true,
-		blend_mode = "normal",
-		layer = 1,
-		texture = "guis/textures/hud_icons",
-		texture_rect = {
-			0,
-			414,
-			360,
-			20
-		},
-        x = 0,
-        y = 0,
-        w = pnlPerk:w(),
-        h = pnlPerk:h()
-	})
-
-	local bmpPerkBar = pnlPerk:bitmap({
-		name = "bmpPerkBar",
-		layer = 2,
-		visible = true,
-		blend_mode = "normal",
-        color = Color.green,
-		texture = "guis/textures/hud_icons",
-		texture_rect = {
-			0,
-			392,
-			360,
-			22
-		}
-	})
-    self._perk_border = 5
-    bmpPerkBar:set_w(bmpPerkBackground:w() - self._perk_border)
-    bmpPerkBar:set_left(bmpPerkBackground:left() + self._perk_border / 2)
-    
-    bmpPerkBar:set_h(bmpPerkBackground:h() - self._perk_border)
-    bmpPerkBar:set_top(bmpPerkBackground:top() + self._perk_border / 2)
-    
 	if pdth_hud.loaded_options.Ingame.Coloured then
 		radial_health:set_color(Color(0.5, 0.8, 0.4))
 	end
@@ -293,7 +239,7 @@ function HUDTeammate:init(i, teammates_panel, is_player, width, full_hud)
 		radial_health:set_bottom(radial_bg:bottom())
 		radial_shield:set_x(0)
 		radial_shield:set_y(0)
-        
+		radial_shield:set_bottom(radial_bg:bottom())
 		self:teammate_fix()
 	end
 	radial_shield:set_bottom(radial_bg:bottom())
@@ -360,9 +306,6 @@ function HUDTeammate:init(i, teammates_panel, is_player, width, full_hud)
 	if rectanglehp and rectangleam and rectanglebg and texture then
 		radial_health:set_image(texture, rectanglehp[1], rectanglehp[2], rectanglehp[3], rectanglehp[4])
 		radial_shield:set_image(texture, rectangleam[1], rectangleam[2], rectangleam[3], rectangleam[4])
-        
-		--bmpHealthCharge:set_image(texture, rectangleam[1], rectangleam[2], rectangleam[3], rectangleam[4])
-        
 		radial_bg:set_image(texture, rectanglebg[1], rectanglebg[2], rectanglebg[3], rectanglebg[4])
 		--[[radial_health:set_texture(texture)
 		radial_shield:set_texture(texture)
@@ -439,11 +382,11 @@ function HUDTeammate:init(i, teammates_panel, is_player, width, full_hud)
 		w = weapon_panel_w * pdth_hud.loaded_options.Ingame.Hud_scale,
 		h = (radial_size + 4) * pdth_hud.loaded_options.Ingame.Hud_scale,
 		x = radial_health_panel:right() + 4 * (pdth_hud.loaded_options.Ingame.Hud_scale),
-		y = -35
+		y = mask:y()
 	})
 	if main_player then
 		weapons_panel:set_x((teammate_panel:w() - (weapon_panel_w * 2) + 10) * pdth_hud.loaded_options.Ingame.Hud_scale)
-		weapons_panel:set_y((-35 - 6) * pdth_hud.loaded_options.Ingame.Hud_scale)
+		weapons_panel:set_y((mask:y() - 6) * pdth_hud.loaded_options.Ingame.Hud_scale)
 	end
 	local primary_weapon_panel = weapons_panel:panel({
 		name = "primary_weapon_panel",
@@ -1735,7 +1678,6 @@ function HUDTeammate:set_health(data)
 	local radial_health = radial_health_panel:child("radial_health")
 	local radial_bg = radial_health_panel:child("radial_bg")
 	local radial_shield = radial_health_panel:child("radial_shield")
-	local bmpHealthCharge = radial_health_panel:child("bmpHealthCharge")
 	local red = data.current / data.total
 	if red < radial_health:color().red then
 		self:_damage_taken()
@@ -1758,7 +1700,6 @@ function HUDTeammate:set_health(data)
 		radial_health:set_h((32.5 * pdth_hud.loaded_options.Ingame.Hud_scale) - y_offsetsmall)
 		radial_health:set_bottom(radial_bg:bottom())
 		radial_shield:set_bottom(radial_bg:bottom())
-		--bmpHealthCharge:set_bottom(radial_bg:bottom() - 2.5)
 	else
 		radial_health:set_h(self.health_h - y_offset_scaled)
 		radial_health:set_bottom(radial_bg:bottom())
@@ -1780,7 +1721,6 @@ function HUDTeammate:set_armor(data)
 	local radial_shield = radial_health_panel:child("radial_shield")
 	local radial_bg = radial_health_panel:child("radial_bg")
 	local radial_health = radial_health_panel:child("radial_health")
-	local bmpHealthCharge = radial_health_panel:child("bmpHealthCharge")
 	local red = data.current / data.total
 	if red < radial_shield:color().red then
 		self:_damage_taken()
@@ -1803,7 +1743,6 @@ function HUDTeammate:set_armor(data)
 	else
 		radial_shield:set_h(self.health_h - y_offset_scaled)
 		radial_shield:set_bottom(radial_bg:bottom())
-		--bmpHealthCharge:set_bottom(radial_bg:bottom() - 2.5)
 	end
 end
 
@@ -2394,28 +2333,6 @@ function HUDTeammate:set_ai_portrait()
 		end
 	elseif ai_health then
 		ai_health:set_visible(false)
-	end
-end
-
-function HUDTeammate:set_stored_health_max(stored_health_ratio)
-    local pnlPerk = self._player_panel:child("pnlPerk")
-    local bmpPerkBackground = pnlPerk:child("bmpPerkBackground")
-    local bmpPerkBar = pnlPerk:child("bmpPerkBar")
-    
-	if alive(bmpPerkBackground) then
-		local red = math.min(stored_health_ratio, 1)
-		bmpPerkBackground:set_color(Color(1, red, 1, 1))
-	end
-end
-function HUDTeammate:set_stored_health(stored_health_ratio)
-    local pnlPerk = self._player_panel:child("pnlPerk")
-    local bmpPerkBackground = pnlPerk:child("bmpPerkBackground")
-    local bmpPerkBar = pnlPerk:child("bmpPerkBar")
-    
-	if alive(bmpPerkBar) then
-		local red = math.min(stored_health_ratio, 1)
-		pnlPerk:set_visible(red > 0)
-		bmpPerkBar:set_w((pnlPerk:w() - self._perk_border) * red)
 	end
 end
 
