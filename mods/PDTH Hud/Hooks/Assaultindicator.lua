@@ -11,8 +11,7 @@ function HUDAssaultCorner:init(hud, full_hud)
     self._vip_assault_color_fx = Color(1, 1, 1, 0)
     self._fx_color =Color.red
     
-    self._assaut_flashing = false
-    self._PoNR_flashing = false
+    self._is_casing_mode = false
     
 	local assault_panel = self._hud_panel:panel({
 		visible = false,
@@ -250,6 +249,7 @@ function HUDAssaultCorner:_start_assault(text_list)
 	--icon_assaultbox:animate(callback(self, self, "_animate_assault"))
 	local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
 	casing_panel:set_visible(false)
+    self._is_casing_mode = false
     icon_assaultbox:set_color(self._assault_color)
     control_assault_title:set_color(self._assault_color)
 	icon_assaultbox:animate(callback(self, self, "flash_assault_title"))
@@ -300,7 +300,9 @@ function HUDAssaultCorner:_end_assault()
 		icon_assaultbox:stop()
 		icon_assaultbox:animate(callback(self, self, "_hide_icon_assaultbox"))
 	end
-    self._assaut_flashing = false
+    if BetterLightFX then
+        BetterLightFX:SetColor(0, 0, 0, 0, nil)
+    end
 	--control_assault_title:set_visible(false)
 	control_assault_title:stop()
 	--icon_assaultbox:set_visible(false)
@@ -353,6 +355,7 @@ function HUDAssaultCorner:_animate_show_casing(casing_panel, delay_time)
 	local icon_casingbox = casing_panel:child("icon_casingbox")
 	wait(delay_time)
 	casing_panel:set_visible(true)
+    self._is_casing_mode = true
 	icon_casingbox:stop()
 	icon_casingbox:animate(callback(self, self, "_show_icon_assaultbox"))
 	local open_done = function()
@@ -478,12 +481,7 @@ end
 
 function HUDAssaultCorner:flash_assault_title(o)
     
-    if not self._assault and self._assaut_flashing then
-        do return end
-    end
-    
     log("Assault Fashing Started")
-    self._assaut_flashing = true
     local assault_panel = nil
     local control_assault_title = nil
     
@@ -501,7 +499,7 @@ function HUDAssaultCorner:flash_assault_title(o)
             control_assault_title:set_color( o:color():with_alpha( alpha_d ) )
         end
         
-        if BetterLightFX then
+        if BetterLightFX and self._assault then
             BetterLightFX:SetColor(self._fx_color.red, self._fx_color.green, self._fx_color.blue, current_fx_alpha, nil )
         end
         

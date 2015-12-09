@@ -12,12 +12,18 @@ if not _G.BetterLightFX then
     Suspicion
     PointOfNoReturn
     Bleedout
+    EndLoss
     
     ]]
     
+    --[[To do:
+    *Internal prioritization of effects. At the moment, any effect can dominate as long as state was nil
+    *Internal effects?
+    *Internal events?
+    *Optimize the thing
+    ]]
+    
 end
-
---Override LightFX
 
 
 
@@ -40,18 +46,23 @@ end
 
 
 function BetterLightFX:SetCurrentState(state)
+    local debug_clockstart = os.clock() --DEBUG
+
     if BetterLightFX.current_state and not state then
         BetterLightFX.current_state = nil
     elseif not BetterLightFX.current_state and state then
         BetterLightFX.current_state = state
     end
+    
+    BetterLightFX:PrintDebugElapsed(os.clock() - debug_clockstart, "BetterLightFX:SetCurrentState") --DEBUG
 end
 
 function BetterLightFX:PushColor(color, state)
+    local debug_clockstart = os.clock() --DEBUG
     
     --Color is already being set
     if BetterLightFX.is_setting_color then
-        do return end
+        return
     end
     
     --Standardize the color
@@ -72,23 +83,25 @@ function BetterLightFX:PushColor(color, state)
     
     --Same color, no need to update.
     if BetterLightFX.current_color == color then
-        do return end
+        return
     end
     
     if SystemInfo:platform() == Idstring("WIN32") and managers.network.account:has_alienware() and not BetterLightFX.is_setting_color and state == BetterLightFX.current_state then
         BetterLightFX.is_setting_color = true
-        BetterLightFX:PrintDebug("Set new color: r="..color.red.." g="..color.green.." b="..color.blue.." a="..color.alpha)
+        --BetterLightFX:PrintDebug("Set new color: r="..color.red.." g="..color.green.." b="..color.blue.." a="..color.alpha)
         BetterLightFX.current_color = color
-        LightFX:set_lamps(math.floor(BetterLightFX.current_color.red * 255.0), math.floor(BetterLightFX.current_color.green * 255.0), math.floor(BetterLightFX.current_color.blue * 255.0), math.floor(BetterLightFX.current_color.alpha * 255.0))
+        LightFX:set_lamps_betterfx(math.floor(BetterLightFX.current_color.red * 255.0), math.floor(BetterLightFX.current_color.green * 255.0), math.floor(BetterLightFX.current_color.blue * 255.0), math.floor(BetterLightFX.current_color.alpha * 255.0))
         BetterLightFX.is_setting_color = false
     end
+    
+    BetterLightFX:PrintDebugElapsed(os.clock() - debug_clockstart, "BetterLightFX:PushColor") --DEBUG
 end
 
 function BetterLightFX:SetColor(red, green, blue, alpha, state)
     if state then
-        BetterLightFX:PrintDebug("State setting color: ".. state)
+        --BetterLightFX:PrintDebug("State setting color: ".. state)
     else
-        BetterLightFX:PrintDebug("State setting color: nil")
+        --BetterLightFX:PrintDebug("State setting color: nil")
     end
     --BetterLightFX:PrintDebug("Set new color: r="..color.red.." g="..color.green.." b="..color.blue.." a="..color.alpha)
     BetterLightFX:PushColor(Color(alpha, red, green, blue), state)

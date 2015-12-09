@@ -46,7 +46,9 @@
 		{ "hook_id" : "lib/network/matchmaking/networkaccountsteam", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/group_ai_states/groupaistatebase", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/hud/hudsuspicion", "script_path" : "PDTHHUDCore.lua" },
-		{ "hook_id" : "lib/units/beings/player/playerdamage", "script_path" : "PDTHHUDCore.lua" }
+		{ "hook_id" : "lib/units/beings/player/playerdamage", "script_path" : "PDTHHUDCore.lua" },
+        { "hook_id" : "lib/states/missionendstate", "script_path" : "PDTHHUDCore.lua" }
+        
 
 
 	],

@@ -57,8 +57,8 @@ pdth_hud.hook_files = {
     ["lib/network/matchmaking/networkaccountsteam"] = "NetworkAccountSteam.lua",
     ["lib/managers/group_ai_states/groupaistatebase"] = "GroupAIStateBase.lua",
     ["lib/managers/hud/hudsuspicion"] = "HudSuspicion.lua",
-    ["lib/units/beings/player/playerdamage"] = "PlayerDamage.lua"
-    
+    ["lib/units/beings/player/playerdamage"] = "PlayerDamage.lua",
+    ["lib/states/missionendstate"] = "MissionEndState.lua"
 }
 
 pdth_hud.colour_gradings = {
