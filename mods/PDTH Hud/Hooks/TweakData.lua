@@ -682,6 +682,17 @@ tweak_data.hud_icons.equipment_elevator_key = {
 	}
 }
 
+tweak_data.hud_icons.equipment_blow_torch = {
+    texture = "guis/textures/hud_icons",
+    texture_rect = {
+        944,
+        49,
+        48,
+        48
+    }
+}
+
+
 end
 tweak_data.interaction.copy_machine_smuggle.icon = "equipment_gasoline"
 tweak_data.interaction.safety_deposit.icon = "develop"
