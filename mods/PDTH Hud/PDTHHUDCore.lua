@@ -28,8 +28,7 @@ pdth_hud.dofiles = {
 	--"WriteOptions.lua",
 	"challengesmanager.lua",
 	"PDTHEquipment.lua",
-	"challengestweakdata.lua",
-    "BetterLightFX.lua"
+	"challengestweakdata.lua"
 }
 
 pdth_hud.writeoptions = "WriteOptions.lua"
@@ -54,7 +53,6 @@ pdth_hud.hook_files = {
 	["lib/managers/menu/menuscenemanager"] = "MenuScene.lua",
 	["core/lib/managers/coreenvironmentcontrollermanager"] = "EnvController.lua",
 	["lib/tweak_data/tweakdata"] = "TweakData.lua",
-    ["lib/network/matchmaking/networkaccountsteam"] = "NetworkAccountSteam.lua",
     ["lib/managers/group_ai_states/groupaistatebase"] = "GroupAIStateBase.lua",
     ["lib/managers/hud/hudsuspicion"] = "HudSuspicion.lua",
     ["lib/units/beings/player/playerdamage"] = "PlayerDamage.lua",

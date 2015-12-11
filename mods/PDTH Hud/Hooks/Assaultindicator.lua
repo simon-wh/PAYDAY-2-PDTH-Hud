@@ -463,14 +463,14 @@ function HUDAssaultCorner:flash_point_of_no_return_timer(beep)
 			o:set_color(Color(r, g, b))
             
             if BetterLightFX then
-                BetterLightFX:SetCurrentState("PointOfNoReturn")
+                BetterLightFX:StartEvent("PointOfNoReturn")
                 BetterLightFX:SetColor(r, g, b, 1, "PointOfNoReturn")
             end
             
 			o:set_font_size(math.lerp(tweak_data.hud_corner.noreturn_size * pdth_hud.loaded_options.Ingame.Hud_scale , (tweak_data.hud_corner.noreturn_size * pdth_hud.loaded_options.Ingame.Hud_scale) * 1.25, n))
 		end
         if BetterLightFX then
-            BetterLightFX:SetCurrentState(nil)
+            BetterLightFX:EndEvent("PointOfNoReturn")
         end
 	end
 
