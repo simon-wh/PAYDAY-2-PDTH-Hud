@@ -87,7 +87,7 @@ function HUDSuspicion:animate_eye()
 			suspicion_left:set_color(Color(0.5 + value * 0.5, 1, 1))
 			suspicion_right:set_color(Color(0.5 + value * 0.5, 1, 1))
             if BetterLightFX then
-                BetterLightFX:SetCurrentState("Suspicion") 
+                BetterLightFX:StartEvent("Suspicion")
                 if value == 1 then
                     BetterLightFX:SetColor(1.0, 0.0, 0.0, 1.0, "Suspicion")
                 elseif value < 0.5 then
@@ -107,7 +107,7 @@ function HUDSuspicion:animate_eye()
 					self:hide()
                     if BetterLightFX then
                         BetterLightFX:SetColor(0, 0, 0, 0, "Suspicion")
-                        BetterLightFX:SetCurrentState(nil)
+                        BetterLightFX:EndEvent("Suspicion")
                     end
 					return
 				end
@@ -118,7 +118,7 @@ function HUDSuspicion:animate_eye()
 					self:hide()
                     if BetterLightFX then
                         BetterLightFX:SetColor(0, 0, 0, 0, "Suspicion")
-                        BetterLightFX:SetCurrentState(nil)
+                        BetterLightFX:EndEvent("Suspicion")
                     end
 					return
 				end
@@ -155,7 +155,7 @@ function HUDSuspicion:hide()
 	end
     if BetterLightFX then
         BetterLightFX:SetColor(0, 0, 0, 0, "Suspicion")
-        BetterLightFX:SetCurrentState(nil)
+        BetterLightFX:EndEvent("Suspicion")
     end
 end
 
@@ -167,7 +167,7 @@ function HUDSuspicion:back_to_stealth()
     
     if BetterLightFX then
         BetterLightFX:SetColor(0, 0, 0, 0, "Suspicion")
-        BetterLightFX:SetCurrentState(nil)
+        BetterLightFX:EndEvent("Suspicion")
     end
     
 end

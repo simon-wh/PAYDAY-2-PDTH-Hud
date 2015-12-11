@@ -8,12 +8,18 @@ function PlayerDamage:update_downed(t, dt)
 		end
         
         if BetterLightFX then
-            BetterLightFX:SetCurrentState("Bleedout")
+            BetterLightFX:StartEvent("Bleedout")
             BetterLightFX:SetColor(1, 1, 1, (self._downed_progression / 100) * 1, "Bleedout")
         end
         
 		managers.environment_controller:set_downed_value(self._downed_progression)
 		SoundDevice:set_rtpc("downed_state_progression", self._downed_progression)
+        
+        if self._downed_timer <= 0 then
+            if BetterLightFX then
+                BetterLightFX:EndEvent("Bleedout")
+            end
+        end
         
 		return self._downed_timer <= 0
 	end
@@ -35,8 +41,8 @@ function PlayerDamage:revive(helped_self)
 	self._downed_timer = nil
 	self._downed_start_time = nil
     if BetterLightFX then
-            BetterLightFX:SetCurrentState(nil)
-        end
+        BetterLightFX:EndEvent("Bleedout")
+    end
 	if not arrested then
 		self:set_health(self:_max_health() * tweak_data.player.damage.REVIVE_HEALTH_STEPS[self._revive_health_i] * (self._revive_health_multiplier or 1))
 		self:set_armor(self:_total_armor())

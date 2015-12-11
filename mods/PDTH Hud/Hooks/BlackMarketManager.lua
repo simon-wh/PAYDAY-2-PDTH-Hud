@@ -10,3 +10,4 @@ function BlackMarketManager.load(self, data)
 	managers.challenges:load(data)
 	--log("main load called")
 end
+
