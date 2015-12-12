@@ -52,8 +52,7 @@ pdth_hud.hook_files = {
 	["lib/managers/hud/hudpresenter"] = "HudPRESENTER.lua",
 	["lib/managers/menu/menuscenemanager"] = "MenuScene.lua",
 	["core/lib/managers/coreenvironmentcontrollermanager"] = "EnvController.lua",
-	["lib/tweak_data/tweakdata"] = "TweakData.lua",
-    ["lib/managers/group_ai_states/groupaistatebase"] = "GroupAIStateBase.lua"
+	["lib/tweak_data/tweakdata"] = "TweakData.lua"
 }
 
 pdth_hud.colour_gradings = {
@@ -117,6 +116,7 @@ if not pdth_hud.setup then
 	pdth_hud:Load_options()
     pdth_hud:LoadAddons()
 	dofile(pdth_hud.lua_path .. pdth_hud.writeoptions)
+    
 	pdth_hud.setup = true
 end
 
@@ -259,6 +259,15 @@ if Hooks then
 	end)
 
 	Hooks:Add("MenuManagerPopulateCustomMenus", "Base_PopulatePDTHHudMenu", function( menu_manager, nodes )
+    
+        if BetterLightFX then
+            BetterLightFX:RegisterEvent("AssaultIndicator", {priority = 2, loop = false,
+                run = function(self, ...)
+                     coroutine.yield()
+                     self._ran_once = true
+                end}, true)
+        end
+        
 		MenuCallbackHandler.pdth_toggle_pcolor = function(this, item)
 			pdth_hud.loaded_options.Ingame.Coloured = item:value() == "on" and true or false
 			pdth_hud:Save()

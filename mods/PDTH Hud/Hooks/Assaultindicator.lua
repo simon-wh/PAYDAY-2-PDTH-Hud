@@ -300,9 +300,7 @@ function HUDAssaultCorner:_end_assault()
 		icon_assaultbox:stop()
 		icon_assaultbox:animate(callback(self, self, "_hide_icon_assaultbox"))
 	end
-    if BetterLightFX then
-        BetterLightFX:SetColor(0, 0, 0, 0, nil)
-    end
+    
 	--control_assault_title:set_visible(false)
 	control_assault_title:stop()
 	--icon_assaultbox:set_visible(false)
@@ -398,10 +396,6 @@ function HUDAssaultCorner:_hide_icon_assaultbox(icon_assaultbox)
 		icon_assaultbox:set_alpha(alpha)
 	end
 	icon_assaultbox:set_alpha(0)
-    
-    if BetterLightFX then
-        BetterLightFX:SetColor(0, 0, 0, 0, nil)
-    end
     
 	self:_show_hostages()
 	icon_assaultbox:stop()
@@ -500,7 +494,8 @@ function HUDAssaultCorner:flash_assault_title(o)
         end
         
         if BetterLightFX and self._assault then
-            BetterLightFX:SetColor(self._fx_color.red, self._fx_color.green, self._fx_color.blue, current_fx_alpha, nil )
+            BetterLightFX:StartEvent("AssaultIndicator")
+            BetterLightFX:SetColor(self._fx_color.red, self._fx_color.green, self._fx_color.blue, current_fx_alpha ,"AssaultIndicator")
         end
         
         current_fx_alpha = new_fx
