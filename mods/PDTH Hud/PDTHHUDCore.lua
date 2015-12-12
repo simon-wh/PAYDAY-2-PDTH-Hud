@@ -53,10 +53,7 @@ pdth_hud.hook_files = {
 	["lib/managers/menu/menuscenemanager"] = "MenuScene.lua",
 	["core/lib/managers/coreenvironmentcontrollermanager"] = "EnvController.lua",
 	["lib/tweak_data/tweakdata"] = "TweakData.lua",
-    ["lib/managers/group_ai_states/groupaistatebase"] = "GroupAIStateBase.lua",
-    ["lib/managers/hud/hudsuspicion"] = "HudSuspicion.lua",
-    ["lib/units/beings/player/playerdamage"] = "PlayerDamage.lua",
-    ["lib/states/missionendstate"] = "MissionEndState.lua"
+    ["lib/managers/group_ai_states/groupaistatebase"] = "GroupAIStateBase.lua"
 }
 
 pdth_hud.colour_gradings = {
