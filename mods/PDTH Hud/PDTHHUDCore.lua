@@ -249,6 +249,16 @@ if Hooks then
 		end
 	end)
 	
+    Hooks:Add("BetterLightFXCreateEvents", "PDTHHudCreateBLFXEvents", function(blfx)
+        if blfx then
+            blfx:RegisterEvent("AssaultIndicator", {priority = 2, loop = false,
+                run = function(self, ...)
+                     coroutine.yield()
+                     self._ran_once = true
+                end}, true)
+        end
+    end)
+    
 	Hooks:Add("MenuManagerSetupCustomMenus", "Base_SetupPDTHHudMenu", function( menu_manager, nodes )
 		MenuHelper:NewMenu( pdth_hud.menu_name )
 		MenuHelper:NewMenu( pdth_hud.heist_cgrade_name )
@@ -259,14 +269,6 @@ if Hooks then
 	end)
 
 	Hooks:Add("MenuManagerPopulateCustomMenus", "Base_PopulatePDTHHudMenu", function( menu_manager, nodes )
-    
-        if BetterLightFX then
-            BetterLightFX:RegisterEvent("AssaultIndicator", {priority = 2, loop = false,
-                run = function(self, ...)
-                     coroutine.yield()
-                     self._ran_once = true
-                end}, true)
-        end
         
 		MenuCallbackHandler.pdth_toggle_pcolor = function(this, item)
 			pdth_hud.loaded_options.Ingame.Coloured = item:value() == "on" and true or false
