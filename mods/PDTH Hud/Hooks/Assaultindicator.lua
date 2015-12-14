@@ -301,6 +301,10 @@ function HUDAssaultCorner:_end_assault()
 		icon_assaultbox:animate(callback(self, self, "_hide_icon_assaultbox"))
 	end
     
+    if BetterLightFX and self._assault then
+        BetterLightFX:EndEvent("AssaultIndicator")
+    end
+    
 	--control_assault_title:set_visible(false)
 	control_assault_title:stop()
 	--icon_assaultbox:set_visible(false)
