@@ -250,8 +250,17 @@ function HUDAssaultCorner:_start_assault(text_list)
 	local hud = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
 	casing_panel:set_visible(false)
     self._is_casing_mode = false
-    icon_assaultbox:set_color(self._assault_color)
-    control_assault_title:set_color(self._assault_color)
+    
+    local color = self._assault_color
+    
+    if self._assault_mode == "phalanx" then
+		color = self._vip_assault_color
+        self._fx_color = self._vip_assault_color_fx
+	end
+    
+    icon_assaultbox:set_color(color)
+    control_assault_title:set_color(color)
+    
 	icon_assaultbox:animate(callback(self, self, "flash_assault_title"))
 	--control_assault_title:animate(callback(self, self, "flash_assault_title"))
 	

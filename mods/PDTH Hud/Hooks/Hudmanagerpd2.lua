@@ -1,33 +1,89 @@
 if pdth_hud.loaded_options.Ingame.MainHud then
+function HUDManager:hide_player_gear(panel_id)
+	if self._teammate_panels[panel_id] and self._teammate_panels[panel_id]:panel() and self._teammate_panels[panel_id]:panel():child("player") then
+		local player_panel = self._teammate_panels[panel_id]:panel():child("player")
+        if player_panel:child("primary_weapon") then
+            player_panel:child("primary_weapon"):set_visible(false)
+        end
+        
+        if player_panel:child("secondary_weapon") then
+            player_panel:child("secondary_weapon"):set_visible(false)
+        end
+        
+        if player_panel:child("deployable_equipment_panel") then
+            player_panel:child("deployable_equipment_panel"):set_visible(false)
+        end
+        
+        if player_panel:child("cable_ties_panel") then
+            player_panel:child("cable_ties_panel"):set_visible(false)
+        end
+        
+        if player_panel:child("grenades_panel") then
+            player_panel:child("grenades_panel"):set_visible(false)
+        end
+	end
+end
+function HUDManager:show_player_gear(panel_id)
+	if self._teammate_panels[panel_id] and self._teammate_panels[panel_id]:panel() and self._teammate_panels[panel_id]:panel():child("player") then
+		local player_panel = self._teammate_panels[panel_id]:panel():child("player")
+		if player_panel:child("primary_weapon") then
+            player_panel:child("primary_weapon"):set_visible(true)
+        end
+        
+        if player_panel:child("secondary_weapon") then
+            player_panel:child("secondary_weapon"):set_visible(true)
+        end
+        
+        if player_panel:child("deployable_equipment_panel") then
+            player_panel:child("deployable_equipment_panel"):set_visible(true)
+        end
+        
+        if player_panel:child("cable_ties_panel") then
+            player_panel:child("cable_ties_panel"):set_visible(true)
+        end
+        
+        if player_panel:child("grenades_panel") then
+            player_panel:child("grenades_panel"):set_visible(true)
+        end
+	end
+end
+
 function HUDManager:_create_teammates_panel(hud)
+    local const = pdth_hud.constants
+    
 	hud = hud or managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
 	self._hud.teammate_panels_data = self._hud.teammate_panels_data or {}
 	self._teammate_panels = {}
+    
 	if hud.panel:child("teammates_panel") then
 		hud.panel:remove(hud.panel:child("teammates_panel"))
 	end
-    local gap = 3
+    
 	local teammates_panel = hud.panel:panel({
 		name = "teammates_panel"
 	})
-    local teammate_h = ((129 * pdth_hud.loaded_options.Ingame.Hud_scale) - (gap * 2)) / 3
+    
+    local teammate_h = (const.main_health_h - (const.tm_gap * 2)) / 3
 	for i = 1, 4 do
 		local is_player = i == HUDManager.PLAYER_PANEL
 		--[[self._hud.teammate_panels_data[i] = {
 			taken = true,
 			special_equipments = {}
 		}]]--
-        self._hud.teammate_panels_data[ i ] = { taken = false and is_player, special_equipments = {} }
+        self._hud.teammate_panels_data[i] = { taken = false and is_player, special_equipments = {} }
+        
 		local teammate = HUDTeammate:new(i, teammates_panel, is_player, is_player and hud.panel:h() or teammate_h)
         
         if is_player then
             teammate._panel:set_x(0)
             teammate._panel:set_bottom(hud.panel:bottom())
         else
-            teammate._panel:set_x(64 + gap)
-            teammate._panel:set_bottom(hud.panel:bottom() - (i - 1) * (teammate._panel:h() + gap))
+            teammate._panel:set_x(const.main_health_w + const.tm_gap)
+            teammate._panel:set_bottom(hud.panel:bottom() - (i - 1) * (teammate._panel:h() + const.tm_gap))
         end
+        
 		self._teammate_panels[i] = teammate
+        
 		if is_player then
 			teammate:add_panel()
 		end
@@ -62,8 +118,9 @@ function HUDManager:set_teammate_ammo_amount(id, selection_index, max_clip, curr
 	self._teammate_panels[id]:set_ammo_amount_by_type(type, max_clip, current_clip, send_real and left_ammo_value or current_left, max)
 end
 
-local custom_radial = HUDManager.set_teammate_custom_radial
-function HUDManager:set_teammate_custom_radial(i, data)
+CloneClass(HUDManager)
+
+function HUDManager.set_teammate_custom_radial(self, i, data)
 	local hud = managers.hud:script( PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
 	if pdth_hud.loaded_options.Ingame.Swansong then
 		if not hud.panel:child("swan_song_left") then
@@ -99,5 +156,6 @@ function HUDManager:set_teammate_custom_radial(i, data)
 			swan_song_left:set_visible(false)
 		end
 	end
-	return custom_radial(self, i, data)
+	
+    self.orig.set_teammate_custom_radial(self, i, data)
 end

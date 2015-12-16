@@ -1880,14 +1880,7 @@ function pdth_hud.textures:get_icon_data(icon_id, isbullet)
 		64, 
 		130
 	}
-	if isbullet then
-		local w = texture_rect[3]
-		local h = texture_rect[4]
-		local scale = pdth_hud.textures[icon_id] and  pdth_hud.textures[icon_id].scale or 1
-		return icon, texture_rect, w, h, scale
-	else
-		return icon, texture_rect
-	end
+	return icon, texture_rect
 end
 
 function pdth_hud.textures:get_weapon_texture(weapon_id, weapon_category)

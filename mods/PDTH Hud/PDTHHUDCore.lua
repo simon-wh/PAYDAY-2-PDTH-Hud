@@ -1,5 +1,6 @@
 if not _G.pdth_hud then
 	_G.pdth_hud = {}
+    pdth_hud.name = "PDTHHud"
 	pdth_hud.newversion = {}
 	pdth_hud.loaded_options = {}
 	pdth_hud.show_thing = true
@@ -19,19 +20,18 @@ if not _G.pdth_hud then
 	pdth_hud.addon_path = ModPath .. "addons/"
 	pdth_hud.lua_path = ModPath .. "lua/"
 	pdth_hud.hook_path = ModPath .. "Hooks/"
-	pdth_hud.save_path = SavePath
+	pdth_hud.SavePath = SavePath
 end
 
 pdth_hud.dofiles = {
-	"PDTHTextures.lua",
+	"PDTHTextures.lua",	
+    "DefaultOptions.lua",
 	"Options.lua",
-	--"WriteOptions.lua",
 	"challengesmanager.lua",
 	"PDTHEquipment.lua",
-	"challengestweakdata.lua"
+	"challengestweakdata.lua",
+	"Constants.lua"
 }
-
-pdth_hud.writeoptions = "WriteOptions.lua"
 
 pdth_hud.hook_files = {
 	["lib/units/weapons/newraycastweaponbase"] = "GadgetState.lua",
@@ -113,10 +113,9 @@ if not pdth_hud.setup then
 	for p, d in pairs(pdth_hud.dofiles) do
 		dofile(pdth_hud.lua_path .. d)
 	end
-	pdth_hud:Load_options()
+	pdth_hud:LoadOptions()
     pdth_hud:LoadAddons()
-	dofile(pdth_hud.lua_path .. pdth_hud.writeoptions)
-    
+    pdth_hud:InitConstants()
 	pdth_hud.setup = true
 end
 
