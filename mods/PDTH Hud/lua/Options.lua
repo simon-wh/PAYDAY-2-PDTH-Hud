@@ -26,7 +26,7 @@ end
 function pdth_hud:OverwriteOptionValues(OptionTable, NewOptionTable)
 	for i, data in pairs(NewOptionTable) do
 		if type(data) == "table" and OptionTable[i] then
-			OptionTable[i] = table.merge(OptionTable[i], data)
+			OptionTable[i] = self:OverwriteOptionValues(OptionTable[i], data)
 		else
 			OptionTable[i] = data
 		end

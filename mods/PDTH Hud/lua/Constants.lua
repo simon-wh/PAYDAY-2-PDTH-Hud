@@ -20,9 +20,12 @@ function pdth_hud:InitConstants()
     
     const.main_equipment_y_offset_multiplier = 1.75
     
+    const.main_firemode_font_size = 14 * scale
     const.main_ammo_font_size = 18 * scale
     const.main_ammo_image_gap = 5 * scale
     const.main_ammo_size_multiplier = 1.2
+    const.main_firemode_gap = 3 * scale
+    const.main_ammo_panel_x_offset = 5
     
     const.equipment_gap = 4
 
