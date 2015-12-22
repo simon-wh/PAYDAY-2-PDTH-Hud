@@ -143,8 +143,8 @@ if pdth_hud.loaded_options.Ingame.MainHud then
             visible = false,
             layer = 11,
             texture_rect = talk_texture_rect,
-            w = talk_texture_rect[3] * pdth_hud.loaded_options.Ingame.Hud_scale,
-            h = talk_texture_rect[4] * pdth_hud.loaded_options.Ingame.Hud_scale
+            w = talk_texture_rect[3] * scale,
+            h = talk_texture_rect[4] * scale
         })
         talk:set_righttop(radial_health_panel:right() + (5), radial_health_panel:top() - (5))
         
@@ -303,23 +303,20 @@ if pdth_hud.loaded_options.Ingame.MainHud then
             })
             self._primary_weapon_ammo:set_right(deployable_equipment_panel:right() - const.main_ammo_panel_x_offset)
             self._primary_weapon_ammo:set_bottom(teammate_panel:bottom())
-            
+            self:InitAmmoPanel(self._primary_weapon_ammo)
             self._secondary_weapon_ammo = self._player_panel:panel({
                 id = "secondary_weapon_ammo",
                 visible = false,
                 layer = 1
             })
             self._secondary_weapon_ammo:set_shape(self._primary_weapon_ammo:shape())
+            self:InitAmmoPanel(self._secondary_weapon_ammo)
+            self:recreate_weapon_firemode()
         end
         
         local tabs_texture = "guis/textures/pd2/hud_tabs"
         
-        local bag_rect = {
-            32,
-            33,
-            32,
-            31
-        }
+        local bag_rect = {32, 33, 32, 31}
 
         local carry_panel = self._player_panel:panel({
             name = "carry_panel",
@@ -358,21 +355,38 @@ if pdth_hud.loaded_options.Ingame.MainHud then
             color = Color.white,
             layer = 0
         })
-
-        self.texture_rect = nil
-        self.w = nil
-        self.h = nil
-        self.scale = nil
-        self._character = nil
-        self._no = 1
     end
 
     function HUDTeammate:_create_primary_weapon_firemode()
-        
+        if self._main_player then
+            local equipped_primary = managers.blackmarket:equipped_primary()
+            local weapon_tweak_data = tweak_data.weapon[equipped_primary.weapon_id]
+            local fire_mode = weapon_tweak_data.FIRE_MODE
+            local can_toggle_firemode = weapon_tweak_data.CAN_TOGGLE_FIREMODE
+            local locked_to_auto = managers.weapon_factory:has_perk("fire_mode_auto", equipped_primary.factory_id, equipped_primary.blueprint)
+            local locked_to_single = managers.weapon_factory:has_perk("fire_mode_single", equipped_primary.factory_id, equipped_primary.blueprint)
+            if locked_to_single or not locked_to_auto and fire_mode == "single" then
+                self:set_weapon_firemode(2, "single")
+            else
+                self:set_weapon_firemode(2, "auto")
+            end
+        end
     end
 
     function HUDTeammate:_create_secondary_weapon_firemode()
-        
+        if self._main_player then
+            local equipped_secondary = managers.blackmarket:equipped_secondary()
+            local weapon_tweak_data = tweak_data.weapon[equipped_secondary.weapon_id]
+            local fire_mode = weapon_tweak_data.FIRE_MODE
+            local can_toggle_firemode = weapon_tweak_data.CAN_TOGGLE_FIREMODE
+            local locked_to_auto = managers.weapon_factory:has_perk("fire_mode_auto", equipped_secondary.factory_id, equipped_secondary.blueprint)
+            local locked_to_single = managers.weapon_factory:has_perk("fire_mode_single", equipped_secondary.factory_id, equipped_secondary.blueprint)
+            if locked_to_single or not locked_to_auto and fire_mode == "single" then
+                self:set_weapon_firemode(1, "single")
+            else
+                self:set_weapon_firemode(1, "auto")
+            end
+        end
     end
 
     function HUDTeammate:_set_weapon_selected(id, hud_icon)
@@ -439,7 +453,41 @@ if pdth_hud.loaded_options.Ingame.MainHud then
             end
         end
     end
-
+    
+    function HUDTeammate:InitAmmoPanel(panel)
+        local const = pdth_hud.constants
+        local scale = pdth_hud.loaded_options.Ingame.Hud_scale
+    
+        local firemode = panel:child("firemode")
+        if not firemode then
+            firemode = panel:text({
+                name = "firemode",
+                text = "AUTO",
+                layer = 1,
+                font = tweak_data.menu.small_font,
+                font_size = const.main_firemode_font_size
+            })
+            managers.hud:make_fine_text(firemode)
+            firemode:set_center_y(panel:h() / 2)
+            firemode:set_right(panel:w())
+        end
+        
+        local ammo = panel:child("ammo")
+        if not ammo then
+            ammo = panel:text({
+                name = "ammo",
+                text = "000/000",
+                layer = 1,
+                font = tweak_data.menu.small_font,
+                font_size = const.main_ammo_font_size
+            })
+            managers.hud:make_fine_text(ammo)
+            ammo:set_center_y(panel:h() / 2)
+            ammo:set_right(firemode:left() - const.main_firemode_gap)
+        end
+    
+    end
+    
     function HUDTeammate:set_ammo_amount_by_type(type, max_clip, current_clip, current_left, max)
         local const = pdth_hud.constants
         local scale = pdth_hud.loaded_options.Ingame.Hud_scale
@@ -458,34 +506,9 @@ if pdth_hud.loaded_options.Ingame.MainHud then
             end
             
             local category = tweak_data.weapon[managers.weapon_factory:get_weapon_id_by_factory_id(weapon.factory_id)].category
-            
+
             local firemode = ammo_panel:child("firemode")
-            if not firemode then
-                firemode = ammo_panel:text({
-                    name = "firemode",
-                    text = "AUTO",
-                    layer = 1,
-                    font = tweak_data.menu.small_font,
-                    font_size = const.main_firemode_font_size
-                })
-                managers.hud:make_fine_text(firemode)
-                firemode:set_center_y(ammo_panel:h() / 2)
-                firemode:set_right(ammo_panel:w())
-            end
-            
             local ammo = ammo_panel:child("ammo")
-            if not ammo then
-                ammo = ammo_panel:text({
-                    name = "ammo",
-                    text = "000/000",
-                    layer = 1,
-                    font = tweak_data.menu.small_font,
-                    font_size = const.main_ammo_font_size
-                })
-                managers.hud:make_fine_text(ammo)
-                ammo:set_center_y(ammo_panel:h() / 2)
-                ammo:set_right(firemode:left() - const.main_firemode_gap)
-            end
             
             local clip_string = (current_clip < 10 and "00" or current_clip < 100 and "0" or "") .. current_clip
             local left_string = (current_left < 10 and "00" or current_left < 100 and "0" or "") .. current_left
@@ -497,7 +520,6 @@ if pdth_hud.loaded_options.Ingame.MainHud then
             else
                 ammo:set_range_color(4, 7, Color.white)
             end
-            
             
             local r, g, b = 1, 1, 1
             if current_clip <= math.round(max_clip / 4) then
@@ -522,8 +544,9 @@ if pdth_hud.loaded_options.Ingame.MainHud then
                 
                 
                 for i = 1, max_clip do
-                    if not ammo_panel:child("bullet_" .. i) then
-                        local bullet = ammo_panel:bitmap({
+                    local bullet = ammo_panel:child("bullet_" .. i)
+                    if not bullet then
+                        bullet = ammo_panel:bitmap({
                             name = "bullet_" .. i,
                             visible = true,
                             layer = 1,
@@ -535,9 +558,11 @@ if pdth_hud.loaded_options.Ingame.MainHud then
                         bullet:set_right(prev_bullet and prev_bullet:left() or ammo:left() - const.main_ammo_image_gap)
                         bullet:set_center_y(ammo:center_y())
                         bullet:set_image(icon, unpack(texture_rect))
+                    elseif self.bulletChanged then
+                        bullet:set_image(icon, unpack(texture_rect))
                     end
-                    
                 end
+                self.bulletChanged = false
                 
                 for i = 1, current_clip do
                     local bullet = ammo_panel:child("bullet_" .. i)
@@ -570,9 +595,10 @@ if pdth_hud.loaded_options.Ingame.MainHud then
                     end
                 end
             else
-                for _, child in pairs(ammo_panel:children()) do
-                    if not child:name() == "ammo" then
-                        ammo_panel:remove(child)
+                for i = 1, max_clip do
+                    local bullet = ammo_panel:child("bullet_" .. i)
+                    if bullet then
+                        ammo_panel:remove(bullet)
                     end
                 end
             end
@@ -1227,15 +1253,18 @@ if pdth_hud.loaded_options.Ingame.MainHud then
             character_text:set_center_x(radial_health_panel:center_x())
             character_text:set_bottom(radial_health_panel:h() - const.main_character_y_offset)
         end
+        
+        local character
+        
         if self._main_player then
-            self._character = managers.network:session():local_peer():character()
+            character = managers.network:session():local_peer():character()
         else 
-            self._character = managers.criminals:character_name_by_peer_id(self._peer_id)
+            character = managers.criminals:character_name_by_peer_id(self._peer_id)
         end
-        if self._character ~= nil then
-            local texturebg, rectanglebg = pdth_hud.textures:get_portrait_texture(self._character .. "_bg")
-            local texturehp, rectanglehp = pdth_hud.textures:get_portrait_texture(self._character .. "_health")
-            local textuream, rectangleam = pdth_hud.textures:get_portrait_texture(self._character .. "_armor")
+        if character ~= nil then
+            local texturebg, rectanglebg = pdth_hud.textures:get_portrait_texture(character .. "_bg")
+            local texturehp, rectanglehp = pdth_hud.textures:get_portrait_texture(character .. "_health")
+            local textuream, rectangleam = pdth_hud.textures:get_portrait_texture(character .. "_armor")
             if rectanglehp ~= nil and rectangleam ~= nil and rectanglebg ~= nil and texturehp ~= nil then
                 return rectanglehp, rectangleam, rectanglebg, texturehp
             else
@@ -1256,7 +1285,6 @@ if pdth_hud.loaded_options.Ingame.MainHud then
         if rectanglehp and rectangleam and rectanglebg then
             radial_health:set_image(texture, unpack(rectanglehp))
             radial_health:set_h(self.health_h)
-            radial_bg:set_y(0)
             radial_bg:set_image(texture, unpack(rectanglebg))
             radial_health:set_bottom(radial_bg:bottom())
             radial_shield:set_image(texture, unpack(rectangleam))
@@ -1319,8 +1347,7 @@ if pdth_hud.loaded_options.Ingame.MainHud then
                 health:set_color(pdth_hud.health_colour)
                 radial_health:set_image(texture, rectanglehp[1], rectanglehp[2] + health_offset, rectanglehp[3], rectanglehp[4] - health_offset)
                 radial_health:set_h(height - health_offset)
-                radial_bg:set_y(0)
-                radial_bg:set_image(texture, rectanglebg[1], rectanglebg[2], rectanglebg[3], rectanglebg[4])
+                radial_bg:set_image(texture, unpack(rectanglebg))
                 radial_health:set_bottom(radial_bg:bottom())
                 radial_shield:set_image(texture, rectangleam[1], rectangleam[2] + armor_offset, rectangleam[3], rectangleam[4] - armor_offset)
                 radial_shield:set_h(height - armor_offset)
@@ -1330,49 +1357,8 @@ if pdth_hud.loaded_options.Ingame.MainHud then
             local ai_health = self._panel:child("ai_health")
             local character = managers.criminals:character_name_by_panel_id(self._id)
             local texturehp, rectanglehp = pdth_hud.textures:get_portrait_texture(character .. "_health")
-            ai_health:set_image(texturehp, rectanglehp[1], rectanglehp[2], rectanglehp[3], rectanglehp[4])
+            ai_health:set_image(texturehp, unpack(rectanglehp))
         end
     end
 
-    function HUDTeammate:bullet_changed()
-        if self._main_player then
-            local ammo_panel
-            local weapon
-            local factory_id
-            local weaponid
-            local category
-            for i = 1, 2 do
-                local type = i == 1 and "primary" or "secondary"
-                ammo_panel = self._panel:child(type .. "_weapon_ammo")
-                if pdth_hud.loaded_options.Ingame.Bullet == 1 then
-                    for i = 1, 600 do
-                        if ammo_panel and ammo_panel:child("bullet_" .. i) then
-                            local bullet = ammo_panel:child("bullet_" .. i)
-                            bullet:set_visible(false)
-                        end
-                    end
-                elseif pdth_hud.loaded_options.Ingame.Bullet == 2 or pdth_hud.loaded_options.Ingame.Bullet == 3 then
-                    if type == "primary" then
-                        weapon = managers.blackmarket:equipped_primary()
-                        factory_id = weapon.factory_id
-                        weaponid = weapon.weapon_id or managers.weapon_factory:get_weapon_id_by_factory_id(factory_id)
-                        category = tweak_data.weapon[weaponid].category
-                    else
-                        weapon = managers.blackmarket:equipped_secondary()
-                        factory_id = weapon.factory_id
-                        weaponid = weapon.weapon_id or managers.weapon_factory:get_weapon_id_by_factory_id(factory_id)
-                        category = tweak_data.weapon[weaponid].category
-                    end
-                    local bullet_texture, bullet_rectangle, w, h, scale = pdth_hud.textures:get_icon_data(category .. "_bullet_" .. pdth_hud.loaded_options.Ingame.Bullet, true)
-                    for i = 1, 600 do
-                        if ammo_panel and ammo_panel:child("bullet_" .. i) then
-                            ammo_panel:child("bullet_" .. i):set_image(bullet_texture, bullet_rectangle[1], bullet_rectangle[2], bullet_rectangle[3], bullet_rectangle[4])
-                            local bullet = ammo_panel:child("bullet_" .. i)
-                            bullet:set_visible(true)
-                        end
-                    end
-                end
-            end
-        end
-    end
 end

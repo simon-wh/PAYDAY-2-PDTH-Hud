@@ -1,21 +1,13 @@
 if not _G.pdth_hud then
 	_G.pdth_hud = {}
     pdth_hud.name = "PDTHHud"
-	pdth_hud.newversion = {}
 	pdth_hud.loaded_options = {}
-	pdth_hud.show_thing = true
-	pdth_hud.log = {}
-	pdth_hud.log_no = 1
 	pdth_hud.menu_name = "pdth_hud_menu"
 	pdth_hud.challenges_menu = "pdth_hud_challenges"
 	pdth_hud.active_challenges_menu = "pdth_hud_active_challenges"
 	pdth_hud.completed_challenges_menu = "pdth_hud_completed_challenges"
 	pdth_hud.portrait_menu = "pdth_hud_portrait_menu"
 	pdth_hud.heist_cgrade_name = "pdth_hud_heist_cgrade"
-	pdth_hud.write_options = pdth_hud.write_options or {}
-	if not pdth_hud._first_boot then
-		pdth_hud._first_boot = 0
-	end
 	pdth_hud.mod_path = ModPath
 	pdth_hud.addon_path = ModPath .. "addons/"
 	pdth_hud.lua_path = ModPath .. "lua/"
@@ -319,10 +311,16 @@ if Hooks then
 		MenuCallbackHandler.pdth_toggle_bullet = function(this, item)
 			pdth_hud.loaded_options.Ingame.Bullet = item:value()
 			pdth_hud:Save()
-			if managers.hud then
-				local tm = managers.hud._teammate_panels[4]
-				tm:bullet_changed()
-			end
+            if managers.player then
+                managers.hud._teammate_panels[4].bulletChanged = true
+                local player = managers.player:local_player()
+                local inventory = player:inventory()
+                if inventory then
+                    for id, weapon in pairs(inventory:available_selections()) do
+                        managers.hud:set_ammo_amount(id, weapon.unit:base():ammo_info())
+                    end
+                end
+            end
 		end
 		
 		MenuHelper:AddToggle({
