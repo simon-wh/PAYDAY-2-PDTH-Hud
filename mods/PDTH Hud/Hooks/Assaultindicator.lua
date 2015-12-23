@@ -1,4 +1,4 @@
-if pdth_hud.loaded_options.Ingame.Assault and not (Restoration and Restoration.options.restoration_assault_global) then
+if pdth_hud.Options.HUD.Assault and not (Restoration and Restoration.options.restoration_assault_global) then
 HUDAssaultCorner = HUDAssaultCorner or class()
 function HUDAssaultCorner:init(hud, full_hud)
 	self._hud_panel = hud.panel
@@ -16,8 +16,8 @@ function HUDAssaultCorner:init(hud, full_hud)
 	local assault_panel = self._hud_panel:panel({
 		visible = false,
 		name = "assault_panel",
-		w = 100 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 100 * pdth_hud.loaded_options.Ingame.Hud_scale,
+		w = 100 * pdth_hud.Options.HUD.Scale,
+		h = 100 * pdth_hud.Options.HUD.Scale,
 		layer = 4
 	})
 	assault_panel:set_bottom(self._hud_panel:bottom() / 1)
@@ -34,10 +34,10 @@ function HUDAssaultCorner:init(hud, full_hud)
 			108,
 			96
 		},
-		x = 7 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		y = 6 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		w = (108 / 1.25) * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = (96 / 1.25) * pdth_hud.loaded_options.Ingame.Hud_scale
+		x = 7 * pdth_hud.Options.HUD.Scale,
+		y = 6 * pdth_hud.Options.HUD.Scale,
+		w = (108 / 1.25) * pdth_hud.Options.HUD.Scale,
+		h = (96 / 1.25) * pdth_hud.Options.HUD.Scale
 	})
 	--icon_assaultbox:set_center_x(icon_assaultbox:parent():w() / 1.99)
 	--icon_assaultbox:set_bottom(assault_panel:bottom())
@@ -46,17 +46,17 @@ function HUDAssaultCorner:init(hud, full_hud)
 		text = managers.localization:text("menu_assault"),
 		blend_mode = "normal",
 		layer = 1,
-		x = 12.5 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		y = 42 * pdth_hud.loaded_options.Ingame.Hud_scale,
+		x = 12.5 * pdth_hud.Options.HUD.Scale,
+		y = 42 * pdth_hud.Options.HUD.Scale,
 		color = Color.red / 2,
-		font_size = 22 * pdth_hud.loaded_options.Ingame.Hud_scale,
+		font_size = 22 * pdth_hud.Options.HUD.Scale,
 		font = tweak_data.menu.small_font,
 		visible = true
 	})
 	local hostages_panel = self._hud_panel:panel({
 		name = "hostages_panel",
-		w = 75 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 30 * pdth_hud.loaded_options.Ingame.Hud_scale,
+		w = 75 * pdth_hud.Options.HUD.Scale,
+		h = 30 * pdth_hud.Options.HUD.Scale,
 		layer = 5
 	})
 	hostages_panel:set_bottom(self._hud_panel:bottom())
@@ -68,10 +68,10 @@ function HUDAssaultCorner:init(hud, full_hud)
 	local point_of_no_return_panel = self._hud_panel:panel({
 		visible = false,
 		name = "point_of_no_return_panel",
-		w = size * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 40 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		x = 0, --(self._hud_panel:w() - size - 15) * pdth_hud.loaded_options.Ingame.Hud_scale,
-		y = 0 --20 * pdth_hud.loaded_options.Ingame.Hud_scale
+		w = size * pdth_hud.Options.HUD.Scale,
+		h = 40 * pdth_hud.Options.HUD.Scale,
+		x = 0, --(self._hud_panel:w() - size - 15) * pdth_hud.Options.HUD.Scale,
+		y = 0 --20 * pdth_hud.Options.HUD.Scale
 	})
 	point_of_no_return_panel:set_right(self._hud_panel:right())
 	point_of_no_return_panel:set_top(self._hud_panel:top())
@@ -87,13 +87,13 @@ function HUDAssaultCorner:init(hud, full_hud)
 		texture = "guis/textures/pd2/hud_icon_noreturnbox",
 		x = 0,
 		y = 0,
-		w = 24 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 24 * pdth_hud.loaded_options.Ingame.Hud_scale
+		w = 24 * pdth_hud.Options.HUD.Scale,
+		h = 24 * pdth_hud.Options.HUD.Scale
 	})
 	icon_noreturnbox:set_right(icon_noreturnbox:parent():w())
 	self._noreturn_bg_box = HUDBGBox_create(point_of_no_return_panel, {
-		w = 242 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 48 * pdth_hud.loaded_options.Ingame.Hud_scale,
+		w = 242 * pdth_hud.Options.HUD.Scale,
+		h = 48 * pdth_hud.Options.HUD.Scale,
 		x = 0,
 		y = 0,
 		visible = false
@@ -116,11 +116,11 @@ function HUDAssaultCorner:init(hud, full_hud)
 		x = 0,
 		y = 0,
 		color = self._noreturn_color,
-		font_size = (tweak_data.hud_corner.noreturn_size - 5) * pdth_hud.loaded_options.Ingame.Hud_scale,
+		font_size = (tweak_data.hud_corner.noreturn_size - 5) * pdth_hud.Options.HUD.Scale,
 		font = tweak_data.menu.small_font
 	})
 	point_of_no_return_text:set_text(utf8.to_upper("TIME TO ESCAPE", {time = ""}))
-	--point_of_no_return_text:set_size(self._noreturn_bg_box:w() * pdth_hud.loaded_options.Ingame.Hud_scale, self._noreturn_bg_box:h() * pdth_hud.loaded_options.Ingame.Hud_scale)
+	--point_of_no_return_text:set_size(self._noreturn_bg_box:w() * pdth_hud.Options.HUD.Scale, self._noreturn_bg_box:h() * pdth_hud.Options.HUD.Scale)
 	local point_of_no_return_timer = point_of_no_return_panel:text({
 		name = "point_of_no_return_timer",
 		text = "",
@@ -133,15 +133,15 @@ function HUDAssaultCorner:init(hud, full_hud)
 		x = 0,
 		y = 0,
 		color = self._noreturn_color,
-		font_size = tweak_data.hud_corner.noreturn_size * pdth_hud.loaded_options.Ingame.Hud_scale,
+		font_size = tweak_data.hud_corner.noreturn_size * pdth_hud.Options.HUD.Scale,
 		font = tweak_data.menu.small_font
 	})
 	local _, _, w, h = point_of_no_return_timer:text_rect()
-	--[[point_of_no_return_timer:set_size(56 * pdth_hud.loaded_options.Ingame.Hud_scale, self._noreturn_bg_box:h() * pdth_hud.loaded_options.Ingame.Hud_scale)
-	point_of_no_return_timer:set_right((point_of_no_return_timer:parent():w() - 10) * pdth_hud.loaded_options.Ingame.Hud_scale)
-	point_of_no_return_timer:set_bottom((point_of_no_return_timer:parent():h() + 10) * pdth_hud.loaded_options.Ingame.Hud_scale)
-	point_of_no_return_text:set_right((math.round(point_of_no_return_timer:left()) + 50) * pdth_hud.loaded_options.Ingame.Hud_scale)
-	point_of_no_return_text:set_bottom((point_of_no_return_timer:parent():h() - 11) * pdth_hud.loaded_options.Ingame.Hud_scale)]]--
+	--[[point_of_no_return_timer:set_size(56 * pdth_hud.Options.HUD.Scale, self._noreturn_bg_box:h() * pdth_hud.Options.HUD.Scale)
+	point_of_no_return_timer:set_right((point_of_no_return_timer:parent():w() - 10) * pdth_hud.Options.HUD.Scale)
+	point_of_no_return_timer:set_bottom((point_of_no_return_timer:parent():h() + 10) * pdth_hud.Options.HUD.Scale)
+	point_of_no_return_text:set_right((math.round(point_of_no_return_timer:left()) + 50) * pdth_hud.Options.HUD.Scale)
+	point_of_no_return_text:set_bottom((point_of_no_return_timer:parent():h() - 11) * pdth_hud.Options.HUD.Scale)]]--
 	
 	
 	
@@ -152,8 +152,8 @@ function HUDAssaultCorner:init(hud, full_hud)
 	local casing_panel = self._hud_panel:panel({
 		visible = false,
 		name = "casing_panel",
-		w = 100 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 100 * pdth_hud.loaded_options.Ingame.Hud_scale
+		w = 100 * pdth_hud.Options.HUD.Scale,
+		h = 100 * pdth_hud.Options.HUD.Scale
 	})
 	casing_panel:set_center_x(self._hud_panel:center_x())
 	casing_panel:set_bottom(self._hud_panel:bottom())
@@ -171,15 +171,15 @@ function HUDAssaultCorner:init(hud, full_hud)
 		texture = "guis/textures/pd2/icon_detection",
 		x = 0,
 		y = 0,
-		w = 100 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 100 * pdth_hud.loaded_options.Ingame.Hud_scale
+		w = 100 * pdth_hud.Options.HUD.Scale,
+		h = 100 * pdth_hud.Options.HUD.Scale
 	})
 	icon_casingbox:set_right(icon_casingbox:parent():w())
 	self._casing_bg_box = HUDBGBox_create(casing_panel, {
-		w = 242 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 38 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		x = 900 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		y = 900 * pdth_hud.loaded_options.Ingame.Hud_scale,
+		w = 242 * pdth_hud.Options.HUD.Scale,
+		h = 38 * pdth_hud.Options.HUD.Scale,
+		x = 900 * pdth_hud.Options.HUD.Scale,
+		y = 900 * pdth_hud.Options.HUD.Scale,
 		visible = false
 	}, {
 		color = self._casing_color,
@@ -208,7 +208,7 @@ function HUDAssaultCorner:init(hud, full_hud)
 		--x = 4,
 		--y = 0,
 		color = Color.white ,
-		font_size = 13 * pdth_hud.loaded_options.Ingame.Hud_scale,
+		font_size = 13 * pdth_hud.Options.HUD.Scale,
 		font = tweak_data.menu.small_font_noshadow
 	})
 	--num_hostages:set_center_y(num_hostages:parent():h() / 2)
@@ -474,7 +474,7 @@ function HUDAssaultCorner:flash_point_of_no_return_timer(beep)
                 BetterLightFX:SetColor(r, g, b, 1, "PointOfNoReturn")
             end
             
-			o:set_font_size(math.lerp(tweak_data.hud_corner.noreturn_size * pdth_hud.loaded_options.Ingame.Hud_scale , (tweak_data.hud_corner.noreturn_size * pdth_hud.loaded_options.Ingame.Hud_scale) * 1.25, n))
+			o:set_font_size(math.lerp(tweak_data.hud_corner.noreturn_size * pdth_hud.Options.HUD.Scale , (tweak_data.hud_corner.noreturn_size * pdth_hud.Options.HUD.Scale) * 1.25, n))
 		end
         if BetterLightFX then
             BetterLightFX:EndEvent("PointOfNoReturn")

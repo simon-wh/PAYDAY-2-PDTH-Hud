@@ -1,4 +1,4 @@
-if pdth_hud.loaded_options.Ingame.MainHud then
+if pdth_hud.Options.HUD.MainHud then
     CloneClass(HUDManager)
 
     function HUDManager.set_mugshot_talk(self, id, active)
@@ -26,5 +26,10 @@ if pdth_hud.loaded_options.Ingame.MainHud then
         self.orig.add_waypoint(self, id, data)
         
         self._hud.waypoints[id].arrow:set_color(Color.white)
+        
+        local distance = self._hud.waypoints[id].distance
+        if distance then
+            distance:set_color(Color(1, 1, 0.65882355, 0))
+        end
     end
 end

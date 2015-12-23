@@ -1,4 +1,4 @@
-if pdth_hud.loaded_options.Ingame.Interaction then
+if pdth_hud.Options.HUD.Interaction then
 
 HUDInteraction = HUDInteraction or class()
 function HUDInteraction:init(hud, child_name)
@@ -23,8 +23,8 @@ function HUDInteraction:init(hud, child_name)
 		layer = 25,
 		--color = Color.white,
 		font = tweak_data.menu.small_font,
-		font_size = tweak_data.hud_present.text_size * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 64 * pdth_hud.loaded_options.Ingame.Hud_scale
+		font_size = tweak_data.hud_present.text_size * pdth_hud.Options.HUD.Scale,
+		h = 64 * pdth_hud.Options.HUD.Scale
 	})
 	local invalid_text = self._hud_panel:text({
 		name = self._child_ivalid_name_text,
@@ -36,8 +36,8 @@ function HUDInteraction:init(hud, child_name)
 		color = Color(1, 0.3, 0.3),
 		blend_mode = "normal",
 		font = tweak_data.menu.small_font,
-		font_size = (tweak_data.hud_present.text_size - 2) * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 64 * pdth_hud.loaded_options.Ingame.Hud_scale
+		font_size = (tweak_data.hud_present.text_size - 2) * pdth_hud.Options.HUD.Scale,
+		h = 64 * pdth_hud.Options.HUD.Scale
 	})
 
 	local interact_bar = self._hud_panel:bitmap({
@@ -56,8 +56,8 @@ function HUDInteraction:init(hud, child_name)
 		--align = "center",
 		x = 0,
 		y = 0,
-		w = 252 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 20 * pdth_hud.loaded_options.Ingame.Hud_scale
+		w = 252 * pdth_hud.Options.HUD.Scale,
+		h = 20 * pdth_hud.Options.HUD.Scale
 	})
 	
 	local interact_bar_invalid = self._hud_panel:bitmap({
@@ -74,8 +74,8 @@ function HUDInteraction:init(hud, child_name)
 		},
 		x = 0,
 		y = 0,
-		w = 252 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 20 * pdth_hud.loaded_options.Ingame.Hud_scale
+		w = 252 * pdth_hud.Options.HUD.Scale,
+		h = 20 * pdth_hud.Options.HUD.Scale
 	})
 	
 	local interact_background = self._hud_panel:bitmap({
@@ -92,8 +92,8 @@ function HUDInteraction:init(hud, child_name)
 		},
 		x = 0,
 		y = 0,
-		w = 254 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 22 * pdth_hud.loaded_options.Ingame.Hud_scale
+		w = 254 * pdth_hud.Options.HUD.Scale,
+		h = 22 * pdth_hud.Options.HUD.Scale
 	})
 	local safe_rect_pixels = managers.viewport:get_safe_rect_pixels()
 	local interact_bitmap = self._hud_panel:bitmap({
@@ -104,8 +104,8 @@ function HUDInteraction:init(hud, child_name)
 		--texture = "guis/textures/pd2/hud_stealth_exclam",
 		x = 0,
 		y = 0,
-		w = 38 * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 38 * pdth_hud.loaded_options.Ingame.Hud_scale
+		w = 38 * pdth_hud.Options.HUD.Scale,
+		h = 38 * pdth_hud.Options.HUD.Scale
 	})
 	
 	local test_text = self._hud_panel:text({
@@ -118,33 +118,33 @@ function HUDInteraction:init(hud, child_name)
 		color = Color(1, 0.3, 0.3),
 		blend_mode = "normal",
 		font = tweak_data.menu.small_font,
-		font_size = (tweak_data.hud_present.text_size - 2) * pdth_hud.loaded_options.Ingame.Hud_scale,
-		h = 64 * pdth_hud.loaded_options.Ingame.Hud_scale
+		font_size = (tweak_data.hud_present.text_size - 2) * pdth_hud.Options.HUD.Scale,
+		h = 64 * pdth_hud.Options.HUD.Scale
 	})
 	
 	local icon, texture_rect = tweak_data.hud_icons:get_icon_data("develop")
 	interact_bitmap:set_image(icon, texture_rect[1], texture_rect[2], texture_rect[3], texture_rect[4])
 	interact_bitmap:set_center_y(interact_bitmap:parent():center_y() / 1.65)
-	--interact_bitmap:set_right(470  pdth_hud.loaded_options.Ingame.Hud_scale)
-	interact_background:set_h((22 * 0.86) * pdth_hud.loaded_options.Ingame.Hud_scale)
-	interact_background:set_w((300 * 0.9) * pdth_hud.loaded_options.Ingame.Hud_scale)
+	--interact_bitmap:set_right(470  pdth_hud.Options.HUD.Scale)
+	interact_background:set_h((22 * 0.86) * pdth_hud.Options.HUD.Scale)
+	interact_background:set_w((300 * 0.9) * pdth_hud.Options.HUD.Scale)
 	interact_background:set_center_x(self._hud_panel:center_x() + (interact_bitmap:w() / 2))
 	interact_background:set_center_y(interact_bitmap:center_y())
 	interact_bitmap:set_right(interact_background:left() - 5)
-	interact_bar:set_h(interact_background:h() - (2 * pdth_hud.loaded_options.Ingame.Hud_scale))
-	interact_bar:set_w(interact_background:w() - (2 * pdth_hud.loaded_options.Ingame.Hud_scale))
+	interact_bar:set_h(interact_background:h() - (2 * pdth_hud.Options.HUD.Scale))
+	interact_bar:set_w(interact_background:w() - (2 * pdth_hud.Options.HUD.Scale))
 	
 	interact_bar:set_left(interact_background:left() + 1)
 	interact_bar:set_center_y(interact_bitmap:center_y())
 	
-	interact_text:set_font_size(15 * pdth_hud.loaded_options.Ingame.Hud_scale)
-	interact_text:set_center_y(interact_bitmap:center_y() + (24.5 * pdth_hud.loaded_options.Ingame.Hud_scale))
+	interact_text:set_font_size(15 * pdth_hud.Options.HUD.Scale)
+	interact_text:set_center_y(interact_bitmap:center_y() + (24.5 * pdth_hud.Options.HUD.Scale))
 	interact_text:set_left(interact_background:left() + 5)
 	
-	test_text:set_center_y(interact_bitmap:center_y() - (24 * pdth_hud.loaded_options.Ingame.Hud_scale))
+	test_text:set_center_y(interact_bitmap:center_y() - (24 * pdth_hud.Options.HUD.Scale))
 	test_text:set_left(interact_bitmap:right())
 
-	invalid_text:set_center_y(interact_text:center_y() + (20 * pdth_hud.loaded_options.Ingame.Hud_scale))
+	invalid_text:set_center_y(interact_text:center_y() + (20 * pdth_hud.Options.HUD.Scale))
 	invalid_text:set_center_x(interact_background:center_x())
 	self._interact_circle = {}
 	self._interact_circle._circle = interact_bar

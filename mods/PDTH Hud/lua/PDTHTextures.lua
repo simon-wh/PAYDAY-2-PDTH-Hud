@@ -1,89 +1,9 @@
---PDTHTextures = PDTHTextures or class()
-
---function PDTHTextures:init()
 pdth_hud.textures = {}
-pdth_hud.textures.jowi_bg_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		384, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.jowi_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		384, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.jowi_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		384, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.american_bg_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		128, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.american_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		128, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.american_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		128, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.german_bg_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		64, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.german_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		64, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.german_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		64, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.russian_bg_default = {
+
+pdth_hud.textures.portraits = {}
+
+pdth_hud.textures.portraits["fallback"] = {}
+pdth_hud.textures.portraits["fallback"].bg = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
 		0, 
@@ -92,7 +12,8 @@ pdth_hud.textures.russian_bg_default = {
 		129
 	}
 }
-pdth_hud.textures.russian_health_default = {
+
+pdth_hud.textures.portraits["fallback"].health = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
 		0, 
@@ -101,7 +22,8 @@ pdth_hud.textures.russian_health_default = {
 		129
 	}
 }
-pdth_hud.textures.russian_armor_default = {
+
+pdth_hud.textures.portraits["fallback"].armor = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
 		0, 
@@ -110,886 +32,262 @@ pdth_hud.textures.russian_armor_default = {
 		129
 	}
 }
-pdth_hud.textures.spanish_bg_default = {
+
+pdth_hud.textures.portraits["fallback"].tm = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
-		192, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.spanish_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		192, 
-		1, 
-		64,
-		129
-	}
-}
-pdth_hud.textures.spanish_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		192, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.old_hoxton_bg_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		320,			
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.old_hoxton_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		320, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.old_hoxton_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		320, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.female_1_bg_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		256, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.female_1_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		256, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.female_1_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		256, 
-		131, 
-		64, 
-		129
+		1,
+        513,
+        192,
+        192
 	}
 }
 
-pdth_hud.textures.dragan_bg_default = {
-	texture = "guis/textures/pd2/masks",
+pdth_hud.textures.portraits["teammate"] = {}
+
+pdth_hud.textures.portraits["teammate"].health = {
+    texture = "guis/textures/hud_icons",
 	texture_rect = {
-		448, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.dragan_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		448, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.dragan_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		448, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.jacket_bg_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		512, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.jacket_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		512, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.jacket_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		512, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.bonnie_bg_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		576, 		
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.bonnie_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		576, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.bonnie_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		576, 
-		131, 
-		64, 
-		129
+		264, 
+		231, 
+		12, 
+		48
 	}
 }
 
-pdth_hud.textures.sokol_bg_default = {
-	texture = "guis/textures/pd2/masks",
+pdth_hud.textures.portraits["teammate"].armor = {
+    texture = "guis/textures/hud_icons",
 	texture_rect = {
-		640, 		
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.sokol_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		640, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.sokol_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		640, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.dragon_bg_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		704, 		
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.dragon_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		704, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.dragon_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		704, 
-		131, 
-		64, 
-		129
+		252, 
+		231, 
+		12, 
+		48
 	}
 }
 
-pdth_hud.textures.bodhi_bg_default = {
-	texture = "guis/textures/pd2/masks",
+pdth_hud.textures.portraits["teammate"].bg = {
+    texture = "guis/textures/hud_icons",
 	texture_rect = {
-		768, 		
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.bodhi_health_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		768, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.bodhi_armor_default = {
-	texture = "guis/textures/pd2/masks",
-	texture_rect = {
-		768, 
-		131, 
-		64, 
-		129
+		240, 
+		231, 
+		12, 
+		48
 	}
 }
 
-pdth_hud.textures.jowi_bg_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		384, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.jowi_health_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		384, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.jowi_armor_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		384, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.american_bg_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		128, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.american_health_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		128, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.american_armor_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		128, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.german_bg_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		64, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.german_health_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		64, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.german_armor_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		64, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.russian_bg_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		0, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.russian_health_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		0, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.russian_armor_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		0, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.spanish_bg_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		192, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.spanish_health_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		192, 
-		1, 
-		64,
-		129
-	}
-}
-pdth_hud.textures.spanish_armor_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		192, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.old_hoxton_bg_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		320,			
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.old_hoxton_health_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		320, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.old_hoxton_armor_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		320, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.female_1_bg_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		256, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.female_1_health_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		256, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.female_1_armor_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		256, 
-		131, 
-		64, 
-		129
-	}
-}
+pdth_hud.textures.bullets = {}
 
-pdth_hud.textures.dragan_bg_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		448, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.dragan_health_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		448, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.dragan_armor_white = {
-	texture = "guis/textures/pd2/healthshield",
-	texture_rect = {
-		448, 
-		131, 
-		64, 
-		129
-	}
-}
+pdth_hud.textures.bullets[2] = {}
 
-pdth_hud.textures.american_bg_pdth = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		128, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.american_health_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		128, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.american_armor_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		128, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.german_bg_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		64, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.german_health_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		64, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.german_armor_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		64, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.russian_bg_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		0, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.russian_health_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		0, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.russian_armor_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		0, 
-		131, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.spanish_bg_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		192, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.spanish_health_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		192, 
-		1, 
-		64,
-		129
-	}
-}
-pdth_hud.textures.spanish_armor_pdth  = {
-	texture = "guis/textures/pd2/gui_grade_badges",
-	texture_rect = {
-		192, 
-		131, 
-		64, 
-		129
-	}
-}
-
-
-pdth_hud.textures.jowi_bg_foster = {
-	texture = "guis/textures/pd2/mission_equipment",
-	texture_rect = {
-		0, 
-		261, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.jowi_health_foster = {
-	texture = "guis/textures/pd2/mission_equipment",
-	texture_rect = {
-		0, 
-		1, 
-		64, 
-		129
-	}
-}
-pdth_hud.textures.jowi_armor_foster = {
-	texture = "guis/textures/pd2/mission_equipment",
-	texture_rect = {
-		0, 
-		131, 
-		64, 
-		129
-	}
-}
-
-
-
-
-pdth_hud.textures.assault_rifle_bullet_2 = {
+pdth_hud.textures.bullets[2].assault_rifle = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		0, 
 		0, 
 		8, 
 		32
-	},
-	w = 8,
-	h = 32,
-	scale = 1.8
+	}
 }
-pdth_hud.textures.bow_bullet_2 = {
+--[[pdth_hud.textures.bullets[2].bow = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		0, 
 		0, 
 		8, 
 		32
-	},
-	w = 8,
-	h = 32,
-	scale = 1.8
-}
-pdth_hud.textures.bow_bullet_3 = {
-	texture = "guis/textures/ammocounter",
-	texture_rect = {
-		0, 
-		0, 
-		8, 
-		32
-	},
-	w = 8,
-	h = 32,
-	scale = 1.8
-}
-pdth_hud.textures.shotgun_bullet_2 = {
+	}
+}]]--
+pdth_hud.textures.bullets[2].shotgun = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		32, 
 		0, 
 		16, 
 		32
-	},
-	w = 16,
-	h = 32,
-	scale = 1.8
+	}
 }
-pdth_hud.textures.saw_bullet_2 = {
+--[[pdth_hud.textures.bullets[2].saw = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		57, 
 		0, 
 		0, 
 		35
-	},
-	w = 0,
-	h = 35,
-	scale = 2.2
-}
-pdth_hud.textures.lmg_bullet_2 = {
+	}
+}]]--
+pdth_hud.textures.bullets[2].lmg = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		48, 
 		0, 
 		4, 
 		32
-	},
-	w = 4,
-	h = 32,
-	scale = 1.8
+	}
 }
-pdth_hud.textures.minigun_bullet_2 = {
+pdth_hud.textures.bullets[2].minigun = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		48, 
 		0, 
 		4, 
 		32
-	},
-	w = 0,
-	h = 32,
-	scale = 1.8
-}
-pdth_hud.textures.minigun_bullet_3 = {
-	texture = "guis/textures/ammocounter",
-	texture_rect = {
-		48, 
-		0, 
-		4, 
-		32
-	},
-	w = 0,
-	h = 32,
-	scale = 1.8
+	}
 }
 
-pdth_hud.textures.snp_bullet_2 = {
+pdth_hud.textures.bullets[2].snp = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		0, 
 		0, 
 		8, 
 		32
-	},
-	w = 8,
-	h = 32,
-	scale = 1.8
+	}
 }
-pdth_hud.textures.grenade_launcher_bullet_2 = {
+pdth_hud.textures.bullets[2].grenade_launcher = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		16, 
 		0, 
 		16, 
 		32
-	},
-	w = 16,
-	h = 32,
-	scale = 1.8
+	}
 }
 
-pdth_hud.textures.akimbo_bullet_2 = {
+pdth_hud.textures.bullets[2].akimbo = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		0, 
 		37, 
 		8, 
 		24
-	},
-	w = 8,
-	h = 24,
-	scale = 1.4
+	}
 }
-pdth_hud.textures.smg_bullet_2 = {
+pdth_hud.textures.bullets[2].smg = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		0, 
 		37, 
 		8, 
 		24
-	},
-	w = 8,
-	h = 24,
-	scale = 1.4
+	}
 }
-pdth_hud.textures.pistol_bullet_2 = {
+pdth_hud.textures.bullets[2].pistol = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		0, 
 		37, 
 		8, 
 		24
-	},
-	w = 8,
-	h = 24,
-	scale = 1.4
+	}
 }
 
 
+pdth_hud.textures.bullets[3] = {}
 
-pdth_hud.textures.assault_rifle_bullet_3 = {
+pdth_hud.textures.bullets[3].assault_rifle = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		91, 
 		0, 
 		8, 
 		32
-	},
-	w = 8,
-	h = 32,
-	scale = 1.8
+	}
 }
-pdth_hud.textures.shotgun_bullet_3 = {
+pdth_hud.textures.bullets[3].shotgun = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		72, 
 		0, 
 		16, 
 		32
-	},
-	w = 16,
-	h = 32,
-	scale = 1.8
+	}
 }
-pdth_hud.textures.saw_bullet_3 = {
+--[[pdth_hud.textures.bullets[3].bow = {
+	texture = "guis/textures/ammocounter",
+	texture_rect = {
+		0, 
+		0, 
+		8, 
+		32
+	}
+}]]--
+pdth_hud.textures.bullets[3].minigun = {
+	texture = "guis/textures/ammocounter",
+	texture_rect = {
+		48, 
+		0, 
+		4, 
+		32
+	}
+}
+
+--[[pdth_hud.textures.bullets[3].saw = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		57, 
 		0, 
 		0, 
 		35
-	},
-	w = 0,
-	h = 35,
-	scale = 2.2
-}
-pdth_hud.textures.lmg_bullet_3 = {
+	}
+}]]--
+pdth_hud.textures.bullets[3].lmg = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		48, 
 		0, 
 		4, 
 		32
-	},
-	w = 4,
-	h = 32,
-	scale = 1.8
+	}
 }
-pdth_hud.textures.snp_bullet_3 = {
+pdth_hud.textures.bullets[3].snp = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		91, 
 		0, 
 		8, 
 		32
-	},
-	w = 8,
-	h = 32,
-	scale = 1.8
+	}
 }
-pdth_hud.textures.grenade_launcher_bullet_3 = {
+pdth_hud.textures.bullets[3].grenade_launcher = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		16, 
 		0, 
 		16, 
 		32
-	},
-	w = 16,
-	h = 32,
-	scale = 1.8
+	}
 }
-pdth_hud.textures.akimbo_bullet_3 = {
+pdth_hud.textures.bullets[3].akimbo = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		103, 
 		4, 
 		8, 
 		24
-	},
-	w = 8,
-	h = 24,
-	scale = 1.4
+	}
 }
-pdth_hud.textures.smg_bullet_3 = {
+pdth_hud.textures.bullets[3].smg = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		103, 
 		4, 
 		8, 
 		24
-	},
-	w = 8,
-	h = 24,
-	scale = 1.4
+	}
 }
-pdth_hud.textures.pistol_bullet_3 = {
+pdth_hud.textures.bullets[3].pistol = {
 	texture = "guis/textures/ammocounter",
 	texture_rect = {
 		103, 
 		4, 
 		8, 
 		24
-	},
-	w = 8,
-	h = 24,
-	scale = 1.4
+	}
 }
 
+pdth_hud.textures.weapons = {}
 
-
-
-pdth_hud.textures.ak47 = {
+pdth_hud.textures.weapons.ak47 = {
 	texture = "guis/textures/hud_icons",
 	texture_rect = {
 		416, 
@@ -998,7 +296,7 @@ pdth_hud.textures.ak47 = {
 		48
 	}
 }
-pdth_hud.textures.ak74 = {
+pdth_hud.textures.weapons.ak74 = {
 	texture = "guis/textures/hud_icons",
 	texture_rect = {
 		416, 
@@ -1008,7 +306,7 @@ pdth_hud.textures.ak74 = {
 	}
 }
 
-pdth_hud.textures.akm = {
+pdth_hud.textures.weapons.akm = {
 	texture = "guis/textures/hud_icons",
 	texture_rect = {
 		416, 
@@ -1017,7 +315,7 @@ pdth_hud.textures.akm = {
 		48
 	}
 }
-pdth_hud.textures.akm_gold = {
+pdth_hud.textures.weapons.akm_gold = {
 	texture = "guis/textures/hud_icons",
 	texture_rect = {
 		416, 
@@ -1026,7 +324,7 @@ pdth_hud.textures.akm_gold = {
 		48
 	}
 }
-pdth_hud.textures.new_m14 = {
+pdth_hud.textures.weapons.new_m14 = {
 	texture = "guis/textures/hud_icons",
 	texture_rect = {
 		336,
@@ -1035,7 +333,7 @@ pdth_hud.textures.new_m14 = {
 		48
 	}
 }
-pdth_hud.textures.g3 = {
+pdth_hud.textures.weapons.g3 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		30, 
@@ -1044,7 +342,7 @@ pdth_hud.textures.g3 = {
 		166
 	}
 }
-pdth_hud.textures.galil = {
+pdth_hud.textures.weapons.galil = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		966, 
@@ -1053,7 +351,7 @@ pdth_hud.textures.galil = {
 		166
 	}
 }
-pdth_hud.textures.fal = {
+pdth_hud.textures.weapons.fal = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		782, 
@@ -1062,7 +360,7 @@ pdth_hud.textures.fal = {
 		166
 	}
 }
-pdth_hud.textures.s552 = {
+pdth_hud.textures.weapons.s552 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		405, 
@@ -1071,7 +369,7 @@ pdth_hud.textures.s552 = {
 		166
 	}
 }
-pdth_hud.textures.famas = {
+pdth_hud.textures.weapons.famas = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		785, 
@@ -1080,7 +378,7 @@ pdth_hud.textures.famas = {
 		166
 	}
 }
-pdth_hud.textures.l85a2 = {
+pdth_hud.textures.weapons.l85a2 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		972, 
@@ -1089,7 +387,7 @@ pdth_hud.textures.l85a2 = {
 		166
 	}
 }
-pdth_hud.textures.m16 = {
+pdth_hud.textures.weapons.m16 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		30, 
@@ -1098,7 +396,7 @@ pdth_hud.textures.m16 = {
 		166
 	}
 }
-pdth_hud.textures.assault_rifle = {
+pdth_hud.textures.weapons.assault_rifle = {
 	texture = "guis/textures/hud_icons",
 	texture_rect = {
 		48, 
@@ -1107,7 +405,7 @@ pdth_hud.textures.assault_rifle = {
 		48
 	}	
 }
-pdth_hud.textures.r870 = {
+pdth_hud.textures.weapons.r870 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		29, 
@@ -1116,7 +414,7 @@ pdth_hud.textures.r870 = {
 		166
 	}
 }
-pdth_hud.textures.ksg = {
+pdth_hud.textures.weapons.ksg = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		965, 
@@ -1125,7 +423,7 @@ pdth_hud.textures.ksg = {
 		166
 	}
 }
-pdth_hud.textures.spas12 = {
+pdth_hud.textures.weapons.spas12 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		779, 
@@ -1134,7 +432,7 @@ pdth_hud.textures.spas12 = {
 		166
 	}
 }
-pdth_hud.textures.benelli = {
+pdth_hud.textures.weapons.benelli = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		594, 
@@ -1143,7 +441,7 @@ pdth_hud.textures.benelli = {
 		166
 	}	
 }
-pdth_hud.textures.huntsman = {
+pdth_hud.textures.weapons.huntsman = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		969, 
@@ -1152,7 +450,7 @@ pdth_hud.textures.huntsman = {
 		166
 	}	
 }
-pdth_hud.textures.saiga = {
+pdth_hud.textures.weapons.saiga = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		404, 
@@ -1161,7 +459,7 @@ pdth_hud.textures.saiga = {
 		166
 	}
 }
-pdth_hud.textures.shotgun = {
+pdth_hud.textures.weapons.shotgun = {
 	texture = "guis/textures/hud_icons",
 	texture_rect = {
 		96, 
@@ -1170,7 +468,7 @@ pdth_hud.textures.shotgun = {
 		48
 	}
 }
-pdth_hud.textures.saw = {
+pdth_hud.textures.weapons.saw = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		780, 
@@ -1179,7 +477,7 @@ pdth_hud.textures.saw = {
 		166
 	}	
 }
-pdth_hud.textures.rpk = {
+pdth_hud.textures.weapons.rpk = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		218, 
@@ -1188,7 +486,7 @@ pdth_hud.textures.rpk = {
 		166
 	}
 }
-pdth_hud.textures.hk21 = {
+pdth_hud.textures.weapons.hk21 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		403, 
@@ -1197,7 +495,7 @@ pdth_hud.textures.hk21 = {
 		166
 	}	
 }
-pdth_hud.textures.m249 = {
+pdth_hud.textures.weapons.m249 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		220, 
@@ -1208,7 +506,7 @@ pdth_hud.textures.m249 = {
 }
 
 
-pdth_hud.textures.lmg = {
+pdth_hud.textures.weapons.lmg = {
 	texture = "guis/textures/hud_icons",
 	texture_rect = {
 		384, 
@@ -1217,7 +515,7 @@ pdth_hud.textures.lmg = {
 		48
 	}
 }
-pdth_hud.textures.m95 = {
+pdth_hud.textures.weapons.m95 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		780, 
@@ -1226,7 +524,7 @@ pdth_hud.textures.m95 = {
 		166
 	}
 }
-pdth_hud.textures.msr = {
+pdth_hud.textures.weapons.msr = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		779, 
@@ -1235,7 +533,7 @@ pdth_hud.textures.msr = {
 		166
 	}
 }
-pdth_hud.textures.mosin = {
+pdth_hud.textures.weapons.mosin = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		970, 
@@ -1244,7 +542,7 @@ pdth_hud.textures.mosin = {
 		166
 	}
 }
-pdth_hud.textures.r93 = {
+pdth_hud.textures.weapons.r93 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		591, 
@@ -1253,7 +551,7 @@ pdth_hud.textures.r93 = {
 		166
 	}
 }
-pdth_hud.textures.snp = {
+pdth_hud.textures.weapons.snp = {
 	texture = "guis/textures/hud_icons",
 	texture_rect = {
 		336, 
@@ -1262,7 +560,7 @@ pdth_hud.textures.snp = {
 		48
 	}
 }
-pdth_hud.textures.grenade_launcher = {
+pdth_hud.textures.weapons.grenade_launcher = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		222, 
@@ -1271,7 +569,7 @@ pdth_hud.textures.grenade_launcher = {
 		166
 	}
 }
-pdth_hud.textures.jowi = {
+pdth_hud.textures.weapons.jowi = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		224, 
@@ -1280,7 +578,7 @@ pdth_hud.textures.jowi = {
 		166
 	}
 }
-pdth_hud.textures.x_b92fs = {
+pdth_hud.textures.weapons.x_b92fs = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		33, 
@@ -1289,7 +587,7 @@ pdth_hud.textures.x_b92fs = {
 		166
 	}
 }
-pdth_hud.textures.x_1911 = {
+pdth_hud.textures.weapons.x_1911 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		407, 
@@ -1298,7 +596,7 @@ pdth_hud.textures.x_1911 = {
 		166
 	}
 }
-pdth_hud.textures.x_deagle = {
+pdth_hud.textures.weapons.x_deagle = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		590, 
@@ -1307,7 +605,7 @@ pdth_hud.textures.x_deagle = {
 		166
 	}
 }
-pdth_hud.textures.akimbo = {
+pdth_hud.textures.weapons.akimbo = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		33, 
@@ -1316,7 +614,7 @@ pdth_hud.textures.akimbo = {
 		166
 	}
 }
-pdth_hud.textures.striker = {
+pdth_hud.textures.weapons.striker = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		405, 
@@ -1325,7 +623,7 @@ pdth_hud.textures.striker = {
 		166
 	}
 }
-pdth_hud.textures.judge = {
+pdth_hud.textures.weapons.judge = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		221, 
@@ -1334,7 +632,7 @@ pdth_hud.textures.judge = {
 		166
 	}
 }
-pdth_hud.textures.serbu = {
+pdth_hud.textures.weapons.serbu = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		402, 
@@ -1343,7 +641,7 @@ pdth_hud.textures.serbu = {
 		166
 	}
 }
-pdth_hud.textures.new_raging_bull = {
+pdth_hud.textures.weapons.new_raging_bull = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		221, 
@@ -1352,7 +650,7 @@ pdth_hud.textures.new_raging_bull = {
 		166
 	}
 }
-pdth_hud.textures.uzi = {
+pdth_hud.textures.weapons.uzi = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		965, 
@@ -1361,7 +659,7 @@ pdth_hud.textures.uzi = {
 		166
 	}
 }
-pdth_hud.textures.m45 = {
+pdth_hud.textures.weapons.m45 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		589, 
@@ -1370,7 +668,7 @@ pdth_hud.textures.m45 = {
 		166
 	}
 }
-pdth_hud.textures.new_mp5 = {
+pdth_hud.textures.weapons.new_mp5 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		592, 
@@ -1379,7 +677,7 @@ pdth_hud.textures.new_mp5 = {
 		166
 	}
 }
-pdth_hud.textures.p90 = {
+pdth_hud.textures.weapons.p90 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		222, 
@@ -1388,7 +686,7 @@ pdth_hud.textures.p90 = {
 		166
 	}
 }
-pdth_hud.textures.scorpion = {
+pdth_hud.textures.weapons.scorpion = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		30, 
@@ -1397,7 +695,7 @@ pdth_hud.textures.scorpion = {
 		166
 	}
 }
-pdth_hud.textures.mp9 = {
+pdth_hud.textures.weapons.mp9 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		971, 
@@ -1406,7 +704,7 @@ pdth_hud.textures.mp9 = {
 		166
 	}
 }
-pdth_hud.textures.m1928 = {
+pdth_hud.textures.weapons.m1928 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		596, 
@@ -1415,7 +713,7 @@ pdth_hud.textures.m1928 = {
 		166
 	}
 }
-pdth_hud.textures.tec9 = {
+pdth_hud.textures.weapons.tec9 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		224, 
@@ -1424,7 +722,7 @@ pdth_hud.textures.tec9 = {
 		166
 	}
 }
-pdth_hud.textures.akmsu = {
+pdth_hud.textures.weapons.akmsu = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		32, 
@@ -1433,7 +731,7 @@ pdth_hud.textures.akmsu = {
 		166
 	}
 }
-pdth_hud.textures.sterling = {
+pdth_hud.textures.weapons.sterling = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		593, 
@@ -1442,7 +740,7 @@ pdth_hud.textures.sterling = {
 		166
 	}
 }
-pdth_hud.textures.olympic = {
+pdth_hud.textures.weapons.olympic = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		405, 
@@ -1451,7 +749,7 @@ pdth_hud.textures.olympic = {
 		166
 	}
 }
-pdth_hud.textures.mp7 = {
+pdth_hud.textures.weapons.mp7 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		970, 
@@ -1460,7 +758,7 @@ pdth_hud.textures.mp7 = {
 		166
 	}
 }
-pdth_hud.textures.mac10 = {
+pdth_hud.textures.weapons.mac10 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		784, 
@@ -1469,7 +767,7 @@ pdth_hud.textures.mac10 = {
 		166
 	}	
 }
-pdth_hud.textures.cobray = {
+pdth_hud.textures.weapons.cobray = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		784, 
@@ -1479,7 +777,7 @@ pdth_hud.textures.cobray = {
 	}	
 }
 
-pdth_hud.textures.smg = {
+pdth_hud.textures.weapons.smg = {
 	texture = "guis/textures/hud_icons",
 	texture_rect = {
 		144, 
@@ -1488,7 +786,7 @@ pdth_hud.textures.smg = {
 		48
 	}
 }
-pdth_hud.textures.b92fs = {
+pdth_hud.textures.weapons.b92fs = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		33, 
@@ -1497,7 +795,7 @@ pdth_hud.textures.b92fs = {
 		166
 	}
 }
-pdth_hud.textures.c96 = {
+pdth_hud.textures.weapons.c96 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		404, 
@@ -1506,7 +804,7 @@ pdth_hud.textures.c96 = {
 		166
 	}
 }
-pdth_hud.textures.glock_17 = {
+pdth_hud.textures.weapons.glock_17 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		594, 
@@ -1515,7 +813,7 @@ pdth_hud.textures.glock_17 = {
 		166
 	}
 }
-pdth_hud.textures.g22c = {
+pdth_hud.textures.weapons.g22c = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		782, 
@@ -1524,7 +822,7 @@ pdth_hud.textures.g22c = {
 		166
 	}
 }
-pdth_hud.textures.g26 = {
+pdth_hud.textures.weapons.g26 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		970, 
@@ -1533,7 +831,7 @@ pdth_hud.textures.g26 = {
 		166
 	}
 }
-pdth_hud.textures.colt_1911 = {
+pdth_hud.textures.weapons.colt_1911 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		31, 
@@ -1542,7 +840,7 @@ pdth_hud.textures.colt_1911 = {
 		166
 	}
 }
-pdth_hud.textures.deagle = {
+pdth_hud.textures.weapons.deagle = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		222, 
@@ -1551,7 +849,7 @@ pdth_hud.textures.deagle = {
 		166
 	}
 }
-pdth_hud.textures.ppk = {
+pdth_hud.textures.weapons.ppk = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		402, 
@@ -1560,7 +858,7 @@ pdth_hud.textures.ppk = {
 		166
 	}
 }
-pdth_hud.textures.usp = {
+pdth_hud.textures.weapons.usp = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		589, 
@@ -1569,7 +867,7 @@ pdth_hud.textures.usp = {
 		166
 	}
 }
-pdth_hud.textures.p226 = {
+pdth_hud.textures.weapons.p226 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		782, 
@@ -1578,7 +876,7 @@ pdth_hud.textures.p226 = {
 		166
 	}
 }
-pdth_hud.textures.glock_18c = {
+pdth_hud.textures.weapons.glock_18c = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		27, 
@@ -1587,8 +885,8 @@ pdth_hud.textures.glock_18c = {
 		166
 	}
 }
-pdth_hud.textures.pistol = {
-	texture = "guis/textures/hud_icons",
+pdth_hud.textures.weapons.pistol = {
+	texture = "guis/textures.weapons/hud_icons",
 	texture_rect = {	
 		368, 
 		288, 
@@ -1596,7 +894,7 @@ pdth_hud.textures.pistol = {
 		48
 	}
 }	
-pdth_hud.textures.vhs = {
+pdth_hud.textures.weapons.vhs = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {	
 		1163, 
@@ -1605,7 +903,7 @@ pdth_hud.textures.vhs = {
 		166
 	}
 }	
-pdth_hud.textures.hs2000 = {
+pdth_hud.textures.weapons.hs2000 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {	
 		1155, 
@@ -1614,7 +912,7 @@ pdth_hud.textures.hs2000 = {
 		166
 	}
 }	
-pdth_hud.textures.aug = {
+pdth_hud.textures.weapons.aug = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {	
 		1160, 
@@ -1623,7 +921,7 @@ pdth_hud.textures.aug = {
 		166
 	}
 }	
-pdth_hud.textures.ak5 = {
+pdth_hud.textures.weapons.ak5 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {	
 		1146, 
@@ -1632,7 +930,7 @@ pdth_hud.textures.ak5 = {
 		166
 	}
 }	
-pdth_hud.textures.g36 = {
+pdth_hud.textures.weapons.g36 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {	
 		1150, 
@@ -1641,7 +939,7 @@ pdth_hud.textures.g36 = {
 		166
 	}
 }	
-pdth_hud.textures.new_m14 = {
+pdth_hud.textures.weapons.new_m14 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {	
 		1145, 
@@ -1650,7 +948,7 @@ pdth_hud.textures.new_m14 = {
 		166
 	}
 }	
-pdth_hud.textures.scar = {
+pdth_hud.textures.weapons.scar = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {	
 		1147, 
@@ -1659,7 +957,7 @@ pdth_hud.textures.scar = {
 		166
 	}
 }	
-pdth_hud.textures.m134 = {
+pdth_hud.textures.weapons.m134 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		1151, 
@@ -1669,7 +967,7 @@ pdth_hud.textures.m134 = {
 	}	
 }
 
-pdth_hud.textures.rpg7 = {
+pdth_hud.textures.weapons.rpg7 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		1151, 
@@ -1678,7 +976,7 @@ pdth_hud.textures.rpg7 = {
 		166
 	}
 }
-pdth_hud.textures.b682 = {
+pdth_hud.textures.weapons.b682 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		211, 
@@ -1687,7 +985,7 @@ pdth_hud.textures.b682 = {
 		166
 	}
 }
-pdth_hud.textures.m32 = {
+pdth_hud.textures.weapons.m32 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		18, 
@@ -1696,7 +994,7 @@ pdth_hud.textures.m32 = {
 		166
 	}
 }
-pdth_hud.textures.flamethrower_mk2 = {
+pdth_hud.textures.weapons.flamethrower_mk2 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		392, 
@@ -1705,7 +1003,7 @@ pdth_hud.textures.flamethrower_mk2 = {
 		166
 	}
 }
-pdth_hud.textures.aa12 = {
+pdth_hud.textures.weapons.aa12 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		586, 
@@ -1714,7 +1012,7 @@ pdth_hud.textures.aa12 = {
 		167
 	}
 }
-pdth_hud.textures.peacemaker = {
+pdth_hud.textures.weapons.peacemaker = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		20, 
@@ -1723,7 +1021,7 @@ pdth_hud.textures.peacemaker = {
 		167
 	}
 }
-pdth_hud.textures.winchester1874 = {
+pdth_hud.textures.weapons.winchester1874 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		961, 
@@ -1732,7 +1030,7 @@ pdth_hud.textures.winchester1874 = {
 		167
 	}
 }
-pdth_hud.textures.bow = {
+pdth_hud.textures.weapons.bow = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		1153, 
@@ -1741,7 +1039,7 @@ pdth_hud.textures.bow = {
 		167
 	}
 }
-pdth_hud.textures.mateba = {
+pdth_hud.textures.weapons.mateba = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		397, 
@@ -1751,7 +1049,7 @@ pdth_hud.textures.mateba = {
 	}
 }
 
-pdth_hud.textures.asval = {
+pdth_hud.textures.weapons.asval = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		584, 
@@ -1761,7 +1059,7 @@ pdth_hud.textures.asval = {
 	}
 }
 
-pdth_hud.textures.sub2000 = {
+pdth_hud.textures.weapons.sub2000 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		778, 
@@ -1772,7 +1070,7 @@ pdth_hud.textures.sub2000 = {
 }
 
 
-pdth_hud.textures.polymer = {
+pdth_hud.textures.weapons.polymer = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		1156, 
@@ -1782,7 +1080,7 @@ pdth_hud.textures.polymer = {
 	}
 }
 
-pdth_hud.textures.wa2000 = {
+pdth_hud.textures.weapons.wa2000 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		24, 
@@ -1792,7 +1090,7 @@ pdth_hud.textures.wa2000 = {
 	}
 }
 
-pdth_hud.textures.hunter = {
+pdth_hud.textures.weapons.hunter = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		215, 
@@ -1802,7 +1100,7 @@ pdth_hud.textures.hunter = {
 	}
 }
 
-pdth_hud.textures.baka = {
+pdth_hud.textures.weapons.baka = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		595, 
@@ -1812,7 +1110,7 @@ pdth_hud.textures.baka = {
 	}
 }
 
-pdth_hud.textures.arblast = {
+pdth_hud.textures.weapons.arblast = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		780, 
@@ -1822,7 +1120,7 @@ pdth_hud.textures.arblast = {
 	}
 }
 
-pdth_hud.textures.frankish = {
+pdth_hud.textures.weapons.frankish = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		970, 
@@ -1832,7 +1130,7 @@ pdth_hud.textures.frankish = {
 	}
 }
 
-pdth_hud.textures.long = {
+pdth_hud.textures.weapons.long = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		1153, 
@@ -1842,7 +1140,7 @@ pdth_hud.textures.long = {
 	}
 }
 
-pdth_hud.textures.par = {
+pdth_hud.textures.weapons.par = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		23, 
@@ -1852,7 +1150,7 @@ pdth_hud.textures.par = {
 	}
 }
 
-pdth_hud.textures.model70 = {
+pdth_hud.textures.weapons.model70 = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		213, 
@@ -1862,7 +1160,7 @@ pdth_hud.textures.model70 = {
 	}
 }
 
-pdth_hud.textures.sparrow = {
+pdth_hud.textures.weapons.sparrow = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
 		402, 
@@ -1872,7 +1170,7 @@ pdth_hud.textures.sparrow = {
 	}
 }
 
-function pdth_hud.textures:get_icon_data(icon_id, isbullet)
+function pdth_hud.textures:get_icon_data(icon_id)
 	local icon = pdth_hud.textures[icon_id] and pdth_hud.textures[icon_id].texture or icon_id
 	local texture_rect = pdth_hud.textures[icon_id] and pdth_hud.textures[icon_id].texture_rect or {
 		384, 
@@ -1883,35 +1181,61 @@ function pdth_hud.textures:get_icon_data(icon_id, isbullet)
 	return icon, texture_rect
 end
 
-function pdth_hud.textures:get_weapon_texture(weapon_id, weapon_category)
-	local rectangle = pdth_hud.textures[weapon_id] and pdth_hud.textures[weapon_id].texture_rect or pdth_hud.textures[weapon_category] and pdth_hud.textures[weapon_category].texture_rect or {
-		000,
-		000,
-		000,
-		000
-	}
-	local texture = pdth_hud.textures[weapon_id] and pdth_hud.textures[weapon_id].texture or pdth_hud.textures[weapon_category] and pdth_hud.textures[weapon_category].texture or "guis/textures/upgrade_images"
-	if texture ~= nil and rectangle ~= nil then
-		return texture, rectangle
-	end
+function pdth_hud.textures:get_bullet_texture(category)
+    local option = pdth_hud.Options.HUD.Bullet
+    
+    local bulletTexture
+    
+    if self.bullets[option] then
+        if self.bullets[option][category] then
+            bulletTexture = self.bullets[option][category]
+        else
+            if self.bullets[2][category] then
+                bulletTexture = self.bullets[2][category]
+            end
+        end
+    end
+    
+    if bulletTexture then
+        return bulletTexture.texture, bulletTexture.texture_rect
+    end
+    
+    return false, false
 end
 
-function pdth_hud.textures:get_portrait_texture(icon_id)
+function pdth_hud.textures:get_weapon_texture(weapon_id, category)
+	local rectangle = pdth_hud.textures.weapons[weapon_id] and pdth_hud.textures.weapons[weapon_id].texture_rect or pdth_hud.textures.weapons[category] and pdth_hud.textures.weapons[category].texture_rect or {
+		0,
+		0,
+		0,
+		0
+	}
+	local texture = pdth_hud.textures.weapons[weapon_id] and pdth_hud.textures.weapons[weapon_id].texture or pdth_hud.textures.weapons[category] and pdth_hud.textures.weapons[category].texture or "guis/textures/upgrade_images"
+	
+    return texture, rectangle
+end
+
+function pdth_hud.textures:get_portrait_texture(character, section, main_player)
+    if not main_player and section ~= "tm" and pdth_hud.Options.HUD.OGTMHealth then
+        local icon = pdth_hud.textures.portraits.teammate[section].texture
+        local texture_rect = pdth_hud.textures.portraits.teammate[section].texture_rect
+        return icon, texture_rect
+    end
+
 	local order = {}
 	local second_order = {}
 	for i, portrait in pairs(pdth_hud.portrait_options) do
 		local seconded
-		if order[pdth_hud.loaded_options.portraits[portrait]] then
+		if order[pdth_hud.Options.portraits[portrait]] then
 			for ordered_i, ordered_portrait in pairs(order) do
-				if ordered_i >= pdth_hud.loaded_options.portraits[portrait] then
+				if ordered_i >= pdth_hud.Options.portraits[portrait] then
 					second_order[ordered_i + 1] = ordered_portrait
 				end
 			end
 			seconded = true
 		end
-		order[pdth_hud.loaded_options.portraits[portrait]] = portrait
+		order[pdth_hud.Options.portraits[portrait]] = portrait
 		if seconded then
-			--pdth_hud:log("Replaced second")
 			for second_i, second_portrait in pairs(second_order) do
 				order[second_i] = second_portrait
 			end
@@ -1920,16 +1244,14 @@ function pdth_hud.textures:get_portrait_texture(icon_id)
 	
 	local portrait_id = "default"
 	for i, portrait in pairs(order) do
-		if portrait and pdth_hud.textures[icon_id .. "_" .. portrait] then
+		if portrait and pdth_hud.textures.portraits[portrait] and pdth_hud.textures.portraits[portrait][character] then
 			portrait_id = portrait
 			break
 		end
 	end
 	
-	--local portrait_id = pdth_hud.portrait_options[pdth_hud.loaded_options.Ingame.Portrait]
-	
-	local icon = pdth_hud.textures[icon_id .. "_" .. portrait_id] and pdth_hud.textures[icon_id .. "_" .. portrait_id].texture or nil
-	local texture_rect = pdth_hud.textures[icon_id .. "_" .. portrait_id] and pdth_hud.textures[icon_id .. "_" .. portrait_id].texture_rect or nil
+	local icon = pdth_hud.textures.portraits[portrait_id][character] and pdth_hud.textures.portraits[portrait_id][character][section] and pdth_hud.textures.portraits[portrait_id][character][section].texture or pdth_hud.textures.portraits["fallback"][section].texture or nil
+	local texture_rect = pdth_hud.textures.portraits[portrait_id][character] and pdth_hud.textures.portraits[portrait_id][character][section] and pdth_hud.textures.portraits[portrait_id][character][section].texture_rect or pdth_hud.textures.portraits["fallback"][section].texture_rect or nil
 	
 	return icon, texture_rect
 end
@@ -1941,16 +1263,19 @@ function pdth_hud.textures:ProcessAddon(data)
             local display_name = portait_set.display_name
             local main_texture = portait_set.main_texture
             pdth_hud.portrait_options[#pdth_hud.portrait_options + 1] = name
-            log(tostring(pdth_hud.portrait_options[#pdth_hud.portrait_options]))
-            Hooks:Add("LocalizationManagerPostInit", "PDTHHudPortrait" .. name, function(loc)
-                LocalizationManager:add_localized_strings({
-                    ["pdth_" .. name] = display_name
-                })
-            end)
+            if display_name then
+                Hooks:Add("LocalizationManagerPostInit", "PDTHHudPortrait" .. name, function(loc)
+                    LocalizationManager:add_localized_strings({
+                        ["pdth_" .. name] = display_name
+                    })
+                end)
+            end
+            pdth_hud.textures.portraits[name] = {}
             for _, portrait in pairs(portait_set.portraits) do
                 local character_id = portrait.character_id
+                pdth_hud.textures.portraits[name][character_id] = {}
                 for ptype, rect in pairs(portrait.texture_rects) do
-                    pdth_hud.textures[character_id .. "_" .. ptype .. "_" .. name] = {
+                    pdth_hud.textures.portraits[name][character_id][ptype] = {
                         texture = portait_set.texture or main_texture,
                         texture_rect = rect
                     }

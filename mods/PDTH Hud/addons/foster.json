@@ -1,0 +1,40 @@
+{
+    "portraits" : [
+        {
+            "name" : "foster",
+            "display_name" : "Foster",
+            "main_texture" : "guis/textures/pd2/mission_equipment",
+            "portraits" : [
+                {
+                    "character_id" : "jowi",
+                    "texture_rects" : {
+                        "health" : [
+                            0, 
+                            1, 
+                            64, 
+                            129
+                        ],
+                        "armor" : [
+                            0, 
+                            131, 
+                            64, 
+                            129
+                        ],
+                        "bg" : [
+                            0, 
+                            261, 
+                            64, 
+                            129
+                        ],
+                        "tm" : [
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

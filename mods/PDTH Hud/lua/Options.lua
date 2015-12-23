@@ -2,7 +2,7 @@ function pdth_hud:GetSaveFile()
     return self.SavePath .. self.name .. "options.txt"
 end
 
-local Options = pdth_hud.loaded_options
+local Options = pdth_hud.Options
 function pdth_hud:Save()
 	local fileName = self:GetSaveFile()
 	local file = io.open(fileName, "w+")
