@@ -1,21 +1,18 @@
 CloneClass(StatisticsManager)
 
-function StatisticsManager.stop_session(self, data)
-	self.orig.stop_session(self, data)
-	local success = data and data.success
+Hooks:PostHook(StatisticsManager, "stop_session", "PDTHHudstop_session", function(self, data)
+    local success = data and data.success
 	managers.challenges:session_stopped({success = success, from_beginning = self._start_session_from_beginning, drop_in = self._start_session_drop_in, last_session = self._global.last_session})
 	managers.challenges:reset("session")
-end
+end)
 
 Hooks:RegisterHook("StatisticsManagerKilledByAnyone")
-function StatisticsManager.killed_by_anyone(self, data)
-	self.orig.killed_by_anyone(self, data)
-	Hooks:Call("StatisticsManagerKilledByAnyone", self, data)
-end
+Hooks:PostHook(StatisticsManager, "killed_by_anyone", "PDTHHudkilled_by_anyone", function(self, data)
+    Hooks:Call("StatisticsManagerKilledByAnyone", self, data)
+end)
 
-function StatisticsManager.killed(self, data)
-	self.orig.killed(self, data)
-	local success, err = pcall(function()
+Hooks:PostHook(StatisticsManager, "killed", "PDTHHudkilled", function(self, data)
+    local success, err = pcall(function()
 		local by_bullet = data.variant == "bullet"
 		local by_melee = data.variant == "melee"
 		local by_explosion = data.variant == "explosion"
@@ -55,7 +52,7 @@ function StatisticsManager.killed(self, data)
 	if not success then
 		log("[Error] L92 " .. tostring(err))
 	end
-end
+end)
 
 function StatisticsManager:_bullet_challenges( data )
 	local success, err = pcall(function()
@@ -150,9 +147,8 @@ function StatisticsManager:_explosion_challenges(data)
 	end
 end
 
-function StatisticsManager.tied(self, data)
-	self.orig.tied(self, data)
-	--[[if data.name == "heavy_swat" then
+Hooks:PostHook(StatisticsManager, "tied", "PDTHHudtied", function(self, data)
+    --[[if data.name == "heavy_swat" then
 		managers.challenges:set_flag( "intimidating" )
 	end
 	local type = tweak_data.character[ data.name ] and tweak_data.character[ data.name ].challenges.type
@@ -160,50 +156,47 @@ function StatisticsManager.tied(self, data)
 		managers.challenges:count_up( "tiedown_"..type )
 	end
 	managers.challenges:count_up( "tiedown_"..data.name )]]--
-end
+end)
 
 function StatisticsManager.revived(self, data)
 	self.orig.revived(self, data)
 	--managers.challenges:count_up( "revive" )
 end
 
-function StatisticsManager.downed(self, data)
-	self.orig.downed(self, data)
-	--[[if data.bleed_out then
+Hooks:PostHook(StatisticsManager, "revived", "PDTHHudrevived", function(self, data)
+    --managers.challenges:count_up( "revive" )
+end)
+
+Hooks:PostHook(StatisticsManager, "downed", "PDTHHuddowned", function(self, data)
+    --[[if data.bleed_out then
 		managers.challenges:reset( "bleed_out" )
 	end]]--
-end
+end)
 
 function StatisticsManager:session_total_law_enforcer_kills()
 	return self._global.session.killed.total.count - self._global.session.killed.civilian.count - self._global.session.killed.civilian_female.count - self._global.session.killed.gangster.count - self._global.session.killed.other.count
 end
 
-function StatisticsManager.use_trip_mine(self)
-	self.orig.use_trip_mine(self)
-	managers.challenges:count_up("plant_tripmine")
-end
+Hooks:PostHook(StatisticsManager, "use_trip_mine", "PDTHHuduse_trip_mine", function(self)
+    managers.challenges:count_up("plant_tripmine")
+end)
 
-function StatisticsManager.use_ammo_bag(self)
-	self.orig.use_ammo_bag(self)
-	managers.challenges:count_up("deploy_ammobag")
-end
+Hooks:PostHook(StatisticsManager, "use_ammo_bag", "PDTHHuduse_ammo_bag", function(self)
+    managers.challenges:count_up("deploy_ammobag")
+end)
 
-function StatisticsManager.use_doctor_bag(self)
-	self.orig.use_doctor_bag(self)
-	managers.challenges:count_up("deploy_medicbag")
-end
+Hooks:PostHook(StatisticsManager, "use_doctor_bag", "PDTHHuduse_doctor_bag", function(self)
+    managers.challenges:count_up("deploy_medicbag")
+end)
 
-function StatisticsManager.use_ecm_jammer(self)
-	self.orig.use_ecm_jammer(self)
-	managers.challenges:count_up("deploy_ecm")
-end
+Hooks:PostHook(StatisticsManager, "use_ecm_jammer", "PDTHHuduse_ecm_jammer", function(self)
+    managers.challenges:count_up("deploy_ecm")
+end)
 
-function StatisticsManager.use_sentry_gun(self)
-	self.orig.use_sentry_gun(self)
-	managers.challenges:count_up("deploy_sentry")
-end
+Hooks:PostHook(StatisticsManager, "use_sentry_gun", "PDTHHuduse_sentry_gun", function(self)
+    managers.challenges:count_up("deploy_sentry")
+end)
 
-function StatisticsManager.use_first_aid(self)
-	self.orig.use_first_aid(self)
-	managers.challenges:count_up("deploy_fak")
-end
+Hooks:PostHook(StatisticsManager, "use_first_aid", "PDTHHuduse_first_aid", function(self)
+    managers.challenges:count_up("deploy_fak")
+end)

@@ -33,6 +33,7 @@
 		{ "hook_id" : "lib/units/props/securitycamera", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/hud/hudassaultcorner", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/hud/hudinteraction", "script_path" : "PDTHHUDCore.lua" },
+		{ "hook_id" : "lib/managers/hud/hudchat", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/hudmanager", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/hudmanagerpd2", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/blackmarketmanager", "script_path" : "PDTHHUDCore.lua" },

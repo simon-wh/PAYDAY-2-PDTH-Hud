@@ -163,8 +163,7 @@ function ChallengesManager:add_by_name( name )
 end
 
 function ChallengesManager:count_up( counter_id )
-	log(counter_id)
-	if	not self._counter_map[ counter_id ] then
+	if not self._counter_map[ counter_id ] then
 		-- Application:error( "No counter id named", counter_id )
 		return
 	end

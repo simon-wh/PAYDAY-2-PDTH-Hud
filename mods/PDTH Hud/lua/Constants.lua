@@ -35,6 +35,38 @@ function pdth_hud:InitConstants()
     const.main_firemode_gap = 3 * scale
     const.main_ammo_panel_x_offset = 5
     
+    const.present_h = 38 * scale
+    const.present_title_fsize = 12 * scale
+    const.present_text_fsize = 20 * scale
+    const.present_text_gap = 3 * scale
+    const.present_title_y_offset = 1 * scale
+    
+    const.interact_scale_w = 15
+    const.interact_scale_h = 1
+    
+    const.interact_border = 0 * scale
+    const.interact_text_x_offset = 4 * scale
+    
+    const.interact_bitmap_x_offset = 2 * scale
+    
+    const.interact_h_multiplier = 1.8
+    
+    const.interact_font_size = 15 * scale
+    const.interact_invalid_font_size = 27 * scale
+    
+    const.hostages_font_size = 14 * scale
+    
+    const.assault_h = 75 * scale
+    const.assault_w = 85 * scale
+    const.assault_font_size = 22 * scale
+    const.assault_y_offset = 5 * scale
+    
+    const.no_return_t_font_size = 19 * scale
+    const.no_return_timer_font_size = 24 * scale
+    const.no_return_timer_font_size_pulse = 32 * scale
+    
+    const.casing_size = 80 * scale
+    
     const.equipment_gap = 4
 
     const.num_on_right_inflation = 2

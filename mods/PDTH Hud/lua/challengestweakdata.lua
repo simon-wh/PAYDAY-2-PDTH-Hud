@@ -80,7 +80,7 @@ end
 function ChallengesTweakData:weapon_challenges()
     local createVS = function(i, id, eneType, count, xp)
         local name = id .. "_vs_" .. eneType .. "_" .. i
-        local challenges = { (i - 1) > 0 and id .. "_vs_" .. eneType .. (i - 1) or nil }
+        local challenges = { (i - 1) > 0 and id .. "_vs_" .. eneType .. "_" .. (i - 1) or nil }
         local depends_on = { challenges = challenges }
         self.weapon[ name ] = {
             title_id = "ch_vs",

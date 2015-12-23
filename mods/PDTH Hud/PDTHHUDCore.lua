@@ -29,8 +29,8 @@ if not _G.pdth_hud then
         ["lib/managers/hud/hudhint"] = "HUDHint.lua",
         ["lib/managers/menu/items/menuitemchallenge"] = "CoreItemChallenges.lua",
         ["lib/managers/hud/hudtemp"] = "Hudtemp.lua",
-        ["lib/managers/experiencemanager"] = "ExperienceManager.lua",
-        ["lib/units/props/securitycamera"] = "Camera.lua",
+        --["lib/managers/experiencemanager"] = "ExperienceManager.lua",
+        --["lib/units/props/securitycamera"] = "Camera.lua",
         --["lib/units/equipment/sentry_gun/sentrygunbase"] = "SentryGunBase.lua",
         --["lib/units/weapons/trip_mine/tripminebase"] = "TripMineBase.lua",
         ["lib/managers/hud/hudassaultcorner"] = "Assaultindicator.lua",
@@ -38,7 +38,7 @@ if not _G.pdth_hud then
         ["lib/managers/hudmanager"] = "Hudmanager.lua",
         ["lib/managers/statisticsmanager"] = "StatsManager.lua",
         ["lib/managers/hudmanagerpd2"] = "Hudmanagerpd2.lua",
-        ["lib/managers/blackmarketmanager"] = "BlackMarketManager.lua",
+        --["lib/managers/blackmarketmanager"] = "BlackMarketManager.lua",
         ["lib/managers/hud/hudteammate"] = "HudTM.lua",
         ["lib/managers/hud/hudpresenter"] = "HudPRESENTER.lua",
         --["lib/managers/menu/menuscenemanager"] = "MenuScene.lua",
@@ -173,6 +173,66 @@ if Hooks then
         end)
     end
 	
+    if HUDChat then
+        Hooks:PostHook(HUDChat, "init", "PDTHHudReposChat", function(self)
+            self._panel:set_bottom(self._hud_panel:h() - pdth_hud.constants.main_health_h)
+        end)
+    end
+    
+    if BlackMarketManager then
+        Hooks:PostHook(BlackMarketManager, "save", "PDTHHudSaveChallenges", function(self, data)
+            managers.challenges:save(data)
+        end)
+        Hooks:PostHook(BlackMarketManager, "load", "PDTHHudLoadChallenges", function(self, data)
+            managers.challenges:load(data)
+        end)
+    end
+    
+    if SecurityCamera then
+        Hooks:PostHook(SecurityCamera, "generate_cooldown", "PDTHHudDestroyedCamera", function(self, amount)
+            if pdth_hud.Options.HUD.Cameras then
+                if managers.job:current_level_id() ~= "safehouse" then
+                    managers.hint:show_hint("destroyed_security_camera")
+                end
+            end
+        end)
+    end
+    
+    if ExperienceManager then
+        Hooks:PostHook(ExperienceManager, "_level_up", "PDTHHudCheckChallenges", function(self)
+            managers.challenges:check_active_challenges()
+        end)
+    end
+    
+    if HUDManager and pdth_hud.Options.HUD.MainHud then
+        Hooks:PostHook(HUDManager, "set_mugshot_talk", "PDTHHudset_mugshot_talk", function(self, id, active)
+            local data = self:_get_mugshot_data(id)
+            if not data then
+                return
+            end
+            local i = managers.criminals:character_data_by_name(data.character_name_id).panel_id
+            managers.hud._teammate_panels[i]._panel:child("talk"):set_visible(active)
+        end)
+        
+        Hooks:PostHook(HUDManager, "set_mugshot_voice", "PDTHHudset_mugshot_voice", function(self, id, active)
+            local data = self:_get_mugshot_data(id)
+            if not data then
+                return
+            end
+            local i = managers.criminals:character_data_by_name(data.character_name_id).panel_id
+            managers.hud._teammate_panels[i]._panel:child("talk"):set_visible(active)
+        end)
+        
+        Hooks:PostHook(HUDManager, "add_waypoint", "PDTHHudset_mugshot_talk", function(self, id, data)
+            self._hud.waypoints[id].arrow:set_color(Color.white)
+        
+            local distance = self._hud.waypoints[id].distance
+            if distance then
+                distance:set_color(Color(1, 1, 0.65882355, 0))
+            end
+        end)
+    end
+    
 	Hooks:Add("BeardLibSequencePostInit", "PDTHHudCallBeardLibSequenceFuncs", function()
 		for name, mod_data in pairs(pdth_hud.PDTHEquipment) do
 			BeardLib.ScriptData.Sequence:CreateMod("PDTH Hud", name, mod_data)
@@ -280,6 +340,13 @@ if Hooks then
 			priority = 1000
 		})
         
+        MenuHelper:AddDivider({
+            name = "HUDOptionDiv",
+            menu_id = pdth_hud.menu_name,
+            size = 20,
+            priority = 999
+        })
+        
         MenuHelper:AddMultipleChoice({
 			id = "pdthcgrading",
 			title = "pdth_toggle_cgrading_title",
@@ -288,7 +355,7 @@ if Hooks then
 			menu_id = pdth_hud.menu_name,
 			value = pdth_hud.Options.Menu.Grading,
 			items = pdth_hud.colour_gradings,
-			priority = 999
+			priority = 998
 		})
         
         MenuHelper:AddButton({
@@ -297,7 +364,7 @@ if Hooks then
 			desc = "pdth_hud_heist_cgrade_hint",
 			next_node = pdth_hud.heist_cgrade_name,
 			menu_id = pdth_hud.menu_name,
-			priority = 998
+			priority = 997
 		})
         
         -- HUD Menu elements

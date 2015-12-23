@@ -1,5 +1,4 @@
 if pdth_hud.Options.HUD.MainHud then
-    HUDTeammate = HUDTeammate or class()
     function HUDTeammate:init(i, teammates_panel, is_player, height)
         self._id = i
         local main_player = is_player
@@ -157,7 +156,7 @@ if pdth_hud.Options.HUD.MainHud then
         if main_player or not pdth_hud.Options.HUD.OGTMHealth then
             talk:set_righttop(radial_health_panel:right() + (5), radial_health_panel:top() - (5))
         else
-            talk:set_righttop(character_icon:right() + (5), character_icon:top() - (5))
+            talk:set_righttop(character_icon:right(), character_icon:top())
         end
         
         local name = teammate_panel:text({
@@ -246,9 +245,8 @@ if pdth_hud.Options.HUD.MainHud then
             name = "weapons_panel",
             layer = 11,
         })
-        
         self:add_special_equipment({
-            id = "primary_weapon",
+            id = "secondary_weapon",
             icon = "",
             amount = 400,
             no_flash = true,
@@ -257,7 +255,7 @@ if pdth_hud.Options.HUD.MainHud then
         })
         
         self:add_special_equipment({
-            id = "secondary_weapon",
+            id = "primary_weapon",
             icon = "",
             amount = 400,
             no_flash = true,
