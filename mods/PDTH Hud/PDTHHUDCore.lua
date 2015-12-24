@@ -309,13 +309,42 @@ if Hooks then
     Hooks:Add("BetterLightFXCreateEvents", "PDTHHudCreateBLFXEvents", function(blfx)
         if blfx then
             blfx:RegisterEvent("AssaultIndicator", {
-                priority = 2, 
+                priority = 20, 
                 loop = false,
+                options = {
+                    {parameter = "enabled", typ = "bool", localization = "Enabled"},
+                },
                 run = function(self, ...)
                      coroutine.yield()
                      self._ran_once = true
                 end
             }, true)
+            
+            blfx:RegisterEvent("Interaction", {
+                priority = 35, 
+                loop = true,
+                blend = true,
+                _color = Color(1, 1, 0.65882355, 0),
+                _use_custom_color = false,
+                _custom_color = Color(1, 1, 0.65882355, 0),
+                _progress = 0,
+                options = {
+                    {parameter = "enabled", typ = "bool", localization = "Enabled"},
+                    {parameter = "_use_custom_color", typ = "bool", localization = "Use Custom Color"},
+                    {parameter = "_custom_color", typ = "color", localization = "Custom Color"},
+                },
+                run = function(self, ...)
+                    if self._use_custom_color then
+                        BetterLightFX:SetColor(self._custom_color.red, self._custom_color.green, self._custom_color.blue, self._progress, self.name)
+                    else
+                        BetterLightFX:SetColor(self._color.red, self._color.green, self._color.blue, self._progress, self.name)
+                    end
+                    
+                     self._ran_once = true
+                end
+            }, true)
+            
+            
         end
     end)
     

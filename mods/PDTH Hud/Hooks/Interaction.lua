@@ -136,6 +136,10 @@ if pdth_hud.Options.HUD.Interaction then
         interact_bar:set_w(width)
         self._interact_panel:set_visible(true)
         interact_bar:set_image("guis/textures/hud_icons", unpack(interact_tr))
+        
+        if BetterLightFX then
+            BetterLightFX:StartEvent("Interaction")
+        end
     end
 
     function HUDInteraction:set_interaction_bar_width(current, total)
@@ -151,8 +155,16 @@ if pdth_hud.Options.HUD.Interaction then
         interact_bar:set_texture_rect(interact_tr[1], interact_tr[2], interact_tr[3] * mul, interact_tr[4])
         if not self.valid then
             interact_bar:set_color(Color.red)
+            if BetterLightFX then
+                BetterLightFX:StartEvent("Interaction")
+                BetterLightFX:UpdateEvent("Interaction", {_custom_color = Color.red, _progress = mul})
+            end
         else
             interact_bar:set_color(Color(1, 1, 0.65882355, 0))
+            if BetterLightFX then
+                BetterLightFX:StartEvent("Interaction")
+                BetterLightFX:UpdateEvent("Interaction", {_custom_color = Color(1, 1, 0.65882355, 0), _progress = mul})
+            end
         end
     end
 
@@ -164,6 +176,11 @@ if pdth_hud.Options.HUD.Interaction then
         end
         interact_bar:set_w(0)
         self._interact_panel:set_visible(not complete)
+        
+        if BetterLightFX then
+            BetterLightFX:UpdateEvent("Interaction", {_progress = 0})
+            BetterLightFX:EndEvent("Interaction")
+        end
     end
 
     function HUDInteraction:set_bar_valid(valid, text_id)
