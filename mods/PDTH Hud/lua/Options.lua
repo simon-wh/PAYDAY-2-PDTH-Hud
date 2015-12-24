@@ -5,8 +5,17 @@ end
 local Options = pdth_hud.Options
 function pdth_hud:Save()
 	local fileName = self:GetSaveFile()
+    local saveOptions = deep_clone(Options)
+    --[[for i, value in pairs(saveOptions) do
+        if type(value) == "table" and #value == 0 then
+            log(tostring(#value))
+            log("Removing " .. i .. " from options because table is empty")
+            saveOptions[i] = nil
+        end
+    end]]--
+    
 	local file = io.open(fileName, "w+")
-	file:write(json.encode(Options))
+	file:write(json.encode(saveOptions))
 	file:close()
 end
 

@@ -1,28 +1,27 @@
-pdth_hud.Options = {}
-pdth_hud.Options.HUD = {}
-pdth_hud.Options.Menu = {}
-pdth_hud.Options.Grading = {}
-pdth_hud.Options.portraits = {}
+local options = pdth_hud.Options
 
-pdth_hud.Options.HUD.CameraGrading = true
+options.HUD = {}
+options.Menu = {}
+options.portraits = {}
 
 for i, portrait in pairs(pdth_hud.portrait_options) do
-	pdth_hud.Options.portraits[portrait] = i
+	options.portraits[portrait] = i
 end
 
-pdth_hud.Options.HUD.Coloured = true
-pdth_hud.Options.HUD.OGTMHealth = true
-pdth_hud.Options.HUD.Cameras = true
-pdth_hud.Options.HUD.Assault = true
-pdth_hud.Options.HUD.Gadget = true
-pdth_hud.Options.HUD.Bullet = 2
-pdth_hud.Options.HUD.Objectives = true
-pdth_hud.Options.HUD.Fireselector = true
-pdth_hud.Options.HUD.Interaction = true
-pdth_hud.Options.HUD.Swansong = true
-pdth_hud.Options.HUD.MainHud = true
-pdth_hud.Options.HUD.Scale = 1
-pdth_hud.Options.HUD.spooky_ammo = false
+options.HUD.CameraGrading = true
+options.HUD.Coloured = true
+options.HUD.OGTMHealth = true
+options.HUD.Cameras = true
+options.HUD.Assault = true
+options.HUD.Gadget = true
+options.HUD.Bullet = 2
+options.HUD.Objectives = true
+options.HUD.Fireselector = true
+options.HUD.Interaction = true
+options.HUD.Swansong = true
+options.HUD.MainHud = true
+options.HUD.Scale = 1
+options.HUD.spooky_ammo = false
 
-pdth_hud.Options.Menu.Grading = 8
+options.Menu.Grading = 8
 

@@ -1,6 +1,6 @@
 if not _G.pdth_hud then
 	_G.pdth_hud = {}
-    pdth_hud.name = "PDTHHud"
+    pdth_hud.name = "PDTHHudReborn"
 	pdth_hud.Options = {}
 	pdth_hud.menu_name = "pdth_hud_menu"
 	pdth_hud.HUDOptionsMenu = "pdth_hud_hud_options_menu"
@@ -15,13 +15,13 @@ if not _G.pdth_hud then
 	pdth_hud.hook_path = ModPath .. "Hooks/"
 	pdth_hud.SavePath = SavePath
     pdth_hud.dofiles = {
+        "Constants.lua",
         "PDTHTextures.lua",	
+        "PDTHEquipment.lua",
         "DefaultOptions.lua",
         "Options.lua",
         "challengesmanager.lua",
-        "PDTHEquipment.lua",
-        "challengestweakdata.lua",
-        "Constants.lua"
+        "challengestweakdata.lua"
     }
 
     pdth_hud.hook_files = {
@@ -103,7 +103,6 @@ if not pdth_hud.setup then
 		dofile(pdth_hud.lua_path .. d)
 	end
 	pdth_hud:LoadOptions()
-    pdth_hud:LoadAddons()
     pdth_hud:InitConstants()
 	pdth_hud.setup = true
 end
@@ -360,6 +359,16 @@ if Hooks then
 
 	Hooks:Add("MenuManagerPopulateCustomMenus", "Base_PopulatePDTHHudMenu", function( menu_manager, nodes )
         --Main Menu Elements
+        MenuCallbackHandler.pdth_toggle_cgrading = function(this, item)
+			pdth_hud.Options.Menu.Grading = item:value()
+			pdth_hud:Save()
+            if not managers.job:current_level_id() or (pdth_hud.Options.Grading and not pdth_hud.Options.Grading[managers.job:current_level_id()]) or (pdth_hud.Options.Grading and pdth_hud.Options.Grading[managers.job:current_level_id()] == 1) then
+                local selected_grading = pdth_hud.colour_gradings[pdth_hud.Options.Menu.Grading]
+                managers.environment_controller:set_default_color_grading(selected_grading)
+                managers.environment_controller:refresh_render_settings()
+            end
+		end
+        
         MenuHelper:AddButton({
 			id = "hudOptions",
 			title = "pdth_hud_hud_options",
@@ -409,19 +418,11 @@ if Hooks then
             pdth_hud.Options.HUD[item:name()] = item:value() == "on" and true or false
 			pdth_hud:Save()
         end
-        
-		MenuCallbackHandler.pdth_toggle_cgrading = function(this, item)
-			pdth_hud.Options.Menu.Grading = item:value()
-			pdth_hud:Save()
-			local selected_grading = pdth_hud.colour_gradings[pdth_hud.Options.Menu.Grading]
-			managers.environment_controller:set_default_color_grading(selected_grading)
-			managers.environment_controller:refresh_render_settings()
-		end
 		
 		MenuCallbackHandler.pdth_toggle_bullet = function(this, item)
 			pdth_hud.Options.HUD.Bullet = item:value()
 			pdth_hud:Save()
-            if managers.player then
+            if managers.player and managers.hud then
                 managers.hud._teammate_panels[4].bulletChanged = true
                 local player = managers.player:local_player()
                 if player then
@@ -651,6 +652,7 @@ if Hooks then
         
         --Heist Colour Grading
 		MenuCallbackHandler.pdth_heist_cgrade_change = function(this, item)
+            pdth_hud.Options.Grading = pdth_hud.Options.Grading or {}
 			pdth_hud.Options.Grading[item:name()] = item:value()
 			tweak_data.levels[item:name()].env_params = tweak_data.levels[item:name()].env_params or {}
 			if item:value() == 1 then
@@ -665,12 +667,11 @@ if Hooks then
 			pdth_hud:Save()
 		end
 		local level_index = deep_clone(tweak_data.levels._level_index)
-		for p, k in pairs(level_index) do
-			if k == "mia2_new" then
-				table.remove(level_index, p)
-			end
-		
-		end
+        local removeLevels = {"mia2_new"}
+        for _, level in pairs(removeLevels) do
+            table.delete(level_index, level)
+        end
+        
 		for i = 1, #level_index do
 			local is_night = false
 			local is_day = false
@@ -682,10 +683,10 @@ if Hooks then
 			end
 			MenuHelper:AddMultipleChoice({
 				id = level_index[i],
-				title = managers.localization:exists(tweak_data.levels[level_index[i]].name_id) and managers.localization:text(tweak_data.levels[level_index[i]].name_id) .. (is_night and " Night" or "") .. (is_day and " Day" or "") or managers.localization:text("pdth_cgrade_title_" .. level_index[i]),
+				title = managers.localization:exists(tweak_data.levels[level_index[i]].name_id) and managers.localization:text(tweak_data.levels[level_index[i]].name_id) .. (is_night and " Night" or "") .. (is_day and " Day" or "") or level_index[i],
 				callback = "pdth_heist_cgrade_change",
 				menu_id = pdth_hud.heist_cgrade_name,
-				value = pdth_hud.Options.Grading[level_index[i]] or 2,
+				value = pdth_hud.Options.Grading and pdth_hud.Options.Grading[level_index[i]] or 2,
 				items = pdth_hud.heist_colour_gradings,
 				localized = "false",
 				priority = 0

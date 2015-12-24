@@ -1221,27 +1221,13 @@ function pdth_hud.textures:get_portrait_texture(character, section, main_player)
         local texture_rect = pdth_hud.textures.portraits.teammate[section].texture_rect
         return icon, texture_rect
     end
-
-	local order = {}
-	local second_order = {}
-	for i, portrait in pairs(pdth_hud.portrait_options) do
-		local seconded
-		if order[pdth_hud.Options.portraits[portrait]] then
-			for ordered_i, ordered_portrait in pairs(order) do
-				if ordered_i >= pdth_hud.Options.portraits[portrait] then
-					second_order[ordered_i + 1] = ordered_portrait
-				end
-			end
-			seconded = true
-		end
-		order[pdth_hud.Options.portraits[portrait]] = portrait
-		if seconded then
-			for second_i, second_portrait in pairs(second_order) do
-				order[second_i] = second_portrait
-			end
-		end
-	end
-	
+    
+	local order = deep_clone(pdth_hud.portrait_options)
+    
+    table.sort(order, function(a, b)
+        return pdth_hud.Options.portraits[a] < pdth_hud.Options.portraits[b]
+    end)
+    
 	local portrait_id = "default"
 	for i, portrait in pairs(order) do
 		if portrait and pdth_hud.textures.portraits[portrait] and pdth_hud.textures.portraits[portrait][character] then
@@ -1285,3 +1271,4 @@ function pdth_hud.textures:ProcessAddon(data)
     end
 end
 
+pdth_hud:LoadAddons()

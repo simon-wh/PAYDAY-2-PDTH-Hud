@@ -101,7 +101,7 @@ pdth_hud.PDTHEquipment = {
 				},
 				[7] = {
 					_meta = "material_config",
-					name = "'units/weapons/shield/shield'"
+					name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 				},
 				[8] = {
 					_meta = "graphic_group",
@@ -132,7 +132,7 @@ pdth_hud.PDTHEquipment = {
 				},]]--
 				material_config = {
 					_meta = "material_config",
-					name = "'units/weapons/shield/shield'"
+					name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 				},
 				graphic_group = {
 					_meta = "graphic_group",
@@ -446,16 +446,16 @@ pdth_hud.PDTHEquipment = {
 				NewElements = {
 					[1] = {
 						_meta = "material_config",
-						name = "'units/weapons/smoke_grenade/smoke_grenade'"
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 					},
 					material_config = {
 						_meta = "material_config",
-						name = "'units/weapons/smoke_grenade/smoke_grenade'"
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 					}
 				}
 			},
 			["'state_vis_hide_contour'"] = {
-			NewElements = {
+                NewElements = {
 					[1] = {
 						_meta = "object",
 						enabled = false,
@@ -488,11 +488,11 @@ pdth_hud.PDTHEquipment = {
 				NewElements = {
 					[1] = {
 						_meta = "material_config",
-						name = "'units/weapons/raging_bull/raging_bull'"
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 					},
 					material_config = {
 						_meta = "material_config",
-						name = "'units/weapons/raging_bull/raging_bull'"
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 					},
 				}
             },
