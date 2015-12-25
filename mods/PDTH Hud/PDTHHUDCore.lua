@@ -234,8 +234,9 @@ if Hooks then
     
 	Hooks:Add("BeardLibSequencePostInit", "PDTHHudCallBeardLibSequenceFuncs", function()
 		for name, mod_data in pairs(pdth_hud.PDTHEquipment) do
-			BeardLib.ScriptData.Sequence:CreateMod("PDTH Hud", name, mod_data)
+			BeardLib.ScriptData.Sequence:CreateMod(mod_data)
 		end
+        BeardLib:ReplaceScriptData("jewelry store_generated.json", "levels/narratives/vlad/jewelry_store/world/world", "continent")
 	end)
 	
 	Hooks:Add("BeardLibSequencePostInit", "PDTHHudEnvironmentTest", function()
@@ -259,10 +260,10 @@ if Hooks then
 			managers.dyn_resource:load(Idstring("scene"), Idstring("core/environments/skies/sky_1846_low_sun_nice_clouds/sky_1846_low_sun_nice_clouds"), managers.dyn_resource.DYN_RESOURCES_PACKAGE, nil)
 		end]]--
 
-		BeardLib.ScriptData.Environment:CreateMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", {})
+		--[[BeardLib.ScriptData.Environment:CreateMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day")
 		BeardLib.ScriptData.Environment:AddParamMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others/underlay", "core/environments/skies/sky_1846_low_sun_nice_clouds/sky_1846_low_sun_nice_clouds")
         BeardLib.ScriptData.Environment:AddParamMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others/sun_ray_color", Vector3(0.7, 0.5, 0.5))
-        BeardLib.ScriptData.Environment:AddNewParam("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others", "this_is_a_faking_test", Vector3(0.7, 0.5, 0.5))
+        BeardLib.ScriptData.Environment:AddNewParam("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others", "this_is_a_faking_test", Vector3(0.7, 0.5, 0.5))]]--
 
 	end)
 	
