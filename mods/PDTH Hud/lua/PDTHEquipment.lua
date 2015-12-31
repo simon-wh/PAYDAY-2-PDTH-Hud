@@ -1,9 +1,9 @@
-function pdth_hud:UseDoorDrill()
-	return true
+function pdth_hud:UseEquipment()
+	return pdth_hud.Options.HUD.Equipment
 end
 
 pdth_hud.PDTHEquipment = {
-	--[[{
+	{
 		SequenceMods = {
 			["'activate'"] = {
 				ElementMods = {
@@ -52,8 +52,8 @@ pdth_hud.PDTHEquipment = {
         file = "units/payday2/equipment/item_door_drill_small/item_door_drill_small",
         ID = "PDTHEquipmentDoorDrillSmall",
 		priority = 0,
-		use_callback = callback(pdth_hud, pdth_hud, "UseDoorDrill")
-	},]]--
+		use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
+	},
 	{
 		SequenceMods = {
 			["'show'"] = {
@@ -152,7 +152,8 @@ pdth_hud.PDTHEquipment = {
 		},
         file = "units/payday2/equipment/gen_equipment_shape_charge/gen_equipment_shape_charge",
         ID = "PDTHEquipmentEquipmentShapeCharge",
-		priority = 0
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
 	{ 
 		SequenceMods = {
@@ -219,7 +220,8 @@ pdth_hud.PDTHEquipment = {
 		},
         file = "units/payday2/equipment/gen_interactable_door_keycard/gen_interactable_door_keycard_jammer",
         ID = "PDTHEquipmentDoorKeycardJammer",
-		priority = 0
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
 	{
 		SequenceMods = {
@@ -286,7 +288,8 @@ pdth_hud.PDTHEquipment = {
 		},
         file = "units/payday2/equipment/gen_interactable_door_keycard/item_door_keycard_jammer_double",
         ID = "PDTHEquipmentDoorJammerDouble",
-		priority = 0
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
 	{
 		SequenceMods  = {
@@ -353,7 +356,8 @@ pdth_hud.PDTHEquipment = {
 		},
         file = "units/payday2/props/gen_prop_bank_atm_standing/gen_prop_bank_atm_jammer",
         ID = "PDTHEquipmentATMJammer",
-		priority = 0
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
 	{
 		SequenceMods = {
@@ -401,7 +405,8 @@ pdth_hud.PDTHEquipment = {
 		},
         file = "units/payday2/equipment/gen_interactable_drill_large_thermic/gen_interactable_drill_large_thermic",
         ID = "PDTHEquipmentLargeThermic",
-		priority = 0
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
 	{
 		SequenceMods = {
@@ -449,7 +454,8 @@ pdth_hud.PDTHEquipment = {
 		},
         file = "units/payday2/equipment/gen_interactable_lance_large/gen_interactable_lance_large",
         ID = "PDTHEquipmentLanceLarge",
-		priority = 0
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
 	{
 		SequenceMods = {
@@ -492,7 +498,8 @@ pdth_hud.PDTHEquipment = {
 		},
         file = "units/payday2/equipment/hlm_equipment_gas_can_shoot/hlm_equipment_gas_can_shoot",
         ID = "PDTHEquipmentHLMGasCan",
-		priority = 0
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
 	{
 		SequenceMods = {
@@ -527,7 +534,7 @@ pdth_hud.PDTHEquipment = {
 		},
         file = "units/payday2/equipment/gen_equipment_shape_charge_plantable/gen_equipment_shape_charge_plantable",
         ID = "PDTHEquipmentShapeChargePlantable",
-		--use_callback = callback(pdth_hud, pdth_hud, "mod_shaped_charge"),
-		priority = 0
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	}
 }

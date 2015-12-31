@@ -81,7 +81,7 @@
 	"pdth_hud_auto" : "AUTO",
 	"pdth_toggle_spookyammo_title" : "Ammo acts properly",
 	"pdth_toggle_spookyammo_help" : "Makes ammo act like (Clip / Spare Ammo)",
-	"pdth_hud_scale_title" : "HUD Scale (Experimental)",
+	"pdth_hud_scale_title" : "HUD Scale",
 	"pdth_hud_scale_help" : "Change the Scale of the HUD",
 	
 	
@@ -92,7 +92,8 @@
     "pdth_hud_hud_options" : "HUD Options",
     "pdth_hud_hud_options_help" : "",
 	"pdth_toggle_OGTMHealth_title" : "PDTH Teammate portrait style",
-    "pdth_toggle_OGTMHealth_help" : "Toggle between PDTH's style of teammate portraits, or the previous PDTH Hud style",
-	
+    "pdth_toggle_OGTMHealth_help" : "Toggle between PD:TH's style of teammate portraits, or the previous PDTH Hud style",
+	"pdth_toggle_equipment_title" : "Toggle PDTH Equipment",
+    "pdth_toggle_equipment_help" : "Toggles the visibility of the PD:TH style of equipment on objects, e.g. The drill showing a yellow version on a door before it has been placed",
 	
 }

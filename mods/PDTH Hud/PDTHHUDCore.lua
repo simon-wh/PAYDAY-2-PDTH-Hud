@@ -232,14 +232,13 @@ if Hooks then
         end)
     end
     
-	Hooks:Add("BeardLibSequencePostInit", "PDTHHudCallBeardLibSequenceFuncs", function()
+	Hooks:Add("BeardLibCreateScriptDataMods", "PDTHHudCallBeardLibSequenceFuncs", function()
 		for name, mod_data in pairs(pdth_hud.PDTHEquipment) do
 			BeardLib.ScriptData.Sequence:CreateMod(mod_data)
 		end
-        BeardLib:ReplaceScriptData("jewelry store_generated.json", "levels/narratives/vlad/jewelry_store/world/world", "continent")
 	end)
 	
-	Hooks:Add("BeardLibSequencePostInit", "PDTHHudEnvironmentTest", function()
+	Hooks:Add("BeardLibCreateScriptDataMods", "PDTHHudEnvironmentTest", function()
 		-- EnvironmentFile, MOD ID, Initial Data
 		--[[BeardLib:CreateEnvMod("environments/pd2_env_mid_day/pd2_env_mid_day", "PDTH Hud", {})
 		
@@ -360,6 +359,11 @@ if Hooks then
 
 	Hooks:Add("MenuManagerPopulateCustomMenus", "Base_PopulatePDTHHudMenu", function( menu_manager, nodes )
         --Main Menu Elements
+        MenuCallbackHandler.PDTHHudToggleHUDOption = function(this, item)
+            pdth_hud.Options.HUD[item:name()] = item:value() == "on" and true or false
+			pdth_hud:Save()
+        end
+        
         MenuCallbackHandler.pdth_toggle_cgrading = function(this, item)
 			pdth_hud.Options.Menu.Grading = item:value()
 			pdth_hud:Save()
@@ -406,6 +410,15 @@ if Hooks then
 			priority = 997
 		})
         
+        MenuHelper:AddToggle({
+			id = "PDTHEquipment",
+			title = "pdth_toggle_equipment_title",
+			desc = "pdth_toggle_equipment_help",
+			callback = "PDTHHudToggleHUDOption",
+			menu_id = pdth_hud.menu_name,
+			value = pdth_hud.Options.HUD.Equipment
+		})
+        
         -- HUD Menu elements
 		MenuCallbackHandler.pdth_toggle_pcolor = function(this, item)
 			pdth_hud.Options.HUD.Coloured = item:value() == "on" and true or false
@@ -415,10 +428,6 @@ if Hooks then
 				tm._player_panel:child("radial_health_panel"):child("radial_health"):set_color(item:value() == "on" and tm.health_colour or Color.white)
 			end
 		end
-        MenuCallbackHandler.PDTHHudToggleHUDOption = function(this, item)
-            pdth_hud.Options.HUD[item:name()] = item:value() == "on" and true or false
-			pdth_hud:Save()
-        end
 		
 		MenuCallbackHandler.pdth_toggle_bullet = function(this, item)
 			pdth_hud.Options.HUD.Bullet = item:value()

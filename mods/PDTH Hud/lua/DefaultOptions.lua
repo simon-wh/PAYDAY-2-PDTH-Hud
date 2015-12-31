@@ -22,6 +22,7 @@ options.HUD.Swansong = true
 options.HUD.MainHud = true
 options.HUD.Scale = 1
 options.HUD.spooky_ammo = false
+options.HUD.Equipment = true
 
 options.Menu.Grading = 8
 

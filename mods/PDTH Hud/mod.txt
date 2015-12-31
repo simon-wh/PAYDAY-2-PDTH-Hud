@@ -1,9 +1,9 @@
 {
-	"name" : "PAYDAY: The Heist HUD",
-	"description" : "Brings back the HUD from PD:TH. If you want to find more awesome mods visit http://lastbullet.net",
-	"author" : "LASTBULLET_GREAT BIG BUSHY BEARD",
-	"contact" : "simon@pd2stats.com",
-	"version" : "3.3",
+	"name" : "PAYDAY: The Heist HUD Reborn",
+	"description" : "Brings back the HUD from PD:TH.",
+	"author" : "GREAT BIG BUSHY BEARD",
+	"contact" : "simon@pd2stats.com or simon@lastbullet.net",
+	"version" : "1",
 	"priority" : 44,
 	"hooks" : [
 		{ "hook_id" : "lib/managers/menu/newsfeedgui", "script_path" : "PDTHHUDCore.lua" },
@@ -49,9 +49,6 @@
 		{ "hook_id" : "lib/units/beings/player/playerdamage", "script_path" : "PDTHHUDCore.lua" },
         { "hook_id" : "lib/states/missionendstate", "script_path" : "PDTHHUDCore.lua" },
         { "hook_id" : "lib/states/ingameaccesscamera", "script_path" : "PDTHHUDCore.lua" }
-        
-
-
 	],
 	"updates" : [
 		{
