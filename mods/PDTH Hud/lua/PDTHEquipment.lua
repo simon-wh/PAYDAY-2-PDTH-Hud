@@ -1,5 +1,6 @@
 function pdth_hud:UseEquipment()
-	return pdth_hud.Options.HUD.Equipment
+	--return pdth_hud.Options.HUD.Equipment
+	return true
 end
 
 pdth_hud.PDTHEquipment = {
@@ -51,6 +52,57 @@ pdth_hud.PDTHEquipment = {
 		},
         file = "units/payday2/equipment/item_door_drill_small/item_door_drill_small",
         ID = "PDTHEquipmentDoorDrillSmall",
+		priority = 0,
+		use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
+	},
+    {
+		SequenceMods = {
+			["'activate'"] = {
+				ElementMods = {
+					["'anim'"] = { enabled = false },
+					["'g_base'"] = { enabled = true },
+					["'g_drill'"] = { enabled = true },
+					["'g_drill_drill'"] = { enabled = true },
+					["'icon'"] = { visibility = false },
+				},
+				NewElements = {
+					[1] = { 
+						_meta = "material",
+						name = "'mtr_drill'",
+						texture = "'units/gui/gui_color_use_df'",
+						search_render_template = "'generic:CONTOUR:DIFFUSE_TEXTURE:NORMALMAP'",
+						multiple_objects = true
+					},
+					material = {
+						_meta = "material",
+						name = "'mtr_drill'",
+						texture = "'units/gui/gui_color_use_df'",
+						search_render_template = "'generic:CONTOUR:DIFFUSE_TEXTURE:NORMALMAP'",
+						multiple_objects = true
+					}
+				}
+			},
+			["'int_seq_show_texured'"] = {
+				NewElements = {
+					[1] = {
+						_meta = "material",
+						name = "'mtr_drill'",
+						texture = "'units/payday2/equipment/gen_interactable_drill_small/drill_small_df'",
+						search_render_template = "'generic:CONTOUR:DIFFUSE_TEXTURE:NORMALMAP'",
+						multiple_objects = true
+					},
+					material = {
+						_meta = "material",
+						name = "'mtr_drill'",
+						texture = "'units/payday2/equipment/gen_interactable_drill_small/drill_small_df'",
+						search_render_template = "'generic:CONTOUR:DIFFUSE_TEXTURE:NORMALMAP'",
+						multiple_objects = true
+					}
+				}
+			}
+		},
+        file = "units/payday2/equipment/gen_interactable_drill_small/gen_interactable_drill_small",
+        ID = "PDTHEquipmentDrillSmall",
 		priority = 0,
 		use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
@@ -152,6 +204,41 @@ pdth_hud.PDTHEquipment = {
 		},
         file = "units/payday2/equipment/gen_equipment_shape_charge/gen_equipment_shape_charge",
         ID = "PDTHEquipmentEquipmentShapeCharge",
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
+	},
+    {
+		SequenceMods = {
+			[" 'interact' "] = {
+				NewElements = {
+					[1] = {
+						_meta = "material_config",
+						name = "'units/pd2_dlc_jolly/equipment/gen_plant_c4/gen_plant_c4'"
+					},
+					material_config = {
+						_meta = "material_config",
+						name = "'units/pd2_dlc_jolly/equipment/gen_plant_c4/gen_plant_c4'"
+					}
+				}
+			},
+            [" 'state_interaction_enabled' "] = {
+                NewElements = {
+					[1] = {
+						_meta = "material_config",
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
+					},
+					material_config = {
+						_meta = "material_config",
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
+					}
+				},
+                ElementMods = {
+					["'g_c4'"] = { enabled = true },
+				}
+            }
+		},
+        file = "units/pd2_dlc_jolly/equipment/gen_plant_c4/gen_plant_c4",
+        ID = "PDTHEquipmentEquipmentPlantC4",
 		priority = 0,
         use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},

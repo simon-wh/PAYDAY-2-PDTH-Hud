@@ -236,6 +236,21 @@ if Hooks then
 		for name, mod_data in pairs(pdth_hud.PDTHEquipment) do
 			BeardLib.ScriptData.Sequence:CreateMod(mod_data)
 		end
+        
+        
+        --[[BeardLib.ScriptData.Continent:CreateMod({
+            ID = "ContinentTest",
+            file = "levels/narratives/classics/dinner/world/world"
+        })
+
+        BeardLib.ScriptData.Continent:AddUnit("ContinentTest", {
+            path = "units/payday2/props/gen_prop_container/gen_prop_container",
+            mesh_variation = "var_set_color_green",
+            name = "test_unit",
+            position = Vector3(-8422.57, 6421.82, 149),
+            rotation = Rotation(0, 0, 0),
+            unit_id = 66676
+        })]]--
 	end)
 	
 	Hooks:Add("BeardLibCreateScriptDataMods", "PDTHHudEnvironmentTest", function()

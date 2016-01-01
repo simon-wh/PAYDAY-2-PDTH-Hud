@@ -41,13 +41,13 @@ if pdth_hud.Options.HUD.MainHud then
             w = self.health_w,
             h = self.health_h
         })
-        radial_health_panel:set_bottom(self._player_panel:bottom())
-        radial_health_panel:set_left(self._player_panel:left())
+        radial_health_panel:set_bottom(self._player_panel:h())
+        radial_health_panel:set_left(0)
         
         local character_icon
         if not main_player then
-            radial_health_panel:set_center_y(self._player_panel:center_y())
-            radial_health_panel:set_left(self._player_panel:left() + const.tm_health_gap)
+            radial_health_panel:set_center_y(self._player_panel:h() / 2)
+            radial_health_panel:set_left(const.tm_health_gap)
             
             character_icon = self._player_panel:bitmap({
                 name = "character_icon",
@@ -268,7 +268,7 @@ if pdth_hud.Options.HUD.MainHud then
             icon = "frag_grenade",
             amount = 12,
             no_flash = true,
-            weapon = true,
+            weapon = main_player,
             default = true
         })
         
@@ -755,7 +755,7 @@ if pdth_hud.Options.HUD.MainHud then
                 icon = "",
                 amount = 12,
                 no_flash = true,
-                weapon = true,
+                weapon = self._main_player,
                 default = true
             })
             self._player_panel:child("grenades_panel"):set_visible(false)
@@ -1256,6 +1256,10 @@ if pdth_hud.Options.HUD.MainHud then
             
             local texture, rect = pdth_hud.textures:get_portrait_texture(character, "bg", self._main_player)
             radial_bg:set_image(texture, unpack(rect))
+        end
+        
+        if not self._ai or not pdth_hud.Options.HUD.OGTMHealth then
+            radial_health_panel:set_visible(true)
         end
         
         radial_bg:set_visible(not self._ai)

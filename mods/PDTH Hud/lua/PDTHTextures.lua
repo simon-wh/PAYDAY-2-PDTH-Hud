@@ -43,33 +43,33 @@ pdth_hud.textures.portraits["fallback"].tm = {
 	}
 }
 
-pdth_hud.textures.portraits["teammate"] = {}
+pdth_hud.textures.portraits.teammate = {}
 
-pdth_hud.textures.portraits["teammate"].health = {
+pdth_hud.textures.portraits.teammate.health = {
     texture = "guis/textures/hud_icons",
 	texture_rect = {
 		264, 
-		231, 
+		240, 
 		12, 
 		48
 	}
 }
 
-pdth_hud.textures.portraits["teammate"].armor = {
+pdth_hud.textures.portraits.teammate.armor = {
     texture = "guis/textures/hud_icons",
 	texture_rect = {
 		252, 
-		231, 
+		240, 
 		12, 
 		48
 	}
 }
 
-pdth_hud.textures.portraits["teammate"].bg = {
+pdth_hud.textures.portraits.teammate.bg = {
     texture = "guis/textures/hud_icons",
 	texture_rect = {
 		240, 
-		231, 
+		240, 
 		12, 
 		48
 	}
