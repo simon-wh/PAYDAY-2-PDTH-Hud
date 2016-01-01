@@ -1,6 +1,6 @@
 function pdth_hud:UseEquipment()
-	--return pdth_hud.Options.HUD.Equipment
-	return true
+	return pdth_hud.Options.HUD.Equipment
+	--return true
 end
 
 pdth_hud.PDTHEquipment = {
