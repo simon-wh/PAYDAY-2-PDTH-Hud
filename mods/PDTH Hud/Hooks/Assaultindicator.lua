@@ -4,7 +4,7 @@ function HUDAssaultCorner:init(hud, full_hud)
 
 	self._hud_panel = hud.panel
 	self._full_hud_panel = full_hud.panel
-    self._assault_color = Color.red / 2
+    self._assault_color = Color.red / 1.5
 	self._vip_assault_color = Color(1, 1, 1, 0)
     --LightFX
     self._assault_color_fx = Color.red
@@ -49,7 +49,7 @@ function HUDAssaultCorner:init(hud, full_hud)
 		text = managers.localization:text("menu_assault"),
 		blend_mode = "normal",
 		layer = 1,
-		color = Color.red / 2,
+		color = Color.red,
 		font_size = const.assault_font_size,
 		font = tweak_data.menu.small_font,
 		visible = true
@@ -181,7 +181,7 @@ function HUDAssaultCorner:_end_assault()
 	end
 	self._assault = false
     
-    if BetterLightFX and self._assault then		
+    if BetterLightFX then		
         BetterLightFX:EndEvent("AssaultIndicator")		
     end
     
@@ -322,12 +322,12 @@ function HUDAssaultCorner:flash_assault_title(o, assault)
     
 	while true do
         local alpha_d = 0.5 + (math.sin( Application:time()*750 )+1)/4  
-        local new_fx = math.floor((alpha_d) * 255)
+        --local new_fx = math.floor((alpha_d) * 255)
 		o:set_alpha(alpha_d)
         
         if BetterLightFX and self._assault and assault then
             BetterLightFX:StartEvent("AssaultIndicator")
-            BetterLightFX:SetColor(self._fx_color.red, self._fx_color.green, self._fx_color.blue, alpha_d ,"AssaultIndicator")
+            BetterLightFX:UpdateEvent("AssaultIndicator", {color = Color(alpha_d, self._fx_color.red, self._fx_color.green, self._fx_color.blue)})
         end
         
         --current_fx_alpha = new_fx
@@ -335,13 +335,6 @@ function HUDAssaultCorner:flash_assault_title(o, assault)
         --wait(0.3)
 	end
 end
-  	
-function HUDAssaultCorner:flash_assault_rect(o)
-	while true do
-		local r = 0.5 + (math.sin( Application:time()*750 )+1)/4
-		o:set_color( Color( 0.75, r, 0, 0 ) )
-		coroutine.yield()
-	end
-end
+
 end
 

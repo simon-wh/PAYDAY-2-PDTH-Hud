@@ -148,7 +148,7 @@ if pdth_hud.Options.HUD.MainHud then
             name = "talk",
             texture = talk_icon,
             visible = false,
-            layer = 12,
+            layer = 14,
             texture_rect = talk_texture_rect,
             w = talk_texture_rect[3] * scale,
             h = talk_texture_rect[4] * scale
@@ -614,9 +614,7 @@ if pdth_hud.Options.HUD.MainHud then
         end
     end
 
-    function HUDTeammate:set_health(data)
-        local teammate_panel = self._panel:child("player")
-        
+    function HUDTeammate:set_health(data) 
         local amount = data.current / data.total
         if amount < self.health_amount then
             self:_damage_taken()
@@ -630,14 +628,8 @@ if pdth_hud.Options.HUD.MainHud then
     end
 
     function HUDTeammate:set_armor(data)
-        local teammate_panel = self._panel:child("player")
-        local radial_health_panel = teammate_panel:child("radial_health_panel")
-        local radial_shield = radial_health_panel:child("radial_shield")
-        local radial_bg = radial_health_panel:child("radial_bg")
-        local radial_health = radial_health_panel:child("radial_health")
-        local bmpHealthCharge = radial_health_panel:child("bmpHealthCharge")
         local amount = data.current / data.total
-        if amount < radial_shield:color().red then
+        if amount < self.armor_amount then
             self:_damage_taken()
         end
         
@@ -1240,9 +1232,8 @@ if pdth_hud.Options.HUD.MainHud then
             local texture, rect = pdth_hud.textures:get_portrait_texture(character, "health", self._main_player)
             local y_offset = rect[4] * (1 - self.health_amount)
             local h_offset = self.health_h * (1 - self.health_amount)
-            if not self._main_player then
-                radial_health:set_color(pdth_hud.Options.HUD.Coloured and self.health_colour or Color.white)
-            end
+            radial_health:set_color(pdth_hud.Options.HUD.Coloured and self.health_colour or Color.white)
+                
             radial_health:set_image(texture, rect[1], rect[2] + y_offset, rect[3], rect[4] - y_offset)
             radial_health:set_h(height - h_offset)
             radial_health:set_bottom(radial_bg:bottom())

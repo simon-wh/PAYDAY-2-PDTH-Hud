@@ -324,11 +324,13 @@ if Hooks then
         if blfx then
             blfx:RegisterEvent("AssaultIndicator", {
                 priority = 20, 
-                loop = false,
+                loop = true,
+                color = Color(1, 1, 0, 0),
                 options = {
                     {parameter = "enabled", typ = "bool", localization = "Enabled"},
                 },
                 run = function(self, ...)
+                     BetterLightFX:SetColor(self.color.red, self.color.green, self.color.blue, self.color.alpha, self.name)
                      coroutine.yield()
                      self._ran_once = true
                 end
