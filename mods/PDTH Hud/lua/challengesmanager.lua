@@ -163,8 +163,7 @@ function ChallengesManager:add_by_name( name )
 end
 
 function ChallengesManager:count_up( counter_id )
-	--log(counter_id)
-	if	not self._counter_map[ counter_id ] then
+	if not self._counter_map[ counter_id ] then
 		-- Application:error( "No counter id named", counter_id )
 		return
 	end
@@ -276,7 +275,7 @@ end
 function ChallengesManager:get_near_completion()
 	self:check_active_challenges()
 	local t = {}
-	for id,data in pairs( self._global.active ) do
+	for id, data in pairs( self._global.active ) do
 		if self._challenges_map[ id ] and not data.already_awarded then
 			local progress, count, amount
 			if data.amount then
@@ -347,27 +346,54 @@ function ChallengesManager:get_last_comleted_description_text()
 end
 
 function ChallengesManager:get_title_text( name )
- 	if self._challenges_map[ name ].title_id then
- 		return self:_get_localized_string( name, self._challenges_map[ name ].title_id )
- 	else
+    local ch_data = self._challenges_map[ name ]
+ 	if ch_data.title_id and ch_data.weapName then
+ 		return managers.localization:text(ch_data.title_id, {
+            weapon = managers.localization:text(tweak_data.weapon[ch_data.weapName] and tweak_data.weapon[ch_data.weapName].name_id or "menu_" .. ch_data.weapName),
+            no = self:NumberToNumeral(ch_data.i),
+            eneType = managers.localization:text("ene_" .. ch_data.ene)
+        })
+ 	elseif ch_data.title_id then
+        return managers.localization:text(ch_data.title_id)
+    else
  		return name
  	end
 end
 
-function ChallengesManager:get_description_text( name, skip_achievment )
- 	if self._challenges_map[ name ].description_id then
- 		local description = self:_get_localized_string( name, self._challenges_map[ name ].description_id )
- 		local achievment = self:get_awarded_achievment( name )
- 		
+function ChallengesManager:NumberToNumeral(no)
+	if not no or no <= 0 then
+		return ""
+	end
+	local numbers = { 1, 5, 10, 50, 100, 500, 1000 	}
+	local chars = { "I", "V", "X", "L", "C", "D", "M" }
+	local roman = ""
+	for i = #numbers, 1, -1 do
+		local num = numbers[i]
+		while no - num >= 0 and no > 0 do
+			roman = roman .. chars[i]
+			no = no - num
+		end
+		for j = 1, i - 1 do
+			local num2 = numbers[j]
+			if no - (num - num2) >= 0 and num > no and no > 0 and num - num2 ~= num2 then
+				roman = roman .. chars[j] .. chars[i]
+				no = no - (num - num2)
+				break
+			end
+		end
+	end
+	return roman
+end
 
- 		if achievment and not skip_achievment then
- 			local adata = managers.achievment:get_info( achievment )
- 			description = description .. managers.localization:text( "debug_challenge_reward", { ACHIEVMENT = managers.localization:text( adata.name ) } ) 
- 		end
-
- 		
- 		return description 
- 	else
+function ChallengesManager:get_description_text( name )
+ 	local ch_data = self._challenges_map[ name ]
+ 	if ch_data.description_id then
+ 		return managers.localization:text(ch_data.description_id, {
+            weapon = ch_data.weapName and managers.localization:text(tweak_data.weapon[ch_data.weapName] and tweak_data.weapon[ch_data.weapName].name_id or "menu_" .. ch_data.weapName) or nil,
+            count = ch_data.count,
+            eneType = managers.localization:text("ene_" .. tostring(ch_data.ene) .. "_desc")
+        })
+    else
  		return name
  	end
 end
@@ -380,15 +406,6 @@ function ChallengesManager:get_awarded_achievment( name )
 	end
 	
  	return nil 
-end
-
-function ChallengesManager:_get_localized_string( name, id )
-	local text =  managers.localization:text( id )
-	if self._challenges_map[ name ].count then
- 		local pattern = "##" .. self._challenges_map[ name ].counter_id .. "##"
- 		text = string.gsub( text, pattern , self._challenges_map[ name ].count )
- 	end
- 	return text
 end
 
 function ChallengesManager:check_text()

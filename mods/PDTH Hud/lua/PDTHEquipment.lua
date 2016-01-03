@@ -1,9 +1,11 @@
-function pdth_hud:UseDoorDrill()
-	return true
+function pdth_hud:UseEquipment()
+    --log(tostring(pdth_hud.Options.HUD.Equipment))
+	return pdth_hud.Options.HUD.Equipment
+	--return true
 end
 
 pdth_hud.PDTHEquipment = {
-	["units/payday2/equipment/item_door_drill_small/item_door_drill_small"] = {
+	{
 		SequenceMods = {
 			["'activate'"] = {
 				ElementMods = {
@@ -49,10 +51,63 @@ pdth_hud.PDTHEquipment = {
 				}
 			}
 		},
+        file = "units/payday2/equipment/item_door_drill_small/item_door_drill_small",
+        ID = "PDTHEquipmentDoorDrillSmall",
 		priority = 0,
-		use_callback = callback(pdth_hud, pdth_hud, "UseDoorDrill")
+		use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
-	["units/payday2/equipment/gen_equipment_shape_charge/gen_equipment_shape_charge"] = {
+    {
+		SequenceMods = {
+			["'activate'"] = {
+				ElementMods = {
+					["'anim'"] = { enabled = false },
+					["'g_base'"] = { enabled = true },
+					["'g_drill'"] = { enabled = true },
+					["'g_drill_drill'"] = { enabled = true },
+					["'icon'"] = { visibility = false },
+				},
+				NewElements = {
+					[1] = { 
+						_meta = "material",
+						name = "'mtr_drill'",
+						texture = "'units/gui/gui_color_use_df'",
+						search_render_template = "'generic:CONTOUR:DIFFUSE_TEXTURE:NORMALMAP'",
+						multiple_objects = true
+					},
+					material = {
+						_meta = "material",
+						name = "'mtr_drill'",
+						texture = "'units/gui/gui_color_use_df'",
+						search_render_template = "'generic:CONTOUR:DIFFUSE_TEXTURE:NORMALMAP'",
+						multiple_objects = true
+					}
+				}
+			},
+			["'int_seq_show_texured'"] = {
+				NewElements = {
+					[1] = {
+						_meta = "material",
+						name = "'mtr_drill'",
+						texture = "'units/payday2/equipment/gen_interactable_drill_small/drill_small_df'",
+						search_render_template = "'generic:CONTOUR:DIFFUSE_TEXTURE:NORMALMAP'",
+						multiple_objects = true
+					},
+					material = {
+						_meta = "material",
+						name = "'mtr_drill'",
+						texture = "'units/payday2/equipment/gen_interactable_drill_small/drill_small_df'",
+						search_render_template = "'generic:CONTOUR:DIFFUSE_TEXTURE:NORMALMAP'",
+						multiple_objects = true
+					}
+				}
+			}
+		},
+        file = "units/payday2/equipment/gen_interactable_drill_small/gen_interactable_drill_small",
+        ID = "PDTHEquipmentDrillSmall",
+		priority = 0,
+		use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
+	},
+	{
 		SequenceMods = {
 			["'show'"] = {
 				NewElements = {
@@ -101,7 +156,7 @@ pdth_hud.PDTHEquipment = {
 				},
 				[7] = {
 					_meta = "material_config",
-					name = "'units/weapons/shield/shield'"
+					name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 				},
 				[8] = {
 					_meta = "graphic_group",
@@ -132,7 +187,7 @@ pdth_hud.PDTHEquipment = {
 				},]]--
 				material_config = {
 					_meta = "material_config",
-					name = "'units/weapons/shield/shield'"
+					name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 				},
 				graphic_group = {
 					_meta = "graphic_group",
@@ -148,9 +203,47 @@ pdth_hud.PDTHEquipment = {
 				triggable = true
 			}
 		},
-		priority = 0
+        file = "units/payday2/equipment/gen_equipment_shape_charge/gen_equipment_shape_charge",
+        ID = "PDTHEquipmentEquipmentShapeCharge",
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
-	["units/payday2/equipment/gen_interactable_door_keycard/gen_interactable_door_keycard_jammer"] = { 
+    {
+		SequenceMods = {
+			[" 'interact' "] = {
+				NewElements = {
+					[1] = {
+						_meta = "material_config",
+						name = "'units/pd2_dlc_jolly/equipment/gen_plant_c4/gen_plant_c4'"
+					},
+					material_config = {
+						_meta = "material_config",
+						name = "'units/pd2_dlc_jolly/equipment/gen_plant_c4/gen_plant_c4'"
+					}
+				}
+			},
+            [" 'state_interaction_enabled' "] = {
+                NewElements = {
+					[1] = {
+						_meta = "material_config",
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
+					},
+					material_config = {
+						_meta = "material_config",
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
+					}
+				},
+                ElementMods = {
+					["'g_c4'"] = { enabled = true },
+				}
+            }
+		},
+        file = "units/pd2_dlc_jolly/equipment/gen_plant_c4/gen_plant_c4",
+        ID = "PDTHEquipmentEquipmentPlantC4",
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
+	},
+	{ 
 		SequenceMods = {
 			[" 'interact' "] = {
 				NewElements = {
@@ -213,9 +306,12 @@ pdth_hud.PDTHEquipment = {
 				triggable = true
 			}
 		},
-		priority = 0
+        file = "units/payday2/equipment/gen_interactable_door_keycard/gen_interactable_door_keycard_jammer",
+        ID = "PDTHEquipmentDoorKeycardJammer",
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
-	["units/payday2/equipment/gen_interactable_door_keycard/item_door_keycard_jammer_double"] = {
+	{
 		SequenceMods = {
 			[" 'interact' "] = {
 				NewElements = {
@@ -278,9 +374,12 @@ pdth_hud.PDTHEquipment = {
 				triggable = true
 			}
 		},
-		priority = 0
+        file = "units/payday2/equipment/gen_interactable_door_keycard/item_door_keycard_jammer_double",
+        ID = "PDTHEquipmentDoorJammerDouble",
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
-	["units/payday2/props/gen_prop_bank_atm_standing/gen_prop_bank_atm_jammer"] = {
+	{
 		SequenceMods  = {
 			[" 'interact' "] = {
 				NewElements = {
@@ -343,9 +442,12 @@ pdth_hud.PDTHEquipment = {
 				triggable = true
 			}
 		},
-		priority = 0
+        file = "units/payday2/props/gen_prop_bank_atm_standing/gen_prop_bank_atm_jammer",
+        ID = "PDTHEquipmentATMJammer",
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
-	["units/payday2/equipment/gen_interactable_drill_large_thermic/gen_interactable_drill_large_thermic"] = {
+	{
 		SequenceMods = {
 			[" 'activate' "] = {
 				ElementMods = {
@@ -389,9 +491,12 @@ pdth_hud.PDTHEquipment = {
 				}
 			}
 		},
-		priority = 0
+        file = "units/payday2/equipment/gen_interactable_drill_large_thermic/gen_interactable_drill_large_thermic",
+        ID = "PDTHEquipmentLargeThermic",
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
-	["units/payday2/equipment/gen_interactable_lance_large/gen_interactable_lance_large"] = {
+	{
 		SequenceMods = {
 			[" 'activate' "] = {
 				ElementMods = {
@@ -435,9 +540,12 @@ pdth_hud.PDTHEquipment = {
 				}
 			}
 		},
-		priority = 0
+        file = "units/payday2/equipment/gen_interactable_lance_large/gen_interactable_lance_large",
+        ID = "PDTHEquipmentLanceLarge",
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
-	["units/payday2/equipment/hlm_equipment_gas_can_shoot/hlm_equipment_gas_can_shoot"] = {
+	{
 		SequenceMods = {
 			["'state_vis_show_interactable'"] = {
 				ElementMods = {
@@ -446,16 +554,16 @@ pdth_hud.PDTHEquipment = {
 				NewElements = {
 					[1] = {
 						_meta = "material_config",
-						name = "'units/weapons/smoke_grenade/smoke_grenade'"
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 					},
 					material_config = {
 						_meta = "material_config",
-						name = "'units/weapons/smoke_grenade/smoke_grenade'"
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 					}
 				}
 			},
 			["'state_vis_hide_contour'"] = {
-			NewElements = {
+                NewElements = {
 					[1] = {
 						_meta = "object",
 						enabled = false,
@@ -476,9 +584,12 @@ pdth_hud.PDTHEquipment = {
 				}
 			}
 		},
-		priority = 0
+        file = "units/payday2/equipment/hlm_equipment_gas_can_shoot/hlm_equipment_gas_can_shoot",
+        ID = "PDTHEquipmentHLMGasCan",
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	},
-	["units/payday2/equipment/gen_equipment_shape_charge_plantable/gen_equipment_shape_charge_plantable"] = {
+	{
 		SequenceMods = {
 			["'show_interactive'"] = {
 				ElementMods = {
@@ -486,13 +597,13 @@ pdth_hud.PDTHEquipment = {
 					["'c4_icon'"] = { visibility = false },
 				},
 				NewElements = {
-					[1] = {
+					{
 						_meta = "material_config",
-						name = "'units/weapons/raging_bull/raging_bull'"
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 					},
 					material_config = {
 						_meta = "material_config",
-						name = "'units/weapons/raging_bull/raging_bull'"
+						name = "'units/pd2_dlc_cage/masks/f1/msk_f1_mask'"
 					},
 				}
             },
@@ -509,7 +620,9 @@ pdth_hud.PDTHEquipment = {
 				}
 			}
 		},
-		--use_callback = callback(pdth_hud, pdth_hud, "mod_shaped_charge"),
-		priority = 0
+        file = "units/payday2/equipment/gen_equipment_shape_charge_plantable/gen_equipment_shape_charge_plantable",
+        ID = "PDTHEquipmentShapeChargePlantable",
+		priority = 0,
+        use_callback = callback(pdth_hud, pdth_hud, "UseEquipment")
 	}
 }

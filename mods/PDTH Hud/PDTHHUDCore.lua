@@ -1,106 +1,89 @@
 if not _G.pdth_hud then
 	_G.pdth_hud = {}
-	pdth_hud.newversion = {}
-	pdth_hud.loaded_options = {}
-	pdth_hud.show_thing = true
-	pdth_hud.log = {}
-	pdth_hud.log_no = 1
+    pdth_hud.name = "PDTHHudReborn"
+	pdth_hud.Options = {}
 	pdth_hud.menu_name = "pdth_hud_menu"
+	pdth_hud.HUDOptionsMenu = "pdth_hud_hud_options_menu"
 	pdth_hud.challenges_menu = "pdth_hud_challenges"
 	pdth_hud.active_challenges_menu = "pdth_hud_active_challenges"
 	pdth_hud.completed_challenges_menu = "pdth_hud_completed_challenges"
 	pdth_hud.portrait_menu = "pdth_hud_portrait_menu"
 	pdth_hud.heist_cgrade_name = "pdth_hud_heist_cgrade"
-	pdth_hud.write_options = pdth_hud.write_options or {}
-	if not pdth_hud._first_boot then
-		pdth_hud._first_boot = 0
-	end
 	pdth_hud.mod_path = ModPath
 	pdth_hud.addon_path = ModPath .. "addons/"
 	pdth_hud.lua_path = ModPath .. "lua/"
 	pdth_hud.hook_path = ModPath .. "Hooks/"
-	pdth_hud.save_path = SavePath
+	pdth_hud.SavePath = SavePath
+    pdth_hud.dofiles = {
+        "Constants.lua",
+        "PDTHTextures.lua",	
+        "PDTHEquipment.lua",
+        "DefaultOptions.lua",
+        "Options.lua",
+        "challengesmanager.lua",
+        "challengestweakdata.lua"
+    }
+
+    pdth_hud.hook_files = {
+        ["lib/units/weapons/newraycastweaponbase"] = "GadgetState.lua",
+        ["lib/managers/hud/hudhint"] = "HUDHint.lua",
+        ["lib/managers/menu/items/menuitemchallenge"] = "CoreItemChallenges.lua",
+        ["lib/managers/hud/hudtemp"] = "Hudtemp.lua",
+        --["lib/managers/experiencemanager"] = "ExperienceManager.lua",
+        --["lib/units/props/securitycamera"] = "Camera.lua",
+        --["lib/units/equipment/sentry_gun/sentrygunbase"] = "SentryGunBase.lua",
+        --["lib/units/weapons/trip_mine/tripminebase"] = "TripMineBase.lua",
+        ["lib/managers/hud/hudassaultcorner"] = "Assaultindicator.lua",
+        ["lib/managers/hud/hudinteraction"] = "Interaction.lua",
+        ["lib/managers/hudmanager"] = "Hudmanager.lua",
+        ["lib/managers/statisticsmanager"] = "StatsManager.lua",
+        ["lib/managers/hudmanagerpd2"] = "Hudmanagerpd2.lua",
+        --["lib/managers/blackmarketmanager"] = "BlackMarketManager.lua",
+        ["lib/managers/hud/hudteammate"] = "HudTM.lua",
+        ["lib/managers/hud/hudpresenter"] = "HudPRESENTER.lua",
+        --["lib/managers/menu/menuscenemanager"] = "MenuScene.lua",
+        --["core/lib/managers/coreenvironmentcontrollermanager"] = "EnvController.lua",
+        ["lib/tweak_data/tweakdata"] = "TweakData.lua",
+        --["lib/states/ingameaccesscamera"] = "IGAccessCam.lua"
+    }
+
+    pdth_hud.colour_gradings = {
+        [1] = "color_payday",
+        [2] = "color_heat",
+        [3] = "color_nice",
+        [4] = "color_sin",
+        [5] = "color_bhd",
+        [6] = "color_xgen",
+        [7] = "color_xxxgen",
+        [8] = "color_matrix",
+    }
+    pdth_hud.heist_colour_gradings = {
+        [1] = "color_main",
+        [2] = "color_payday",
+        [3] = "color_heat",
+        [4] = "color_nice",
+        [5] = "color_sin",
+        [6] = "color_bhd",
+        [7] = "color_xgen",
+        [8] = "color_xxxgen",
+        [9] = "color_matrix",
+    }
+
+    pdth_hud.portrait_options = {}
+
+    pdth_hud.bullet_style_options = {
+        [1] = "off",
+        [2] = "normal",
+        [3] = "coloured"
+    }
 end
 
-pdth_hud.dofiles = {
-	"PDTHTextures.lua",
-	"Options.lua",
-	--"WriteOptions.lua",
-	"challengesmanager.lua",
-	"PDTHEquipment.lua",
-	"challengestweakdata.lua",
-    "BetterLightFX.lua"
-}
 
-pdth_hud.writeoptions = "WriteOptions.lua"
-
-pdth_hud.hook_files = {
-	["lib/units/weapons/newraycastweaponbase"] = "GadgetState.lua",
-	["lib/managers/hud/hudhint"] = "HUDHint.lua",
-	["lib/managers/menu/items/menuitemchallenge"] = "CoreItemChallenges.lua",
-	["lib/managers/hud/hudtemp"] = "Hudtemp.lua",
-	["lib/managers/experiencemanager"] = "ExperienceManager.lua",
-	["lib/units/props/securitycamera"] = "Camera.lua",
-	["lib/units/equipment/sentry_gun/sentrygunbase"] = "SentryGunBase.lua",
-	["lib/units/weapons/trip_mine/tripminebase"] = "TripMineBase.lua",
-	["lib/managers/hud/hudassaultcorner"] = "Assaultindicator.lua",
-	["lib/managers/hud/hudinteraction"] = "Interaction.lua",
-	["lib/managers/hudmanager"] = "Hudmanager.lua",
-	["lib/managers/statisticsmanager"] = "StatsManager.lua",
-	["lib/managers/hudmanagerpd2"] = "Hudmanagerpd2.lua",
-	["lib/managers/blackmarketmanager"] = "BlackMarketManager.lua",
-	["lib/managers/hud/hudteammate"] = "HudTM.lua",
-	["lib/managers/hud/hudpresenter"] = "HudPRESENTER.lua",
-	["lib/managers/menu/menuscenemanager"] = "MenuScene.lua",
-	["core/lib/managers/coreenvironmentcontrollermanager"] = "EnvController.lua",
-	["lib/tweak_data/tweakdata"] = "TweakData.lua",
-    ["lib/network/matchmaking/networkaccountsteam"] = "NetworkAccountSteam.lua",
-    ["lib/managers/group_ai_states/groupaistatebase"] = "GroupAIStateBase.lua",
-    ["lib/managers/hud/hudsuspicion"] = "HudSuspicion.lua",
-    ["lib/units/beings/player/playerdamage"] = "PlayerDamage.lua"
-    
-}
-
-pdth_hud.colour_gradings = {
-	[1] = "color_payday",
-	[2] = "color_heat",
-	[3] = "color_nice",
-	[4] = "color_sin",
-	[5] = "color_bhd",
-	[6] = "color_xgen",
-	[7] = "color_xxxgen",
-	[8] = "color_matrix",
-}
-pdth_hud.heist_colour_gradings = {
-	[1] = "color_main",
-	[2] = "color_payday",
-	[3] = "color_heat",
-	[4] = "color_nice",
-	[5] = "color_sin",
-	[6] = "color_bhd",
-	[7] = "color_xgen",
-	[8] = "color_xxxgen",
-	[9] = "color_matrix",
-}
-
-pdth_hud.portrait_options = pdth_hud.portrait_options or {
-	[1] = "default",
-	[2] = "white",
-	[3] = "pdth",
-	[4] = "foster"
-}
-
-pdth_hud.bullet_style_options = {
-	[1] = "off",
-	[2] = "normal",
-	[3] = "coloured"
-}
 
 function pdth_hud:LoadAddons()
     local addons = file.GetFiles(self.addon_path)
     for _, path in pairs(addons) do
         if string.ends(path, "json") then
-            log(path)
             local file = io.open(self.addon_path .. path, "r")
             local file_contents = file:read("*all")
             local data = json.decode( file_contents )
@@ -119,9 +102,8 @@ if not pdth_hud.setup then
 	for p, d in pairs(pdth_hud.dofiles) do
 		dofile(pdth_hud.lua_path .. d)
 	end
-	pdth_hud:Load_options()
-    pdth_hud:LoadAddons()
-	dofile(pdth_hud.lua_path .. pdth_hud.writeoptions)
+	pdth_hud:LoadOptions()
+    pdth_hud:InitConstants()
 	pdth_hud.setup = true
 end
 
@@ -158,10 +140,10 @@ if Hooks then
 	end
 	if CriminalsManager then
 		Hooks:PostHook(CriminalsManager, "add_character", "pdth_hud_ai_portrait", function(ply)
-			if pdth_hud.loaded_options.Ingame.MainHud then
+			if pdth_hud.Options.HUD.MainHud then
 				for i = 1, 4 do
 					if managers.hud then
-						managers.hud._teammate_panels[i]:set_ai_portrait()
+						managers.hud._teammate_panels[i]:RefreshPortraits()
 					end
 				end
 			end
@@ -172,16 +154,106 @@ if Hooks then
 			managers.challenges:reset_challenges()
 		end)
 	end
-
+    if MenuSceneManager then
+        Hooks:PostHook(MenuSceneManager, "_set_up_environments", "PDTHHudApplyMenuCGrade", function(self)
+            for env, data in pairs(self._environments) do
+                if data.color_grading then
+                    data.color_grading = pdth_hud.colour_gradings[pdth_hud.Options.Menu.Grading]
+                end
+            end
+        end)
+    end
+    if IngameAccessCamera then
+        Hooks:PostHook(IngameAccessCamera, "at_enter", "PDTHHudApplyCameraGrade", function(self)
+            if not pdth_hud.Options.HUD.CameraGrading then
+                managers.environment_controller:set_default_color_grading(self._saved_default_color_grading)
+                managers.environment_controller:refresh_render_settings()
+            end
+        end)
+    end
 	
-	
-	Hooks:Add("BeardLibSequencePostInit", "PDTHHudCallBeardLibSequenceFuncs", function()
+    if HUDChat then
+        Hooks:PostHook(HUDChat, "init", "PDTHHudReposChat", function(self)
+            self._panel:set_bottom(self._hud_panel:h() - pdth_hud.constants.main_health_h)
+        end)
+    end
+    
+    if BlackMarketManager then
+        Hooks:PostHook(BlackMarketManager, "save", "PDTHHudSaveChallenges", function(self, data)
+            managers.challenges:save(data)
+        end)
+        Hooks:PostHook(BlackMarketManager, "load", "PDTHHudLoadChallenges", function(self, data)
+            managers.challenges:load(data)
+        end)
+    end
+    
+    if SecurityCamera then
+        Hooks:PostHook(SecurityCamera, "generate_cooldown", "PDTHHudDestroyedCamera", function(self, amount)
+            if pdth_hud.Options.HUD.Cameras then
+                if managers.job:current_level_id() ~= "safehouse" then
+                    managers.hint:show_hint("destroyed_security_camera")
+                end
+            end
+        end)
+    end
+    
+    if ExperienceManager then
+        Hooks:PostHook(ExperienceManager, "_level_up", "PDTHHudCheckChallenges", function(self)
+            managers.challenges:check_active_challenges()
+        end)
+    end
+    
+    if HUDManager and pdth_hud.Options.HUD.MainHud then
+        Hooks:PostHook(HUDManager, "set_mugshot_talk", "PDTHHudset_mugshot_talk", function(self, id, active)
+            local data = self:_get_mugshot_data(id)
+            if not data then
+                return
+            end
+            local i = managers.criminals:character_data_by_name(data.character_name_id).panel_id
+            managers.hud._teammate_panels[i]._panel:child("talk"):set_visible(active)
+        end)
+        
+        Hooks:PostHook(HUDManager, "set_mugshot_voice", "PDTHHudset_mugshot_voice", function(self, id, active)
+            local data = self:_get_mugshot_data(id)
+            if not data then
+                return
+            end
+            local i = managers.criminals:character_data_by_name(data.character_name_id).panel_id
+            managers.hud._teammate_panels[i]._panel:child("talk"):set_visible(active)
+        end)
+        
+        Hooks:PostHook(HUDManager, "add_waypoint", "PDTHHudset_mugshot_talk", function(self, id, data)
+            self._hud.waypoints[id].arrow:set_color(Color.white)
+        
+            local distance = self._hud.waypoints[id].distance
+            if distance then
+                distance:set_color(Color(1, 1, 0.65882355, 0))
+            end
+        end)
+    end
+    
+	Hooks:Add("BeardLibCreateScriptDataMods", "PDTHHudCallBeardLibSequenceFuncs", function()
 		for name, mod_data in pairs(pdth_hud.PDTHEquipment) do
-			BeardLib.ScriptData.Sequence:CreateMod("PDTH Hud", name, mod_data)
+			BeardLib.ScriptData.Sequence:CreateMod(mod_data)
 		end
+        
+        
+        --[[BeardLib.ScriptData.Continent:CreateMod({
+            ID = "ContinentTest",
+            file = "levels/narratives/classics/dinner/world/world"
+        })
+
+        BeardLib.ScriptData.Continent:AddUnit("ContinentTest", {
+            path = "units/payday2/props/gen_prop_container/gen_prop_container",
+            mesh_variation = "var_set_color_green",
+            name = "test_unit",
+            position = Vector3(-8422.57, 6421.82, 149),
+            rotation = Rotation(0, 0, 0),
+            unit_id = 66676
+        })]]--
 	end)
 	
-	Hooks:Add("BeardLibSequencePostInit", "PDTHHudEnvironmentTest", function()
+	Hooks:Add("BeardLibCreateScriptDataMods", "PDTHHudEnvironmentTest", function()
 		-- EnvironmentFile, MOD ID, Initial Data
 		--[[BeardLib:CreateEnvMod("environments/pd2_env_mid_day/pd2_env_mid_day", "PDTH Hud", {})
 		
@@ -202,10 +274,10 @@ if Hooks then
 			managers.dyn_resource:load(Idstring("scene"), Idstring("core/environments/skies/sky_1846_low_sun_nice_clouds/sky_1846_low_sun_nice_clouds"), managers.dyn_resource.DYN_RESOURCES_PACKAGE, nil)
 		end]]--
 
-		BeardLib.ScriptData.Environment:CreateMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", {})
+		--[[BeardLib.ScriptData.Environment:CreateMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day")
 		BeardLib.ScriptData.Environment:AddParamMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others/underlay", "core/environments/skies/sky_1846_low_sun_nice_clouds/sky_1846_low_sun_nice_clouds")
         BeardLib.ScriptData.Environment:AddParamMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others/sun_ray_color", Vector3(0.7, 0.5, 0.5))
-        BeardLib.ScriptData.Environment:AddNewParam("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others", "this_is_a_faking_test", Vector3(0.7, 0.5, 0.5))
+        BeardLib.ScriptData.Environment:AddNewParam("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others", "this_is_a_faking_test", Vector3(0.7, 0.5, 0.5))]]--
 
 	end)
 	
@@ -230,17 +302,11 @@ if Hooks then
 		else
 			LocalizationManager:load_localization_file(pdth_hud.mod_path ..  "/Localization/english.txt" )
 		end
-		LocalizationManager:add_localized_strings({
-			["portrait_value_1"] = "1",
-			["portrait_value_2"] = "2",
-			["portrait_value_3"] = "3",
-			["portrait_value_4"] = "4",
-			["portrait_value_5"] = "5",
-			["portrait_value_6"] = "6",
-			["portrait_value_7"] = "7",
-			["portrait_value_8"] = "8",
-			["portrait_value_9"] = "9",
-		})
+        for i = 1, #pdth_hud.portrait_options do
+            LocalizationManager:add_localized_strings({
+                ["portrait_value_" .. i] = i
+            })
+        end
 	end)
 	
 	Hooks:Add("StatisticsManagerKilledByAnyone", "PDTHHudStatisticsManagerKilledByAnyone", function( self, data )
@@ -254,8 +320,53 @@ if Hooks then
 		end
 	end)
 	
+    Hooks:Add("BetterLightFXCreateEvents", "PDTHHudCreateBLFXEvents", function(blfx)
+        if blfx then
+            blfx:RegisterEvent("AssaultIndicator", {
+                priority = 20, 
+                loop = true,
+                color = Color(1, 1, 0, 0),
+                options = {
+                    {parameter = "enabled", typ = "bool", localization = "Enabled"},
+                },
+                run = function(self, ...)
+                     BetterLightFX:SetColor(self.color.red, self.color.green, self.color.blue, self.color.alpha, self.name)
+                     coroutine.yield()
+                     self._ran_once = true
+                end
+            }, true)
+            
+            blfx:RegisterEvent("Interaction", {
+                priority = 35, 
+                loop = true,
+                blend = true,
+                _color = Color(1, 1, 0.65882355, 0),
+                _use_custom_color = false,
+                _custom_color = Color(1, 1, 0.65882355, 0),
+                _progress = 0,
+                options = {
+                    {parameter = "enabled", typ = "bool", localization = "Enabled"},
+                    {parameter = "_use_custom_color", typ = "bool", localization = "Use Custom Color"},
+                    {parameter = "_custom_color", typ = "color", localization = "Custom Color"},
+                },
+                run = function(self, ...)
+                    if self._use_custom_color then
+                        BetterLightFX:SetColor(self._custom_color.red, self._custom_color.green, self._custom_color.blue, self._progress, self.name)
+                    else
+                        BetterLightFX:SetColor(self._color.red, self._color.green, self._color.blue, self._progress, self.name)
+                    end
+                    
+                     self._ran_once = true
+                end
+            }, true)
+            
+            
+        end
+    end)
+    
 	Hooks:Add("MenuManagerSetupCustomMenus", "Base_SetupPDTHHudMenu", function( menu_manager, nodes )
 		MenuHelper:NewMenu( pdth_hud.menu_name )
+		MenuHelper:NewMenu( pdth_hud.HUDOptionsMenu )
 		MenuHelper:NewMenu( pdth_hud.heist_cgrade_name )
 		MenuHelper:NewMenu( pdth_hud.portrait_menu )
 		MenuHelper:NewMenu( pdth_hud.challenges_menu )
@@ -264,255 +375,213 @@ if Hooks then
 	end)
 
 	Hooks:Add("MenuManagerPopulateCustomMenus", "Base_PopulatePDTHHudMenu", function( menu_manager, nodes )
-		MenuCallbackHandler.pdth_toggle_pcolor = function(this, item)
-			pdth_hud.loaded_options.Ingame.Coloured = item:value() == "on" and true or false
+        --Main Menu Elements
+        MenuCallbackHandler.PDTHHudToggleHUDOption = function(this, item)
+            pdth_hud.Options.HUD[item:name()] = item:value() == "on" and true or false
 			pdth_hud:Save()
-			for i = 1, 4 do 
-				if managers.hud then
-					local tm = managers.hud._teammate_panels[i]
-					local colour = pdth_hud.colour_amount < 0.33 and Color(1, 0, 0) or Color(0.5, 0.8, 0.4)
-					tm._player_panel:child("radial_health_panel"):child("radial_health"):set_color(item:value() == "on" and colour or Color(1, 1, 1))
-				end
-			end
-		end
-		MenuCallbackHandler.pdth_toggle_camera = function(this, item)
-			pdth_hud.loaded_options.Ingame.Cameras = item:value() == "on" and true or false
+        end
+        
+        MenuCallbackHandler.pdth_toggle_cgrading = function(this, item)
+			pdth_hud.Options.Menu.Grading = item:value()
 			pdth_hud:Save()
+            if not managers.job:current_level_id() or (pdth_hud.Options.Grading and not pdth_hud.Options.Grading[managers.job:current_level_id()]) or (pdth_hud.Options.Grading and pdth_hud.Options.Grading[managers.job:current_level_id()] == 1) then
+                local selected_grading = pdth_hud.colour_gradings[pdth_hud.Options.Menu.Grading]
+                managers.environment_controller:set_default_color_grading(selected_grading)
+                managers.environment_controller:refresh_render_settings()
+            end
 		end
-		MenuCallbackHandler.pdth_toggle_assault = function(this, item)
-			pdth_hud.loaded_options.Ingame.Assault = item:value() == "on" and true or false
-			pdth_hud:Save()
-		end
-		MenuCallbackHandler.pdth_toggle_interaction = function(this, item)
-			pdth_hud.loaded_options.Ingame.Interaction = item:value() == "on" and true or false
-			pdth_hud:Save()
-		end
-		MenuCallbackHandler.pdth_toggle_objective = function(this, item)
-			pdth_hud.loaded_options.Ingame.Objectives = item:value() == "on" and true or false
-			pdth_hud:Save()
-		end
-		MenuCallbackHandler.pdth_toggle_gadget = function(this, item)
-			pdth_hud.loaded_options.Ingame.Gadget = item:value() == "on" and true or false
-			pdth_hud:Save()
-		end
-		MenuCallbackHandler.pdth_toggle_swansong = function(this, item)
-			pdth_hud.loaded_options.Ingame.Swansong = item:value() == "on" and true or false
-			pdth_hud:Save()
-		end
-		MenuCallbackHandler.pdth_toggle_camgrading = function(this, item)
-			pdth_hud.loaded_options.Ingame.CameraGrading = item:value() == "on" and true or false
-			pdth_hud:Save()
-		end
-		MenuCallbackHandler.pdth_toggle_cgrading = function(this, item)
-			pdth_hud.loaded_options.Menu.Grading = item:value()
-			pdth_hud:Save()
-			local selected_grading = pdth_hud.colour_gradings[pdth_hud.loaded_options.Menu.Grading]
-			managers.environment_controller:set_default_color_grading(selected_grading)
-			managers.environment_controller:refresh_render_settings()
-		end
-		
-		MenuCallbackHandler.pdth_toggle_bullet = function(this, item)
-			pdth_hud.loaded_options.Ingame.Bullet = item:value()
-			pdth_hud:Save()
-			if managers.hud then
-				local tm = managers.hud._teammate_panels[4]
-				tm:bullet_changed()
-			end
-		end
-		
-		MenuHelper:AddToggle({
-			id = "pdthpcoloured",
-			title = "pdth_toggle_pcolor_title",
-			desc = "pdth_toggle_pcolor_help",
-			callback = "pdth_toggle_pcolor",
-			--disabled_color = ,
-			icon_by_text = false,
+        
+        MenuHelper:AddButton({
+			id = "hudOptions",
+			title = "pdth_hud_hud_options",
+			desc = "pdth_hud_hud_options_help",
+			next_node = pdth_hud.HUDOptionsMenu,
 			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Coloured,
-			priority = 1006
+			priority = 1000
 		})
-		
-		MenuHelper:AddToggle({
-			id = "pdthcamera",
-			title = "pdth_toggle_camera_title",
-			desc = "pdth_toggle_camera_help",
-			callback = "pdth_toggle_camera",
-			--disabled_color = ,
-			icon_by_text = false,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Cameras,
-			priority = 1001
-		})
-		MenuHelper:AddToggle({
-			id = "pdthassault",
-			title = "pdth_toggle_assault_title",
-			desc = "pdth_toggle_assault_help",
-			callback = "pdth_toggle_assault",
-			--disabled_color = ,
-			icon_by_text = false,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Assault,
-			--priority = 0
-		})
-		MenuHelper:AddToggle({
-			id = "pdthinteraction",
-			title = "pdth_toggle_interaction_title",
-			desc = "pdth_toggle_interaction_help",
-			callback = "pdth_toggle_interaction",
-			--disabled_color = ,
-			icon_by_text = false,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Interaction,
-			--priority = 0
-		})
-		MenuHelper:AddToggle({
-			id = "pdthobjective",
-			title = "pdth_toggle_objective_title",
-			desc = "pdth_toggle_objective_help",
-			callback = "pdth_toggle_objective",
-			--disabled_color = ,
-			icon_by_text = false,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Objectives,
-			--priority = 0
-		})
-		MenuHelper:AddToggle({
-			id = "pdthgadget",
-			title = "pdth_toggle_gadget_title",
-			desc = "pdth_toggle_gadget_help",
-			callback = "pdth_toggle_gadget",
-			--disabled_color = ,
-			icon_by_text = false,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Gadget,
-			priority = 1002
-		})
-		MenuHelper:AddToggle({
-			id = "pdthswansong",
-			title = "pdth_toggle_swansong_title",
-			desc = "pdth_toggle_swansong_help",
-			callback = "pdth_toggle_swansong",
-			--disabled_color = ,
-			icon_by_text = false,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Swansong,
-			priority = 1003
-		})
-		--[[MenuHelper:AddMultipleChoice({
-			id = "pdthportrait",
-			title = "pdth_toggle_portrait_title",
-			desc = "pdth_toggle_portrait_help",
-			callback = "pdth_toggle_portrait",
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Portrait,
-			items = pdth_hud.portrait_options,
-			priority = 1005
-		})]]--
-		MenuHelper:AddMultipleChoice({
+        
+        MenuHelper:AddDivider({
+            name = "HUDOptionDiv",
+            menu_id = pdth_hud.menu_name,
+            size = 20,
+            priority = 999
+        })
+        
+        MenuHelper:AddMultipleChoice({
 			id = "pdthcgrading",
 			title = "pdth_toggle_cgrading_title",
 			desc = "pdth_toggle_cgrading_help",
 			callback = "pdth_toggle_cgrading",
 			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Menu.Grading,
+			value = pdth_hud.Options.Menu.Grading,
 			items = pdth_hud.colour_gradings,
-			priority = 1007
+			priority = 998
 		})
+        
+        MenuHelper:AddButton({
+			id = "heistCGrading",
+			title = "pdth_hud_heist_cgrade_button",
+			desc = "pdth_hud_heist_cgrade_hint",
+			next_node = pdth_hud.heist_cgrade_name,
+			menu_id = pdth_hud.menu_name,
+			priority = 997
+		})
+        
+        local disabled = true
+        if BeardLib then
+            disabled = false
+        end
+        
+        MenuHelper:AddToggle({
+			id = "PDTHEquipment",
+			title = "pdth_toggle_equipment_title",
+			desc = "pdth_toggle_equipment_help",
+			callback = "PDTHHudToggleHUDOption",
+			menu_id = pdth_hud.menu_name,
+            disabled = disabled,
+			value = pdth_hud.Options.HUD.Equipment
+		})
+        
+        -- HUD Menu elements
+		MenuCallbackHandler.pdth_toggle_pcolor = function(this, item)
+			pdth_hud.Options.HUD.Coloured = item:value() == "on" and true or false
+			pdth_hud:Save()
+			if managers.hud then
+				local tm = managers.hud._teammate_panels[4]
+				tm._player_panel:child("radial_health_panel"):child("radial_health"):set_color(item:value() == "on" and tm.health_colour or Color.white)
+			end
+		end
+		
+		MenuCallbackHandler.pdth_toggle_bullet = function(this, item)
+			pdth_hud.Options.HUD.Bullet = item:value()
+			pdth_hud:Save()
+            if managers.player and managers.hud then
+                managers.hud._teammate_panels[4].bulletChanged = true
+                local player = managers.player:local_player()
+                if player then
+                    local inventory = player:inventory()
+                    if inventory then
+                        for id, weapon in pairs(inventory:available_selections()) do
+                            managers.hud:set_ammo_amount(id, weapon.unit:base():ammo_info())
+                        end
+                    end
+                end
+            end
+		end
+        MenuHelper:AddToggle({
+			id = "MainHud",
+			title = "pdth_toggle_mainhud_title",
+			desc = "pdth_toggle_mainhud_help",
+			callback = "PDTHHudToggleHUDOption",
+			icon_by_text = false,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.MainHud,
+			priority = 1000
+		})
+		MenuHelper:AddToggle({
+			id = "Assault",
+			title = "pdth_toggle_assault_title",
+			desc = "pdth_toggle_assault_help",
+			callback = "PDTHHudToggleHUDOption",
+			icon_by_text = false,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.Assault,
+			priority = 999
+		})
+		MenuHelper:AddToggle({
+			id = "Interaction",
+			title = "pdth_toggle_interaction_title",
+			desc = "pdth_toggle_interaction_help",
+			callback = "PDTHHudToggleHUDOption",
+			icon_by_text = false,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.Interaction,
+			priority = 998
+		})
+		MenuHelper:AddToggle({
+			id = "Objectives",
+			title = "pdth_toggle_objective_title",
+			desc = "pdth_toggle_objective_help",
+			callback = "PDTHHudToggleHUDOption",
+			icon_by_text = false,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.Objectives,
+			priority = 997
+		})
+        
+        MenuHelper:AddToggle({
+			id = "Swansong",
+			title = "pdth_toggle_swansong_title",
+			desc = "pdth_toggle_swansong_help",
+			callback = "PDTHHudToggleHUDOption",
+			icon_by_text = false,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.Swansong,
+			priority = 996
+		})
+        
+        MenuHelper:AddDivider({
+            name = "mainDivider",
+            menu_id = pdth_hud.HUDOptionsMenu,
+            size = 20,
+            priority = 995
+        })
+		
+        MenuHelper:AddToggle({
+			id = "pdthpcoloured",
+			title = "pdth_toggle_pcolor_title",
+			desc = "pdth_toggle_pcolor_help",
+			callback = "pdth_toggle_pcolor",
+			icon_by_text = false,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.Coloured,
+			priority = 994
+		})
+		
+        
+		MenuHelper:AddToggle({
+			id = "OGTMHealth",
+			title = "pdth_toggle_OGTMHealth_title",
+			desc = "pdth_toggle_OGTMHealth_help",
+			callback = "PDTHHudToggleHUDOption",
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.OGTMHealth,
+            disabled = not nodes.main,
+			priority = 993
+		})
+		
 		MenuHelper:AddMultipleChoice({
 			id = "pdthbullet",
 			title = "pdth_toggle_bullet_title",
 			desc = "pdth_toggle_bullet_help",
 			callback = "pdth_toggle_bullet",
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Bullet,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.Bullet,
 			items = pdth_hud.bullet_style_options,
-			priority = 1004
+			priority = 992
 		})
 		
-		MenuHelper:AddToggle({
-			id = "pdthcameragrade",
-			title = "pdth_toggle_camgrading_title",
-			desc = "pdth_toggle_camgrading_help",
-			callback = "pdth_toggle_camgrading",
-			--disabled_color = ,
-			icon_by_text = false,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.CameraGrading,
-			priority = 1009
-		})
-		MenuCallbackHandler.pdth_toggle_mainhud = function(this, item)
-			pdth_hud.loaded_options.Ingame.MainHud = item:value() == "on" and true or false
+		
+        MenuCallbackHandler.pdth_hud_scale = function(this, item)
+			pdth_hud.Options.HUD.Scale = item:value()
 			pdth_hud:Save()
 		end
-		
-		MenuHelper:AddToggle({
-			id = "pdthmainhud",
-			title = "pdth_toggle_mainhud_title",
-			desc = "pdth_toggle_mainhud_help",
-			callback = "pdth_toggle_mainhud",
-			--disabled_color = ,
-			icon_by_text = false,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.MainHud,
-			--priority = 0
+		MenuHelper:AddSlider({
+			min = 0,
+			max = 2,
+			step = 0.05,
+			show_value = true,
+			id = "PDTHHUDScale",
+			title = "pdth_hud_scale_title",
+			desc = "pdth_hud_scale_help",
+			callback = "pdth_hud_scale",
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.Scale or 1,
+			priority = 991
 		})
 		
-		MenuCallbackHandler.pdth_heist_cgrade_change = function(this, item)
-			pdth_hud.loaded_options.Grading[item:name()] = item:value()
-			--tweak_data.levels[item:name()].env_params = tweak_data.levels[item:name()].env_params or {}
-			--[[if item:value() == 2 then
-				tweak_data.levels[item:name()].env_params.color_grading = pdth_hud.colour_gradings[pdth_hud.loaded_options.Menu.Grading]
-			else
-				tweak_data.levels[item:name()].env_params.color_grading = pdth_hud.heist_colour_gradings[item:value()]
-			end]]--
-			if managers.job:current_level_id() == item:name() then
-				managers.environment_controller:set_default_color_grading(tweak_data.levels[item:name()].env_params.color_grading)
-				managers.environment_controller:refresh_render_settings()
-			end
-			pdth_hud:Save()
-		end
-		local level_index = deep_clone(tweak_data.levels._level_index)
-		--table.remove(level_index, "mia2_new")
-		for p, k in pairs(level_index) do
-			if k == "mia2_new" then
-				table.remove(level_index, p)
-			end
-		
-		end
-		for i = 1, #level_index do
-			local is_night = false
-			local is_day = false
-			if string.find(level_index[i], "_night") then
-				is_night = true
-			end
-			if string.find(level_index[i], "_day") then
-				is_day = true
-			end
-			MenuHelper:AddMultipleChoice({
-				id = level_index[i],
-				title = managers.localization:exists(tweak_data.levels[level_index[i]].name_id) and managers.localization:text(tweak_data.levels[level_index[i]].name_id) .. (is_night and " Night" or "") .. (is_day and " Day" or "") or managers.localization:text("pdth_cgrade_title_" .. level_index[i]),
-				--desc = "pdth_cgrade_help_" .. tweak_data.levels._level_index[i],
-				callback = "pdth_heist_cgrade_change",
-				menu_id = pdth_hud.heist_cgrade_name,
-				value = pdth_hud.loaded_options.Grading[level_index[i]] or 2,
-				items = pdth_hud.heist_colour_gradings,
-				localized = "false",
-				priority = 0
-			})
-		end
-		if tweak_data then
-			for i = 1, #tweak_data.levels._level_index do
-				tweak_data.levels[tweak_data.levels._level_index[i]].env_params = tweak_data.levels[tweak_data.levels._level_index[i]].env_params or {}
-				if pdth_hud.loaded_options.Grading[tweak_data.levels._level_index[i]] == 2 then
-					tweak_data.levels[tweak_data.levels._level_index[i]].env_params.color_grading = pdth_hud.colour_gradings[pdth_hud.loaded_options.Menu.Grading]
-				else
-					tweak_data.levels[tweak_data.levels._level_index[i]].env_params.color_grading = pdth_hud.heist_colour_gradings[pdth_hud.loaded_options.Grading[tweak_data.levels._level_index[i]]]
-				end
-			end
-		end
-		
-		MenuCallbackHandler.pdth_toggle_firemode = function(this, item)
-			pdth_hud.loaded_options.Ingame.Fireselector = item:value() == "on" and true or false
+        MenuCallbackHandler.pdth_toggle_firemode = function(this, item)
+			pdth_hud.Options.HUD.Fireselector = item:value() == "on" and true or false
 			pdth_hud:Save()
 			if managers.hud then
 				local tm = managers.hud._teammate_panels[4]
@@ -525,12 +594,140 @@ if Hooks then
 			title = "pdth_toggle_firemode_title",
 			desc = "pdth_toggle_firemode_help",
 			callback = "pdth_toggle_firemode",
-			--disabled_color = ,
 			icon_by_text = false,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Fireselector,
-			priority = 1001
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.Fireselector,
+			priority = 990
 		})
+        
+        MenuHelper:AddButton({
+			id = "portraitPri",
+			title = "pdth_hud_portait_button",
+			desc = "pdth_hud_portait_button_hint",
+			next_node = pdth_hud.portrait_menu,
+			menu_id = pdth_hud.HUDOptionsMenu,
+            priority = 989
+		})
+        
+		MenuCallbackHandler.pdth_toggle_portrait = function(this, item)
+			pdth_hud.Options.portraits[item:name()] = item:value()
+			pdth_hud:Save()
+			for i = 1, 4 do 
+				if managers.hud then
+					local tm = managers.hud._teammate_panels[i]
+					tm:RefreshPortraits()
+				end
+			end
+		end
+		
+		for i, portrait in pairs(pdth_hud.portrait_options) do
+			MenuHelper:AddMultipleChoice({
+				id = portrait,
+				title = "pdth_" .. portrait,
+				desc = "pdth_toggle_portrait_global_help",
+				callback = "pdth_toggle_portrait",
+				menu_id = pdth_hud.portrait_menu,
+				value = pdth_hud.Options.portraits[portrait] or i,
+				items = pdth_hud.portrait_value_options,
+			})
+		end
+        
+        MenuHelper:AddDivider({
+            name = "HUDDivider",
+            menu_id = pdth_hud.HUDOptionsMenu,
+            size = 20,
+            priority = 988
+        })
+        
+        MenuHelper:AddToggle({
+			id = "spooky_ammo",
+			title = "pdth_toggle_spookyammo_title",
+			desc = "pdth_toggle_spookyammo_help",
+			callback = "PDTHHudToggleHUDOption",
+			icon_by_text = false,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.spooky_ammo,
+			priority = 987
+		})
+        
+        MenuHelper:AddToggle({
+			id = "CameraGrading",
+			title = "pdth_toggle_camgrading_title",
+			desc = "pdth_toggle_camgrading_help",
+			callback = "PDTHHudToggleHUDOption",
+			icon_by_text = false,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.CameraGrading,
+			priority = 986
+		})
+		
+		MenuHelper:AddToggle({
+			id = "Gadget",
+			title = "pdth_toggle_gadget_title",
+			desc = "pdth_toggle_gadget_help",
+			callback = "PDTHHudToggleHUDOption",
+			icon_by_text = false,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.Gadget,
+			priority = 985
+		})
+        
+		MenuHelper:AddToggle({
+			id = "Cameras",
+			title = "pdth_toggle_camera_title",
+			desc = "pdth_toggle_camera_help",
+			callback = "PDTHHudToggleHUDOption",
+			icon_by_text = false,
+			menu_id = pdth_hud.HUDOptionsMenu,
+			value = pdth_hud.Options.HUD.Cameras,
+			priority = 984
+		})
+        
+        --Heist Colour Grading
+		MenuCallbackHandler.pdth_heist_cgrade_change = function(this, item)
+            pdth_hud.Options.Grading = pdth_hud.Options.Grading or {}
+			pdth_hud.Options.Grading[item:name()] = item:value()
+			tweak_data.levels[item:name()].env_params = tweak_data.levels[item:name()].env_params or {}
+			if item:value() == 1 then
+				tweak_data.levels[item:name()].env_params.color_grading = pdth_hud.colour_gradings[pdth_hud.Options.Menu.Grading]
+			else
+				tweak_data.levels[item:name()].env_params.color_grading = pdth_hud.heist_colour_gradings[item:value()]
+			end
+			if managers.job:current_level_id() == item:name() then
+				managers.environment_controller:set_default_color_grading(tweak_data.levels[item:name()].env_params.color_grading)
+				managers.environment_controller:refresh_render_settings()
+			end
+			pdth_hud:Save()
+		end
+		local level_index = deep_clone(tweak_data.levels._level_index)
+        local removeLevels = {"mia2_new"}
+        for _, level in pairs(removeLevels) do
+            table.delete(level_index, level)
+        end
+        
+		for i = 1, #level_index do
+			local is_night = false
+			local is_day = false
+			if string.find(level_index[i], "_night") then
+				is_night = true
+			end
+			if string.find(level_index[i], "_day") then
+				is_day = true
+			end
+			MenuHelper:AddMultipleChoice({
+				id = level_index[i],
+				title = managers.localization:exists(tweak_data.levels[level_index[i]].name_id) and managers.localization:text(tweak_data.levels[level_index[i]].name_id) .. (is_night and " Night" or "") .. (is_day and " Day" or "") or level_index[i],
+				callback = "pdth_heist_cgrade_change",
+				menu_id = pdth_hud.heist_cgrade_name,
+				value = pdth_hud.Options.Grading and pdth_hud.Options.Grading[level_index[i]] or 2,
+				items = pdth_hud.heist_colour_gradings,
+				localized = "false",
+				priority = 0
+			})
+		end
+		
+        --Challenges stuff
+        
 		MenuCallbackHandler.active_Challenges_callback = function(this, item)
 			pdth_hud:refresh_active_challenges(pdth_hud.active_challenges_node)
 		end
@@ -539,7 +736,6 @@ if Hooks then
 			title = "pdth_hud_active_challenges",
 			desc = "pdth_hud_active_challenges_hint",
 			callback = "active_Challenges_callback",
-			--back_callback = ,
 			next_node = pdth_hud.active_challenges_menu,
 			menu_id = pdth_hud.challenges_menu,
 			priority = 1
@@ -553,85 +749,23 @@ if Hooks then
 			title = "pdth_hud_completed_challenges",
 			desc = "pdth_hud_completed_challenges_hint",
 			callback = "completed_Challenges_callback",
-			--back_callback = ,
 			next_node = pdth_hud.completed_challenges_menu,
 			menu_id = pdth_hud.challenges_menu,
 			--priority = 2
 		})
-
-		MenuCallbackHandler.pdth_hud_scale = function(this, item)
-			pdth_hud.loaded_options.Ingame.Hud_scale = item:value()
-			pdth_hud:Save()
-		end
-		MenuHelper:AddSlider({
-			min = 0,
-			max = 2,
-			step = 0.05,
-			show_value = true,
-			id = "PDTHHUDScale",
-			title = "pdth_hud_scale_title",
-			desc = "pdth_hud_scale_help",
-			callback = "pdth_hud_scale",
-			--disabled_color = ,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.Hud_scale or 1
-			--priority = 
-		})
-		
-		MenuCallbackHandler.pdth_toggle_spooky_ammo = function(this, item)
-			pdth_hud.loaded_options.Ingame.spooky_ammo = item:value() == "on" and true or false
-			pdth_hud:Save()
-		end
-		
-		MenuHelper:AddToggle({
-			id = "pdthspookyammo",
-			title = "pdth_toggle_spookyammo_title",
-			desc = "pdth_toggle_spookyammo_help",
-			callback = "pdth_toggle_spooky_ammo",
-			--disabled_color = ,
-			icon_by_text = false,
-			menu_id = pdth_hud.menu_name,
-			value = pdth_hud.loaded_options.Ingame.spooky_ammo,
-			priority = 1001
-		})
-		
-		MenuCallbackHandler.pdth_toggle_portrait = function(this, item)
-			pdth_hud.loaded_options.portraits[item:name()] = item:value()
-			pdth_hud:Save()
-			for i = 1, 4 do 
-				if managers.hud then
-					local tm = managers.hud._teammate_panels[i]
-					tm:portrait_changed()
-				end
-			end
-		end
-		
-		for i, portrait in pairs(pdth_hud.portrait_options) do
-			MenuHelper:AddMultipleChoice({
-				id = portrait,
-				title = "pdth_" .. portrait,
-				desc = "pdth_toggle_portrait_global_help",
-				callback = "pdth_toggle_portrait",
-				menu_id = pdth_hud.portrait_menu,
-				value = pdth_hud.loaded_options.portraits[portrait] or i,
-				items = pdth_hud.portrait_value_options,
-				--priority = 0
-			})
-		end
 	end)
 	 
 	Hooks:Add("MenuManagerBuildCustomMenus", "Base_BuildPDTHHudMenu", function(menu_manager, nodes)
 		nodes[pdth_hud.menu_name] = MenuHelper:BuildMenu(pdth_hud.menu_name)
 		MenuHelper:AddMenuItem(MenuHelper.menus.lua_mod_options_menu, pdth_hud.menu_name, "pdth_hud_button", "pdth_hud_hint", 1)
-		
+        
+        nodes[pdth_hud.HUDOptionsMenu] = MenuHelper:BuildMenu(pdth_hud.HUDOptionsMenu)
 		nodes[pdth_hud.heist_cgrade_name] = MenuHelper:BuildMenu(pdth_hud.heist_cgrade_name)
-		MenuHelper:AddMenuItem(MenuHelper.menus[pdth_hud.menu_name], pdth_hud.heist_cgrade_name, "pdth_hud_heist_cgrade_button", "pdth_hud_heist_cgrade_hint", 3)
-		
 		nodes[pdth_hud.portrait_menu] = MenuHelper:BuildMenu(pdth_hud.portrait_menu)
-		MenuHelper:AddMenuItem(MenuHelper.menus[pdth_hud.menu_name], pdth_hud.portrait_menu, "pdth_hud_portait_button", "pdth_hud_portait_button_hint", 4)
 		
 		nodes[pdth_hud.challenges_menu] = MenuHelper:BuildMenu(pdth_hud.challenges_menu)
 		MenuHelper:AddMenuItem(nodes.main or nodes.pause, pdth_hud.challenges_menu, "pdth_hud_challenges", "pdth_hud_challenges_hint", "fbi_files", "after")
+        
 		if nodes.lobby then
 			MenuHelper:AddMenuItem(nodes.lobby, pdth_hud.challenges_menu, "pdth_hud_challenges", "pdth_hud_challenges_hint", "fbi_files", "after")
 		end
@@ -650,7 +784,6 @@ function pdth_hud:refresh_active_challenges(node)
 	end
 	node:clean_items()
 	for _,data in pairs(managers.challenges:get_near_completion()) do
-		--if data.count > 1 then
 		local title_text = managers.challenges:get_title_text(data.id)
 		local description_text = managers.challenges:get_description_text(data.id)
 		local params = {
@@ -659,12 +792,9 @@ function pdth_hud:refresh_active_challenges(node)
 			description_text = string.upper(description_text),
 			localize = "false",
 			challenge = data.id,
-			--count = data.count,
-			--callback = "debug_modify_challenge",
 		}
 		local new_item = node:create_item({type = "MenuItemChallenge"}, params)
 		node:add_item(new_item)
-		--end
 	end
 	managers.menu:add_back_button(node)
 end

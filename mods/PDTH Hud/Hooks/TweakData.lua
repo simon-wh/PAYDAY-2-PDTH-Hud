@@ -1,99 +1,3 @@
-tweak_data.weapon.hk21.challenges = {}
-tweak_data.weapon.hk21.challenges.group = "rifle"
-tweak_data.weapon.hk21.challenges.weapon = "hk21"
-
-tweak_data.weapon.amcar.challenges = {}
-tweak_data.weapon.amcar.challenges.group = "rifle"
-tweak_data.weapon.amcar.challenges.weapon = "m4"
-
-tweak_data.weapon.new_m14.challenges = {}
-tweak_data.weapon.new_m14.challenges.group = "rifle"
-tweak_data.weapon.new_m14.challenges.weapon = "m4"
-
-tweak_data.weapon.m16.challenges = {}
-tweak_data.weapon.m16.challenges.group = "rifle"
-tweak_data.weapon.m16.challenges.weapon = "m4"
-
-tweak_data.weapon.colt_1911.challenges = {}
-tweak_data.weapon.colt_1911.challenges.group = "handgun"
-tweak_data.weapon.colt_1911.challenges.weapon = "c45"
-
-tweak_data.weapon.deagle.challenges = {}
-tweak_data.weapon.deagle.challenges.group = "handgun"
-tweak_data.weapon.deagle.challenges.weapon = "deagle"
-
-tweak_data.weapon.x_deagle.challenges = {}
-tweak_data.weapon.x_deagle.challenges.group = "handgun"
-tweak_data.weapon.x_deagle.challenges.weapon = "deagle"
-
-tweak_data.weapon.b92fs.challenges = {}
-tweak_data.weapon.b92fs.challenges.group = "handgun"
-tweak_data.weapon.b92fs.challenges.weapon = "beretta92"
-
-tweak_data.weapon.x_b92fs.challenges = {}
-tweak_data.weapon.x_b92fs.challenges.group = "handgun"
-tweak_data.weapon.x_b92fs.challenges.weapon = "beretta92"
-
-tweak_data.weapon.new_raging_bull.challenges = {}
-tweak_data.weapon.new_raging_bull.challenges.group = "handgun"
-tweak_data.weapon.new_raging_bull.challenges.weapon = "bronco"
-
-tweak_data.weapon.glock_18c.challenges = {}
-tweak_data.weapon.glock_18c.challenges.group = "handgun"
-tweak_data.weapon.glock_18c.challenges.weapon = "glock"
-
-tweak_data.weapon.glock_17.challenges = {}
-tweak_data.weapon.glock_17.challenges.group = "handgun"
-tweak_data.weapon.glock_17.challenges.weapon = "glock"
-
-tweak_data.weapon.g22c.challenges = {}
-tweak_data.weapon.g22c.challenges.group = "handgun"
-tweak_data.weapon.g22c.challenges.weapon = "glock"
-
-tweak_data.weapon.jowi.challenges = {}
-tweak_data.weapon.jowi.challenges.group = "handgun"
-tweak_data.weapon.jowi.challenges.weapon = "glock"
-
-tweak_data.weapon.g26.challenges = {}
-tweak_data.weapon.g26.challenges.group = "handgun"
-tweak_data.weapon.g26.challenges.weapon = "glock"
-
-tweak_data.weapon.x_g22c.challenges = {}
-tweak_data.weapon.x_g22c.challenges.group = "handgun"
-tweak_data.weapon.x_g22c.challenges.weapon = "glock"
-
-tweak_data.weapon.x_g17.challenges = {}
-tweak_data.weapon.x_g17.challenges.group = "handgun"
-tweak_data.weapon.x_g17.challenges.weapon = "glock"
-
-tweak_data.weapon.r870.challenges = {}
-tweak_data.weapon.r870.challenges.group = "shotgun"
-tweak_data.weapon.r870.challenges.weapon = "reinbeck"
-
-tweak_data.weapon.serbu.challenges = {}
-tweak_data.weapon.serbu.challenges.group = "shotgun"
-tweak_data.weapon.serbu.challenges.weapon = "mossberg"
-
-tweak_data.weapon.new_mp5.challenges = {}
-tweak_data.weapon.new_mp5.challenges.group = "sub_machingun"
-tweak_data.weapon.new_mp5.challenges.weapon = "mp5"
-
-tweak_data.weapon.mac10.challenges = {}
-tweak_data.weapon.mac10.challenges.group = "sub_machingun"
-tweak_data.weapon.mac10.challenges.weapon = "mac11"
-
-tweak_data.weapon.gre_m79.challenges = {}
-tweak_data.weapon.gre_m79.challenges.group = "grenade_launcher"
-tweak_data.weapon.gre_m79.challenges.weapon = "m79"
-
-tweak_data.weapon.m32.challenges = {}
-tweak_data.weapon.m32.challenges.group = "grenade_launcher"
-tweak_data.weapon.m32.challenges.weapon = "m79"
-
-tweak_data.weapon.rpg7.challenges = {}
-tweak_data.weapon.rpg7.challenges.group = "rocket_launcher"
-tweak_data.weapon.rpg7.challenges.weapon = "rpg7"
-
 tweak_data.contour.character.standard_color = Vector3(0.1, 1, 0.5)
 tweak_data.contour.character.friendly_color = Vector3(0.2, 0.8, 1)
 tweak_data.contour.character.downed_color = Vector3(1, 0.5, 0)
@@ -121,575 +25,595 @@ tweak_data.contour.pickup.standard_opacity = 1
 tweak_data.contour.interactable_icon.standard_color = Vector3(0, 0, 0)
 tweak_data.contour.interactable_icon.selected_color = Vector3(0, 1, 0)
 tweak_data.contour.interactable_icon.standard_opacity = 0
-if pdth_hud.loaded_options.Ingame.MainHud then
-tweak_data.hud_icons.equipment_body_bag = {
-	texture = "guis/textures/pd2/equipment",
-	texture_rect = {
-		96,
-		32,
-		32,
-		32
-	}
-}
 
-tweak_data.hud_icons.equipment_ammo_bag = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		48,
-		96,
-		48,
-		48
-	}
-}
+if pdth_hud.Options.Grading then
+    for level_id, value in pairs(pdth_hud.Options.Grading) do
+        if tweak_data.levels[level_id] then
+            tweak_data.levels[level_id].env_params = tweak_data.levels[level_id].env_params or {}
+            tweak_data.levels[level_id].env_params.color_grading = value == 1 and pdth_hud.colour_gradings[pdth_hud.Options.Menu.Grading] or pdth_hud.heist_colour_gradings[value]
+        end
+    end
+end
 
-tweak_data.hud_icons.equipment_doctor_bag = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		96,
-		96,
-		48,
-		48
-	}
-}
+if pdth_hud.Options.HUD.MainHud then
+    tweak_data.hud_icons.equipment_body_bag = {
+        texture = "guis/textures/pd2/equipment",
+        texture_rect = {
+            96,
+            32,
+            32,
+            32
+        }
+    }
 
-tweak_data.hud_icons.equipment_sentry = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		320,
-		288,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_ammo_bag = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            48,
+            96,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_trip_mine = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		0,
-		96,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_doctor_bag = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            96,
+            96,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_ecm_jammer = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		143,
-		464,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_sentry = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            320,
+            288,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_armor_kit = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		95,
-		464,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_trip_mine = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            0,
+            96,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_first_aid_kit = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		1,
-		464,
-		47,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_ecm_jammer = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            143,
+            464,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_bodybags_bag = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		48,
-		464,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_armor_kit = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            95,
+            464,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.frag_grenade = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		416,
-		384,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_first_aid_kit = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            1,
+            464,
+            47,
+            48
+        }
+    }
 
-tweak_data.hud_icons.molotov_grenade = {
-	texture = "guis/textures/upgrade_images",
-	texture_rect = {
-		784,
-		1709,
-		160,
-		167
-	}
-}
+    tweak_data.hud_icons.equipment_bodybags_bag = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            48,
+            464,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.dynamite_grenade = {
-	texture = "guis/textures/upgrade_images",
-	texture_rect = {
-		213,
-		1887,
-		184,
-		167
-	}
-}
+    tweak_data.hud_icons.frag_grenade = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            416,
+            384,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.four_projectile = {
-	texture = "guis/textures/upgrade_images",
-	texture_rect = {
-		972, 
-		1886, 
-		160, 
-		167
-	}
-}
+    tweak_data.hud_icons.molotov_grenade = {
+        texture = "guis/textures/upgrade_images",
+        texture_rect = {
+            784,
+            1709,
+            160,
+            167
+        }
+    }
 
-tweak_data.hud_icons.ace_projectile = {
-	texture = "guis/textures/upgrade_images",
-	texture_rect = {
-		406, 
-		2079, 
-		163, 
-		167
-	}
-}
+    tweak_data.hud_icons.dynamite_grenade = {
+        texture = "guis/textures/upgrade_images",
+        texture_rect = {
+            213,
+            1887,
+            184,
+            167
+        }
+    }
 
-tweak_data.hud_icons.jav_projectile = {
-	texture = "guis/textures/upgrade_images",
-	texture_rect = {
-		1151, 
-		2082,
-		176, 
-		164
-	}
-}
+    tweak_data.hud_icons.four_projectile = {
+        texture = "guis/textures/upgrade_images",
+        texture_rect = {
+            972, 
+            1886, 
+            160, 
+            167
+        }
+    }
 
-tweak_data.hud_icons.cable = {
-	texture = "guis/textures/pd2/hud_pickups",
-	texture_rect = {
-		32,
-		96,
-		32,
-		32
-	}
-}
+    tweak_data.hud_icons.ace_projectile = {
+        texture = "guis/textures/upgrade_images",
+        texture_rect = {
+            406, 
+            2079, 
+            163, 
+            167
+        }
+    }
 
-tweak_data.hud_icons.repair = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		48,
-		48,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.jav_projectile = {
+        texture = "guis/textures/upgrade_images",
+        texture_rect = {
+            1151, 
+            2082,
+            176, 
+            164
+        }
+    }
 
-tweak_data.hud_icons.grenade_pdth = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		416,
-		384,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.cable = {
+        texture = "guis/textures/pd2/hud_pickups",
+        texture_rect = {
+            32,
+            96,
+            32,
+            32
+        }
+    }
 
-tweak_data.hud_icons.agressor = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		0,
-		48,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.repair = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            48,
+            48,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_drill = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		240,
-		96,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.grenade_pdth = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            416,
+            384,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_bank_manager_key = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		288,
-		144,
-		48,
-		48
-	}
-}
-tweak_data.hud_icons.equipment_chavez_key = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		192,
-		96,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.agressor = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            0,
+            48,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_generic_key = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		192,
-		96,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_drill = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            240,
+            96,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_planks = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		144,
-		288,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_bank_manager_key = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            288,
+            144,
+            48,
+            48
+        }
+    }
+    tweak_data.hud_icons.equipment_chavez_key = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            192,
+            96,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_cable_ties = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		384,
-		96,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_generic_key = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            192,
+            96,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_saw = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		336,
-		144,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_planks = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            144,
+            288,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_thermite = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		560,
-		49,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_cable_ties = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            384,
+            96,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_sentry = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		320,
-		288,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_saw = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            336,
+            144,
+            48,
+            48
+        }
+    }
 
---[[tweak_data.hud_icons.equipment_glasscutter = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		384,
-		192,
-		48,
-		48
-	}
-}]]--
+    tweak_data.hud_icons.equipment_thermite = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            560,
+            49,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_harddrive = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		272,
-		288,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_sentry = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            320,
+            288,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_crowbar = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		192,
-		240,
-		48,
-		48
-	}
-}
+    --[[tweak_data.hud_icons.equipment_glasscutter = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            384,
+            192,
+            48,
+            48
+        }
+    }]]--
 
-tweak_data.hud_icons.equipment_c4 = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		336,
-		96,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_harddrive = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            272,
+            288,
+            48,
+            48
+        }
+    }
 
---[[tweak_data.hud_icons.pd2_c4 = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		336,
-		96,
-		48,
-		48
-	}
-}]]--
+    tweak_data.hud_icons.equipment_crowbar = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            192,
+            240,
+            48,
+            48
+        }
+    }
 
---[[tweak_data.hud_icons.wp_c4 = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		336,
-		96,
-		48,
-		48
-	}
-}]]--
+    tweak_data.hud_icons.equipment_c4 = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            336,
+            96,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_gasoline = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		288,
-		96,
-		48,
-		48
-	}
-}
+    --[[tweak_data.hud_icons.pd2_c4 = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            336,
+            96,
+            48,
+            48
+        }
+    }]]--
 
-tweak_data.hud_icons.equipment_muriatic_acid = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		512,
-		1,
-		48,
-		48
-	}
-}
-tweak_data.hud_icons.equipment_hydrogen_chloride = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		560,
-		1,
-		48,
-		48
-	}
-}
-tweak_data.hud_icons.equipment_caustic_soda = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		608,
-		1,
-		48,
-		48
-	}
-}
+    --[[tweak_data.hud_icons.wp_c4 = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            336,
+            96,
+            48,
+            48
+        }
+    }]]--
 
-tweak_data.hud_icons.equipment_barcode = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		848,
-		1,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_gasoline = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            288,
+            96,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_glasscutter = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		944,
-		1,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_muriatic_acid = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            512,
+            1,
+            48,
+            48
+        }
+    }
+    tweak_data.hud_icons.equipment_hydrogen_chloride = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            560,
+            1,
+            48,
+            48
+        }
+    }
+    tweak_data.hud_icons.equipment_caustic_soda = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            608,
+            1,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_ticket = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		800,
-		1,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_barcode = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            848,
+            1,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_files = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		896,
-		1,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_glasscutter = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            944,
+            1,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_harddrive = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		752,
-		1,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_ticket = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            800,
+            1,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_evidence = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		656,
-		1,
-		48,
-		48
-	}
-}
-tweak_data.hud_icons.equipment_chainsaw = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		704,
-		1,
-		48,
-		48
-	}
-}
-tweak_data.hud_icons.equipment_manifest = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		432,
-		192,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_files = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            896,
+            1,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_drillfix = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		608,
-		49,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_harddrive = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            752,
+            1,
+            48,
+            48
+        }
+    }
+
+    tweak_data.hud_icons.equipment_evidence = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            656,
+            1,
+            48,
+            48
+        }
+    }
+    tweak_data.hud_icons.equipment_chainsaw = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            704,
+            1,
+            48,
+            48
+        }
+    }
+    tweak_data.hud_icons.equipment_manifest = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            432,
+            192,
+            48,
+            48
+        }
+    }
+
+    tweak_data.hud_icons.equipment_drillfix = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            608,
+            49,
+            48,
+            48
+        }
+    }
 
 
-tweak_data.hud_icons.equipment_fire_extinguisher = {
- 	texture = "guis/textures/hud_icons",
- 	texture_rect = {
- 		656,
-		49,
-		48,
-		48
- 	}
-}
+    tweak_data.hud_icons.equipment_fire_extinguisher = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            656,
+            49,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_winch_hook = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		704,
-		49,
-		48,
-		48
-	}
-}
-tweak_data.hud_icons.equipment_bottle = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		752,
-		49,
-		48,
-		48
-	}
-}
-tweak_data.hud_icons.equipment_sleeping_gas = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		800,
-		49,
-		48,
-		48
-	}
-}
-tweak_data.hud_icons.equipment_usb_with_data = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		896,
-		49,
-		48,
-		48
-	}
-}
-tweak_data.hud_icons.equipment_usb_no_data = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		848,
-		49,
-		48,
-		48
-	}
-}
---[[tweak_data.hud_icons.equipment_empty_cooling_bottle = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		0,
-		160,
-		32,
-		32
-	}
-}
-tweak_data.hud_icons.equipment_cooling_bottle = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		0,
-		128,
-		32,
-		32
-	}
-}]]--
-tweak_data.hud_icons.equipment_bfd_tool = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		240,
-		96,
-		48,
-		48
-	}
-}
-tweak_data.hud_icons.equipment_elevator_key = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		192,
-		96,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_winch_hook = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            704,
+            49,
+            48,
+            48
+        }
+    }
+    tweak_data.hud_icons.equipment_bottle = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            752,
+            49,
+            48,
+            48
+        }
+    }
+    tweak_data.hud_icons.equipment_sleeping_gas = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            800,
+            49,
+            48,
+            48
+        }
+    }
+    tweak_data.hud_icons.equipment_usb_with_data = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            896,
+            49,
+            48,
+            48
+        }
+    }
+    tweak_data.hud_icons.equipment_usb_no_data = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            848,
+            49,
+            48,
+            48
+        }
+    }
+    --[[tweak_data.hud_icons.equipment_empty_cooling_bottle = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            0,
+            160,
+            32,
+            32
+        }
+    }
+    tweak_data.hud_icons.equipment_cooling_bottle = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            0,
+            128,
+            32,
+            32
+        }
+    }]]--
+    tweak_data.hud_icons.equipment_bfd_tool = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            240,
+            96,
+            48,
+            48
+        }
+    }
+    tweak_data.hud_icons.equipment_elevator_key = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            192,
+            96,
+            48,
+            48
+        }
+    }
 
-tweak_data.hud_icons.equipment_blow_torch = {
-	texture = "guis/textures/hud_icons",
-	texture_rect = {
-		944,
-		49,
-		48,
-		48
-	}
-}
+    tweak_data.hud_icons.equipment_blow_torch = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            944,
+            49,
+            48,
+            48
+        }
+    }
 
+    tweak_data.hud_icons.equipment_saw = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            336,
+            144,
+            48,
+            48
+        }
+    }
+    
 end
 tweak_data.interaction.copy_machine_smuggle.icon = "equipment_gasoline"
 tweak_data.interaction.safety_deposit.icon = "develop"
