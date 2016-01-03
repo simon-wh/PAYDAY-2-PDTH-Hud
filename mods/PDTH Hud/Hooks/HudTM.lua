@@ -170,6 +170,7 @@ if pdth_hud.Options.HUD.MainHud then
             font = tweak_data.menu.small_font
         })
         local name_bg = teammate_panel:bitmap({name = "name_bg", visible = false, w = 0, h = 0})
+        local callsign = teammate_panel:bitmap({name = "callsign", visible = false, w = 0, h = 0})
         
         if main_player then
             name:set_visible(false)
@@ -392,6 +393,18 @@ if pdth_hud.Options.HUD.MainHud then
                 self:set_weapon_firemode(1, "single")
             else
                 self:set_weapon_firemode(1, "auto")
+            end
+        end
+    end
+    
+    function HUDTeammate:set_weapon_firemode_burst(id, firemode, burst_fire)
+        local is_secondary = id == 1
+        local weapPanel = is_secondary and self._secondary_weapon_ammo or self._primary_weapon_ammo
+        if alive(weapPanel) then
+            local firemodeText = weapPanel:child("firemode")
+            if alive(firemodeText)then
+                firemodeText:set_text("BRST")
+                firemodeText:set_visible(pdth_hud.Options.HUD.Fireselector)
             end
         end
     end
