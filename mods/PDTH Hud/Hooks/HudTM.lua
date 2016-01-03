@@ -169,7 +169,7 @@ if pdth_hud.Options.HUD.MainHud then
             font_size = tweak_data.hud_players.name_size * scale,
             font = tweak_data.menu.small_font
         })
-        local _, _, name_w, name_h = name:text_rect()
+        local name_bg = teammate_panel:bitmap({name = "name_bg", visible = false, w = 0, h = 0})
         
         if main_player then
             name:set_visible(false)
@@ -650,6 +650,9 @@ if pdth_hud.Options.HUD.MainHud then
         radial_custom:set_h(self.health_h - y_offset)
         radial_custom:set_bottom(radial_bg:bottom())
         radial_custom:show()
+        if amount == 0 then
+            radial_custom:hide()
+        end
     end
 
     function HUDTeammate:_damage_taken()
@@ -881,19 +884,18 @@ if pdth_hud.Options.HUD.MainHud then
     end
 
     function HUDTeammate:set_grenades(data)
-        if not PlayerBase.USE_GRENADES then
+        --[[if not PlayerBase.USE_GRENADES then
             return
-        end
+        end]]--
         local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
         self:set_grenades_amount(data)
         self:set_special_equipment_image("grenades_panel", icon, texture_rect)
     end
 
     function HUDTeammate:set_grenades_amount(data)
-        if not PlayerBase.USE_GRENADES then
+        --[[if not PlayerBase.USE_GRENADES then
             return
-        end
-        
+        end]]--
         self:set_special_equipment_amount("grenades_panel", data.amount)
     end
 
@@ -1056,6 +1058,13 @@ if pdth_hud.Options.HUD.MainHud then
 
     function HUDTeammate:set_special_equipment_image(equipment_id, image, texture_rect)
         for i, special in ipairs(self._special_equipment) do
+            local panel = special.panel
+            if panel and panel:name() == equipment_id then
+                panel:child("bitmap"):set_image(image, unpack(texture_rect))
+            end
+        end
+        
+        for i, special in ipairs(self._weapons) do
             local panel = special.panel
             if panel and panel:name() == equipment_id then
                 panel:child("bitmap"):set_image(image, unpack(texture_rect))

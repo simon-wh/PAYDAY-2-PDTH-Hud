@@ -14,6 +14,11 @@ if pdth_hud.Options.HUD.Interaction then
             self._hud_panel:remove(self._hud_panel:child(panel_name))
         end
         
+        local poco_compat = self._hud_panel:text({
+            name = "progress_timer_text",
+            visible = false
+        })
+        
         self._interact_panel = self._hud_panel:panel({
             name = panel_name,
             layer = 10,
