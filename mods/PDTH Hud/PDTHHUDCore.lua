@@ -427,12 +427,18 @@ if Hooks then
 			priority = 997
 		})
         
+        local disabled = true
+        if BeardLib then
+            disabled = false
+        end
+        
         MenuHelper:AddToggle({
 			id = "PDTHEquipment",
 			title = "pdth_toggle_equipment_title",
 			desc = "pdth_toggle_equipment_help",
 			callback = "PDTHHudToggleHUDOption",
 			menu_id = pdth_hud.menu_name,
+            disabled = disabled,
 			value = pdth_hud.Options.HUD.Equipment
 		})
         

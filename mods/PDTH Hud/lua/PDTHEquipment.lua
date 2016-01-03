@@ -1,4 +1,5 @@
 function pdth_hud:UseEquipment()
+    --log(tostring(pdth_hud.Options.HUD.Equipment))
 	return pdth_hud.Options.HUD.Equipment
 	--return true
 end

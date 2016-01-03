@@ -12,7 +12,7 @@ function pdth_hud:InitConstants()
     const.tm_health_w = 12
     const.tm_health_h = 34
     
-    const.tm_condition_demultiplier = 1.25
+    const.tm_condition_demultiplier = 1.1
     
     const.main_perk_multiplier = 5
     const.main_perk_gap = 5

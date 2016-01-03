@@ -318,11 +318,8 @@ end
 
 
 function HUDAssaultCorner:flash_assault_title(o, assault)
-    --local current_fx_alpha = 255
-    
 	while true do
         local alpha_d = 0.5 + (math.sin( Application:time()*750 )+1)/4  
-        --local new_fx = math.floor((alpha_d) * 255)
 		o:set_alpha(alpha_d)
         
         if BetterLightFX and self._assault and assault then
@@ -330,9 +327,7 @@ function HUDAssaultCorner:flash_assault_title(o, assault)
             BetterLightFX:UpdateEvent("AssaultIndicator", {color = Color(alpha_d, self._fx_color.red, self._fx_color.green, self._fx_color.blue)})
         end
         
-        --current_fx_alpha = new_fx
 		coroutine.yield()
-        --wait(0.3)
 	end
 end
 
