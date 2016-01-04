@@ -78,8 +78,6 @@ if not _G.pdth_hud then
     }
 end
 
-
-
 function pdth_hud:LoadAddons()
     local addons = file.GetFiles(self.addon_path)
     for _, path in pairs(addons) do
@@ -433,7 +431,7 @@ if Hooks then
         end
         
         MenuHelper:AddToggle({
-			id = "PDTHEquipment",
+			id = "Equipment",
 			title = "pdth_toggle_equipment_title",
 			desc = "pdth_toggle_equipment_help",
 			callback = "PDTHHudToggleHUDOption",

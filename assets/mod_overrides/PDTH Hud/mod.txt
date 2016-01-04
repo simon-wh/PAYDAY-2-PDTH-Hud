@@ -1,5 +1,0 @@
-{
-  "Name": "PD:TH Hud",
-  "Author": "GREAT BIG BUSHY BEARD",
-  "Description": "The mod_override files for the PD:TH Hud modification"
-}
