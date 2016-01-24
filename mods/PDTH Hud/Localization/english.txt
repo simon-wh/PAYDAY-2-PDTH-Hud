@@ -94,7 +94,7 @@
 	"pdth_toggle_OGTMHealth_title" : "PDTH Teammate portrait style",
     "pdth_toggle_OGTMHealth_help" : "Toggle between PD:TH's style of teammate portraits, or the previous PDTH Hud style",
 	"pdth_toggle_equipment_title" : "Toggle PDTH Equipment",
-    "pdth_toggle_equipment_help" : "Toggles the visibility of the PD:TH style of equipment on objects, e.g. The drill showing a yellow version on a door before it has been placed (REQUIRES BeardLib)",
+    "pdth_toggle_equipment_help" : "Toggles the visibility of the PD:TH style of equipment, e.g. The drill showing a yellow version on a door before it has been placed (REQUIRES BeardLib) (Doesn't show when MP host, or if you have dropped into a MP heist. May also have issues in MP as client)",
     "BLFXevent_Interaction" : "Interaction",
 	
 }

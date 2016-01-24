@@ -235,7 +235,6 @@ if Hooks then
 			BeardLib.ScriptData.Sequence:CreateMod(mod_data)
 		end
         
-        
         --[[BeardLib.ScriptData.Continent:CreateMod({
             ID = "ContinentTest",
             file = "levels/narratives/classics/dinner/world/world"
@@ -249,34 +248,6 @@ if Hooks then
             rotation = Rotation(0, 0, 0),
             unit_id = 66676
         })]]--
-	end)
-	
-	Hooks:Add("BeardLibCreateScriptDataMods", "PDTHHudEnvironmentTest", function()
-		-- EnvironmentFile, MOD ID, Initial Data
-		--[[BeardLib:CreateEnvMod("environments/pd2_env_mid_day/pd2_env_mid_day", "PDTH Hud", {})
-		
-		-- EnvironmentFile, MOD ID, EnvGroupMeta, Param Mod Table (This is for multiple param mods in the same EnvGroup, structure is ParamKey = NewParamValue)
-		BeardLib:AddEnvParamMods("environments/pd2_env_mid_day/pd2_env_mid_day", "PDTH Hud", "cloud_overlay", { color_sun_scale = 0 })
-		
-		-- EnvironmentFile, MOD ID, EnvGroupMeta, Param Key, New Param Value (For a singular mod)
-		BeardLib:AddEnvParamMod("environments/pd2_env_mid_day/pd2_env_mid_day", "PDTH Hud", "cloud_overlay", "color_sun", Vector3(0, 0, 0))
-		BeardLib:AddEnvParamMod("environments/pd2_env_mid_day/pd2_env_mid_day", "PDTH Hud", "others", "sun_ray_color", Vector3(0, 0, 0))
-		
-		-- EnvironmentFile, MOD ID, EnvGroupMeta, New Param Key, New Param Value
-		BeardLib:AddEnvNewParam("environments/pd2_env_mid_day/pd2_env_mid_day", "PDTH Hud", "cloud_overlay", "test_value", 69)
-		
-		-- EnvironmentFile, MOD ID, EnvGroupMeta, NewGroupTable(Probably want to look how they are made in the json decode)
-		BeardLib:AddEnvNewGroup("environments/pd2_env_mid_day/pd2_env_mid_day", "PDTH Hud", "underlay_effect", { _meta = "test_group"})]]--
-		--[[if not managers.dyn_resource:has_resource(Idstring("scene"), Idstring("core/environments/skies/sky_1846_low_sun_nice_clouds/sky_1846_low_sun_nice_clouds"), managers.dyn_resource.DYN_RESOURCES_PACKAGE) then
-			log("not loaded")
-			managers.dyn_resource:load(Idstring("scene"), Idstring("core/environments/skies/sky_1846_low_sun_nice_clouds/sky_1846_low_sun_nice_clouds"), managers.dyn_resource.DYN_RESOURCES_PACKAGE, nil)
-		end]]--
-
-		--[[BeardLib.ScriptData.Environment:CreateMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day")
-		BeardLib.ScriptData.Environment:AddParamMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others/underlay", "core/environments/skies/sky_1846_low_sun_nice_clouds/sky_1846_low_sun_nice_clouds")
-        BeardLib.ScriptData.Environment:AddParamMod("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others/sun_ray_color", Vector3(0.7, 0.5, 0.5))
-        BeardLib.ScriptData.Environment:AddNewParam("Restoration", "environments/pd2_env_mid_day/pd2_env_mid_day", "others", "this_is_a_faking_test", Vector3(0.7, 0.5, 0.5))]]--
-
 	end)
 	
 	Hooks:Add("BeardLibPreProcessScriptData", "PDTHHudEnvironmentTest", function(PackManager, path, raw_data)
@@ -704,24 +675,26 @@ if Hooks then
         end
         
 		for i = 1, #level_index do
-			local is_night = false
-			local is_day = false
-			if string.find(level_index[i], "_night") then
-				is_night = true
-			end
-			if string.find(level_index[i], "_day") then
-				is_day = true
-			end
-			MenuHelper:AddMultipleChoice({
-				id = level_index[i],
-				title = managers.localization:exists(tweak_data.levels[level_index[i]].name_id) and managers.localization:text(tweak_data.levels[level_index[i]].name_id) .. (is_night and " Night" or "") .. (is_day and " Day" or "") or level_index[i],
-				callback = "pdth_heist_cgrade_change",
-				menu_id = pdth_hud.heist_cgrade_name,
-				value = pdth_hud.Options.Grading and pdth_hud.Options.Grading[level_index[i]] or 2,
-				items = pdth_hud.heist_colour_gradings,
-				localized = "false",
-				priority = 0
-			})
+            if tweak_data.levels[level_index[i]] then
+                local is_night = false
+                local is_day = false
+                if string.find(level_index[i], "_night") then
+                    is_night = true
+                end
+                if string.find(level_index[i], "_day") then
+                    is_day = true
+                end
+                MenuHelper:AddMultipleChoice({
+                    id = level_index[i],
+                    title = managers.localization:exists(tweak_data.levels[level_index[i]].name_id) and managers.localization:text(tweak_data.levels[level_index[i]].name_id) .. (is_night and " Night" or "") .. (is_day and " Day" or "") or level_index[i],
+                    callback = "pdth_heist_cgrade_change",
+                    menu_id = pdth_hud.heist_cgrade_name,
+                    value = pdth_hud.Options.Grading and pdth_hud.Options.Grading[level_index[i]] or 2,
+                    items = pdth_hud.heist_colour_gradings,
+                    localized = "false",
+                    priority = 0
+                })
+            end
 		end
 		
         --Challenges stuff

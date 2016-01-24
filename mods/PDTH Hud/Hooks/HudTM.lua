@@ -509,6 +509,10 @@ if pdth_hud.Options.HUD.MainHud then
     
     end
     
+    local forbid_cat = {
+        "saw",
+        "minigun"
+    }
     function HUDTeammate:set_ammo_amount_by_type(type, max_clip, current_clip, current_left, max)
         local const = pdth_hud.constants
         local scale = pdth_hud.Options.HUD.Scale
@@ -519,12 +523,11 @@ if pdth_hud.Options.HUD.MainHud then
         if self._main_player then
             local ammo_panel = type == "primary" and self._primary_weapon_ammo or self._secondary_weapon_ammo
             
-            if max_clip ~= self._max_clip then
+            if max_clip + 2 > ammo_panel:num_children() then
                 for _, child in pairs(ammo_panel:children()) do
-                    if string.begins(child:name(), "bullet_") then
-                        ammo_panel:remove(child)
-                    end
+                    ammo_panel:remove(child)
                 end
+                self:InitAmmoPanel(ammo_panel)
             end
             
             local weapon
@@ -559,7 +562,7 @@ if pdth_hud.Options.HUD.MainHud then
             
             local icon, texture_rect = pdth_hud.textures:get_bullet_texture(category)
             
-            if icon then
+            if icon and not table.contains(forbid_cat, category) then
                 
                 local h = ammo:h() * const.main_ammo_size_multiplier
                 local w = (h / texture_rect[4]) * texture_rect[3]
@@ -623,7 +626,6 @@ if pdth_hud.Options.HUD.MainHud then
                     end
                 end
             end
-            self._max_clip = max_clip
         end
     end
 
@@ -731,9 +733,7 @@ if pdth_hud.Options.HUD.MainHud then
     end
 
     function HUDTeammate:set_cable_ties_amount(amount)
-        if self._main_player then
-            self:set_special_equipment_amount("cable_ties_panel", amount)
-        end
+        self:set_special_equipment_amount("cable_ties_panel", amount)
     end
 
     function HUDTeammate:_set_amount_string(text, amount)
@@ -792,6 +792,7 @@ if pdth_hud.Options.HUD.MainHud then
         end
         
         self:teammate_progress(false, false, false, false)
+        self:_set_weapon_selected(1)
     end
 
     function HUDTeammate:remove_panel()
@@ -873,7 +874,7 @@ if pdth_hud.Options.HUD.MainHud then
                     if special.default then
                         special.panel:set_visible(false)
                     else
-                        self._player_panel:remove(special.panel)
+                        self:remove_special_equipment(special.panel:name())
                     end
                 end
                 radial_health_panel:set_visible(not pdth_hud.Options.HUD.OGTMHealth)
@@ -1001,8 +1002,8 @@ if pdth_hud.Options.HUD.MainHud then
         for i, special in ipairs(special_equipment) do
             local panel = special.panel
             if panel:name() == equipment then
-                local data = table.remove(special_equipment, i)
                 teammate_panel:remove(panel)
+                table.remove(special_equipment, i)
                 self:layout_special_equipments()
                 break
             end
@@ -1011,8 +1012,8 @@ if pdth_hud.Options.HUD.MainHud then
         for i, weap in ipairs(self._weapons) do
             local panel = weap.panel
             if panel:name() == equipment then
-                local data = table.remove(self._weapons, i)
                 teammate_panel:remove(panel)
+                table.remove(self._weapons, i)
                 self:layout_special_equipments()
                 break
             end
@@ -1047,8 +1048,7 @@ if pdth_hud.Options.HUD.MainHud then
                 txtAmount:set_visible(tonumber(amount) > 1)
             end
             if tonumber(amount) < 1 and not special.weapon then
-                teammate_panel:remove(panel)
-                table.remove(self._special_equipment, i)
+                self:remove_special_equipment(equipment_id)
             end
         end
         
@@ -1149,7 +1149,8 @@ if pdth_hud.Options.HUD.MainHud then
                 blend_mode = "add",
                 align = "center",
                 valign = "center",
-                layer = 2
+                layer = 2,
+                visible = false
             })
             bitmap:set_size(self._interact:size())
             bitmap:set_position(self._player_panel:child("interact_panel"):x(), self._player_panel:child("interact_panel"):y())
@@ -1212,6 +1213,11 @@ if pdth_hud.Options.HUD.MainHud then
             local b = math.lerp(0 or self._point_of_no_return_color.b, 0.2, n)
             condition_timer:set_color(Color(r, g, b))
             condition_timer:set_font_size(math.lerp(const.tm_condition_font_size, const.tm_condition_font_size_flash, n))
+            if pdth_hud.Options.HUD.OGTMHealth then
+                condition_timer:set_center(self._player_panel:child("character_icon"):center())
+            else
+                condition_timer:set_center(self._player_panel:child("radial_health_panel"):center())
+            end
         end
         condition_timer:set_font_size(const.tm_condition_font_size) 
     end

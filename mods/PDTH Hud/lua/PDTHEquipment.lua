@@ -1,7 +1,9 @@
 function pdth_hud:UseEquipment()
-    --log(tostring(pdth_hud.Options.HUD.Equipment))
+    if LuaNetworking:IsHost() and Network:multiplayer() and not Global.game_settings.single_player then
+        return false
+    end
+    
 	return pdth_hud.Options.HUD.Equipment
-	--return true
 end
 
 pdth_hud.PDTHEquipment = {

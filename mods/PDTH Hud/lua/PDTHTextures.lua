@@ -1170,6 +1170,16 @@ pdth_hud.textures.weapons.sparrow = {
 	}
 }
 
+pdth_hud.textures.weapons.m37 = {
+	texture = "guis/textures/upgrade_images",
+	texture_rect = {
+		593, 
+		2269, 
+		168, 
+		167
+	}
+}
+
 function pdth_hud.textures:get_icon_data(icon_id)
 	local icon = pdth_hud.textures[icon_id] and pdth_hud.textures[icon_id].texture or icon_id
 	local texture_rect = pdth_hud.textures[icon_id] and pdth_hud.textures[icon_id].texture_rect or {
