@@ -361,7 +361,8 @@ if pdth_hud.Options.HUD.MainHud then
         self.armor_amount = 1
         self.health_colour = Color(0.5, 0.8, 0.4)
         self._max_clip = 0
-        
+        self._current_primary = nil
+        self._current_secondary = nil
         self:RefreshPortraits()
     end
 
@@ -423,6 +424,18 @@ if pdth_hud.Options.HUD.MainHud then
             self._secondary_weapon_ammo:set_visible(is_secondary)
         end
         
+        if self._main_player then
+            local prim_factory_id = managers.blackmarket:equipped_primary().factory_id
+            local prim_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(prim_factory_id)
+            
+            local sec_factory_id = managers.blackmarket:equipped_secondary().factory_id
+            local sec_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(sec_factory_id)
+            
+            if prim_weapon_id ~= self._current_primary or sec_weapon_id ~= self._current_secondary then
+                self._set_weapon_icons = false
+            end
+        end
+        
         if not self._set_weapon_icons then
             local peer, blackmarket_outfit
             if managers.network:session() then
@@ -440,10 +453,12 @@ if pdth_hud.Options.HUD.MainHud then
             local prim_factory_id = self._main_player and managers.blackmarket:equipped_primary().factory_id or blackmarket_outfit.primary.factory_id
             local prim_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(prim_factory_id)
             local prim_category = tweak_data.weapon[prim_weapon_id].category
+            self._current_primary = prim_weapon_id
             
             local sec_factory_id = self._main_player and managers.blackmarket:equipped_secondary().factory_id or blackmarket_outfit.secondary.factory_id
             local sec_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(sec_factory_id)
             local sec_category = tweak_data.weapon[sec_weapon_id].category
+            self._current_secondary = sec_weapon_id
             
             local texture, rectangle = pdth_hud.textures:get_weapon_texture(prim_weapon_id, prim_category)
             if texture ~= nil and rectangle ~= nil then
@@ -792,6 +807,7 @@ if pdth_hud.Options.HUD.MainHud then
         end
         
         self:teammate_progress(false, false, false, false)
+        self._set_weapon_icons = false
         self:_set_weapon_selected(1)
     end
 
