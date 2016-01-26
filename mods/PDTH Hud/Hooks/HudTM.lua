@@ -311,7 +311,6 @@ if pdth_hud.Options.HUD.MainHud then
             })
             self._secondary_weapon_ammo:set_shape(self._primary_weapon_ammo:shape())
             self:InitAmmoPanel(self._secondary_weapon_ammo)
-            self:recreate_weapon_firemode()
         end
         
         local tabs_texture = "guis/textures/pd2/hud_tabs"
@@ -364,6 +363,7 @@ if pdth_hud.Options.HUD.MainHud then
         self._current_primary = nil
         self._current_secondary = nil
         self:RefreshPortraits()
+        self._set_max_clip = 0
     end
 
     function HUDTeammate:_create_primary_weapon_firemode()
@@ -391,8 +391,10 @@ if pdth_hud.Options.HUD.MainHud then
             local locked_to_auto = managers.weapon_factory:has_perk("fire_mode_auto", equipped_secondary.factory_id, equipped_secondary.blueprint)
             local locked_to_single = managers.weapon_factory:has_perk("fire_mode_single", equipped_secondary.factory_id, equipped_secondary.blueprint)
             if locked_to_single or not locked_to_auto and fire_mode == "single" then
+                log("set single")
                 self:set_weapon_firemode(1, "single")
             else
+                log("set auto")
                 self:set_weapon_firemode(1, "auto")
             end
         end
@@ -424,53 +426,42 @@ if pdth_hud.Options.HUD.MainHud then
             self._secondary_weapon_ammo:set_visible(is_secondary)
         end
         
-        if self._main_player then
-            local prim_factory_id = managers.blackmarket:equipped_primary().factory_id
-            local prim_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(prim_factory_id)
+        local peer, blackmarket_outfit
+        if managers.network:session() then
+            peer = managers.network:session():peer(self._peer_id)
             
-            local sec_factory_id = managers.blackmarket:equipped_secondary().factory_id
-            local sec_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(sec_factory_id)
-            
-            if prim_weapon_id ~= self._current_primary or sec_weapon_id ~= self._current_secondary then
-                self._set_weapon_icons = false
-            end
-        end
-        
-        if not self._set_weapon_icons then
-            local peer, blackmarket_outfit
-            if managers.network:session() then
-                peer = managers.network:session():peer(self._peer_id)
-                
-                if peer and peer._profile["outfit_string"] then
-                    blackmarket_outfit = peer:blackmarket_outfit()
-                elseif not self._main_player then
-                    return
-                end
+            if peer and peer._profile["outfit_string"] then
+                blackmarket_outfit = peer:blackmarket_outfit()
             elseif not self._main_player then
                 return
             end
-            
-            local prim_factory_id = self._main_player and managers.blackmarket:equipped_primary().factory_id or blackmarket_outfit.primary.factory_id
-            local prim_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(prim_factory_id)
-            local prim_category = tweak_data.weapon[prim_weapon_id].category
-            self._current_primary = prim_weapon_id
-            
-            local sec_factory_id = self._main_player and managers.blackmarket:equipped_secondary().factory_id or blackmarket_outfit.secondary.factory_id
-            local sec_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(sec_factory_id)
-            local sec_category = tweak_data.weapon[sec_weapon_id].category
-            self._current_secondary = sec_weapon_id
-            
-            local texture, rectangle = pdth_hud.textures:get_weapon_texture(prim_weapon_id, prim_category)
-            if texture ~= nil and rectangle ~= nil then
-                primary_weapon_panel:child("bitmap"):set_image(texture, unpack(rectangle))
-            end
-            
-            local texture, rectangle = pdth_hud.textures:get_weapon_texture(sec_weapon_id, sec_category)
-            if texture ~= nil and rectangle ~= nil then
-                secondary_weapon_panel:child("bitmap"):set_image(texture, unpack(rectangle))
-            end
-            
-            self._set_weapon_icons = true
+        elseif not self._main_player then
+            return
+        end
+        
+        local prim_factory_id = self._main_player and managers.blackmarket:equipped_primary().factory_id or blackmarket_outfit.primary.factory_id
+        local prim_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(prim_factory_id)
+        local prim_category = tweak_data.weapon[prim_weapon_id].category
+        
+        local sec_factory_id = self._main_player and managers.blackmarket:equipped_secondary().factory_id or blackmarket_outfit.secondary.factory_id
+        local sec_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(sec_factory_id)
+        local sec_category = tweak_data.weapon[sec_weapon_id].category
+        
+        if self._current_primary == prim_weapon_id and self._current_secondary == sec_weapon_id then
+            return
+        end
+        
+        self._current_primary = prim_weapon_id
+        self._current_secondary = sec_weapon_id
+        
+        local texture, rectangle = pdth_hud.textures:get_weapon_texture(prim_weapon_id, prim_category)
+        if texture ~= nil and rectangle ~= nil then
+            primary_weapon_panel:child("bitmap"):set_image(texture, unpack(rectangle))
+        end
+        
+        local texture, rectangle = pdth_hud.textures:get_weapon_texture(sec_weapon_id, sec_category)
+        if texture ~= nil and rectangle ~= nil then
+            secondary_weapon_panel:child("bitmap"):set_image(texture, unpack(rectangle))
         end
     end
 
@@ -481,8 +472,10 @@ if pdth_hud.Options.HUD.MainHud then
             local firemodeText = weapPanel:child("firemode")
             if alive(firemodeText)then
                 if firemode == "single" then
+                    log("set semi")
                     firemodeText:set_text("SEMI")
                 else
+                    log("set set auto")
                     firemodeText:set_text("AUTO")
                 end
                 firemodeText:set_visible(pdth_hud.Options.HUD.Fireselector)
@@ -521,7 +514,8 @@ if pdth_hud.Options.HUD.MainHud then
             ammo:set_center_y(panel:h() / 2)
             ammo:set_right(firemode:left() - const.main_firemode_gap)
         end
-    
+        
+        self:recreate_weapon_firemode()
     end
     
     local forbid_cat = {
@@ -537,13 +531,6 @@ if pdth_hud.Options.HUD.MainHud then
         
         if self._main_player then
             local ammo_panel = type == "primary" and self._primary_weapon_ammo or self._secondary_weapon_ammo
-            
-            if max_clip + 2 > ammo_panel:num_children() then
-                for _, child in pairs(ammo_panel:children()) do
-                    ammo_panel:remove(child)
-                end
-                self:InitAmmoPanel(ammo_panel)
-            end
             
             local weapon
             if type == "primary" then
@@ -579,9 +566,24 @@ if pdth_hud.Options.HUD.MainHud then
             
             if icon and not table.contains(forbid_cat, category) then
                 
+                if max_clip > self._set_max_clip then
+                    for i = max_clip + 1, self._set_max_clip do
+                        local bullet = ammo_panel:child("bullet_" .. i)
+                        if bullet then
+                            ammo_panel:remove(bullet)
+                        end
+                    end
+                end
+                
                 local h = ammo:h() * const.main_ammo_size_multiplier
                 local w = (h / texture_rect[4]) * texture_rect[3]
                 
+                
+                local r, g, b = 1, 1, 1
+                if current_clip <= math.round(max_clip / 4) then
+                    g = current_clip / (max_clip / 2)
+                    b = current_clip / (max_clip / 2)
+                end
                 
                 for i = 1, max_clip do
                     local bullet = ammo_panel:child("bullet_" .. i)
@@ -601,39 +603,18 @@ if pdth_hud.Options.HUD.MainHud then
                     elseif self.bulletChanged then
                         bullet:set_image(icon, unpack(texture_rect))
                     end
+                    
+                    if i <= current_clip then
+                        bullet:set_alpha(1)
+                        bullet:set_color(Color(0.8, r, g, b))
+                    elseif i >= current_clip then
+                        bullet:set_alpha(0.5)
+                        bullet:set_color(Color(0.2, r, g, b))
+                    end
                 end
                 self.bulletChanged = false
                 
-                for i = 1, current_clip do
-                    local bullet = ammo_panel:child("bullet_" .. i)
-                    if bullet then
-                        bullet:set_alpha(1)
-                    end
-                end
-                
-                for i = current_clip + 1, max_clip do
-                    local bullet = ammo_panel:child("bullet_" .. i)
-                    if bullet then
-                        bullet:set_alpha(0.5)
-                    end
-                end
-
-                local r, g, b = 1, 1, 1
-                if current_clip <= math.round(max_clip / 4) then
-                    g = current_clip / (max_clip / 2)
-                    b = current_clip / (max_clip / 2)
-                end
-                
-                for i = 1, max_clip do		
-                    if ammo_panel:child("bullet_" .. i) then
-                        local bullet = ammo_panel:child("bullet_" .. i)
-                        if bullet:alpha() == 0.5 then
-                            bullet:set_color(Color(0.2, r, g, b))
-                        else
-                            bullet:set_color(Color(0.8, r, g, b))
-                        end
-                    end
-                end
+                self._set_max_clip = max_clip
             else
                 for _, child in pairs(ammo_panel:children()) do
                     if string.begins(child:name(), "bullet_") then
@@ -807,7 +788,6 @@ if pdth_hud.Options.HUD.MainHud then
         end
         
         self:teammate_progress(false, false, false, false)
-        self._set_weapon_icons = false
         self:_set_weapon_selected(1)
     end
 
@@ -839,7 +819,6 @@ if pdth_hud.Options.HUD.MainHud then
         self:teammate_progress(false, false, false, false)
         self._peer_id = nil
         self._ai = nil
-        self._set_weapon_icons = false
     end
 
     function HUDTeammate:set_name(teammate_name)
@@ -879,13 +858,11 @@ if pdth_hud.Options.HUD.MainHud then
             carry_panel:set_left(name:right())
             carry_panel:set_top(name:top())
             if is_player then
-                self._set_weapon_icons = false
                 for i, special in pairs(self._special_equipment) do
                     special.panel:set_visible(true)
                 end
                 radial_health_panel:set_visible(true)
             else
-                self._set_weapon_icons = false
                 for i, special in pairs(self._special_equipment) do
                     if special.default then
                         special.panel:set_visible(false)
