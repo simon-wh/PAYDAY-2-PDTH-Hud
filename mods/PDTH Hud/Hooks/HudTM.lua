@@ -564,9 +564,8 @@ if pdth_hud.Options.HUD.MainHud then
             
             local icon, texture_rect = pdth_hud.textures:get_bullet_texture(category)
             
-            if icon and not table.contains(forbid_cat, category) then
-                
-                if max_clip > self._set_max_clip then
+            if icon and not table.contains(forbid_cat, category) and not (max_clip > 200) then
+                if self._set_max_clip > max_clip then
                     for i = max_clip + 1, self._set_max_clip do
                         local bullet = ammo_panel:child("bullet_" .. i)
                         if bullet then
@@ -600,7 +599,7 @@ if pdth_hud.Options.HUD.MainHud then
                         bullet:set_right(prev_bullet and prev_bullet:left() or ammo:left() - const.main_ammo_image_gap)
                         bullet:set_center_y(ammo:center_y())
                         bullet:set_image(icon, unpack(texture_rect))
-                    elseif self.bulletChanged then
+                    elseif self[type .. "_set_texture_rect"] ~= texture_rect then
                         bullet:set_image(icon, unpack(texture_rect))
                     end
                     
@@ -612,7 +611,7 @@ if pdth_hud.Options.HUD.MainHud then
                         bullet:set_color(Color(0.2, r, g, b))
                     end
                 end
-                self.bulletChanged = false
+                self[type .. "_set_texture_rect"] = texture_rect
                 
                 self._set_max_clip = max_clip
             else
@@ -1167,6 +1166,7 @@ if pdth_hud.Options.HUD.MainHud then
         self._panel:child("condition_timer"):set_color(Color.white)
         self._panel:child("condition_timer"):stop()
         self._panel:child("condition_timer"):set_visible(true)
+        self._panel:child("condition_timer"):set_font_size(const.tm_condition_font_size) 
         self._panel:child("condition_timer"):animate(callback(self, self, "_animate_timer"))
     end
 
