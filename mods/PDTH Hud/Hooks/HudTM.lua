@@ -363,7 +363,9 @@ if pdth_hud.Options.HUD.MainHud then
         self._current_primary = nil
         self._current_secondary = nil
         self:RefreshPortraits()
-        self._set_max_clip = 0
+        self._set_max_clip = {}
+        self._set_max_clip.primary = 0
+        self._set_max_clip.secondary = 0
     end
 
     function HUDTeammate:_create_primary_weapon_firemode()
@@ -565,8 +567,8 @@ if pdth_hud.Options.HUD.MainHud then
             local icon, texture_rect = pdth_hud.textures:get_bullet_texture(category)
             
             if icon and not table.contains(forbid_cat, category) and not (max_clip > 200) then
-                if self._set_max_clip > max_clip then
-                    for i = max_clip + 1, self._set_max_clip do
+                if self._set_max_clip[type] > max_clip then
+                    for i = max_clip + 1, self._set_max_clip[type] do
                         local bullet = ammo_panel:child("bullet_" .. i)
                         if bullet then
                             ammo_panel:remove(bullet)
@@ -613,7 +615,7 @@ if pdth_hud.Options.HUD.MainHud then
                 end
                 self[type .. "_set_texture_rect"] = texture_rect
                 
-                self._set_max_clip = max_clip
+                self._set_max_clip[type] = max_clip
             else
                 for _, child in pairs(ammo_panel:children()) do
                     if string.begins(child:name(), "bullet_") then
