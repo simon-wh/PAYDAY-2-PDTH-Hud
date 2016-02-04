@@ -613,17 +613,6 @@ if pdth_hud.Options.HUD.MainHud then
             48
         }
     }
-    
-    tweak_data.hud_icons.pd2_generic_saw = {
-        texture = "guis/textures/hud_icons",
-        texture_rect = {
-            336,
-            144,
-            48,
-            48
-        }
-    }
-    
 end
 tweak_data.interaction.copy_machine_smuggle.icon = "equipment_gasoline"
 tweak_data.interaction.safety_deposit.icon = "develop"

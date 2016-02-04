@@ -107,7 +107,7 @@ if pdth_hud.Options.HUD.Objectives then
         local background = present_panel:child("background")
         local bitmap = present_panel:child("bitmap")
         if params.use_icon then
-            params.use_icon = params.use_icon == "pd2_c4" and "equipment_c4" or params.use_icon
+            params.use_icon = params.use_icon == "pd2_c4" and "equipment_c4" or params.use_icon == "pd2_generic_saw" and "equipment_saw" or params.use_icon
             bitmap:set_visible(true)
             local icon, texture_rect = tweak_data.hud_icons:get_icon_data(params.use_icon)
             bitmap:set_image(icon, unpack(texture_rect))

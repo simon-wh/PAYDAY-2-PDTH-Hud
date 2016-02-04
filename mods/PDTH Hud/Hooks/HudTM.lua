@@ -935,6 +935,8 @@ if pdth_hud.Options.HUD.MainHud then
         local icon, texture_rect
         if data.icon == "pd2_c4" then
             icon, texture_rect = tweak_data.hud_icons:get_icon_data("equipment_c4")
+        elseif data.icon == "pd2_generic_saw" then
+            icon, texture_rect = tweak_data.hud_icons:get_icon_data("equipment_saw")
         else
             icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
         end
