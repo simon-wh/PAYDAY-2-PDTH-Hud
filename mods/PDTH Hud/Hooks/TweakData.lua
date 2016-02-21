@@ -613,6 +613,46 @@ if pdth_hud.Options.HUD.MainHud then
             48
         }
     }
+    
+    tweak_data.hud_icons.equipment_printer_ink = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            512,
+            97,
+            48,
+            48
+        }
+    }
+    
+    tweak_data.hud_icons.equipment_plates = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            560,
+            97,
+            48,
+            48
+        }
+    }
+    
+    tweak_data.hud_icons.equipment_paper_roll = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            608,
+            97,
+            48,
+            48
+        }
+    }
+    
+    tweak_data.hud_icons.equipment_stash_server = {
+        texture = "guis/textures/hud_icons",
+        texture_rect = {
+            656,
+            97,
+            48,
+            48
+        }
+    }
 end
 tweak_data.interaction.copy_machine_smuggle.icon = "equipment_gasoline"
 tweak_data.interaction.safety_deposit.icon = "develop"
