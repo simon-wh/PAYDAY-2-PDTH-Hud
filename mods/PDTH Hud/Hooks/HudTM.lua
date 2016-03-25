@@ -87,10 +87,34 @@ if pdth_hud.Options.HUD.MainHud then
             h = radial_health_panel:h(),
             layer = 3
         })
+        local radial_absorb_shield_active = radial_health_panel:bitmap({
+			name = "radial_absorb_shield_active",
+			texture = "guis/textures/pd2/masks",
+			blend_mode = "normal",
+			alpha = 1,
+			w = radial_health_panel:w(),
+			h = radial_health_panel:h(),
+			layer = 5
+		})
+		radial_absorb_shield_active:set_color(Color(1, 0, 0, 1))
+		radial_absorb_shield_active:hide()
+        
+        local radial_absorb_health_active = radial_health_panel:bitmap({
+			name = "radial_absorb_health_active",
+			texture = "guis/textures/pd2/masks",
+			blend_mode = "normal",
+			alpha = 1,
+			w = radial_health_panel:w(),
+			h = radial_health_panel:h(),
+			layer = 5
+		})
+		radial_absorb_health_active:set_color(Color(1, 0, 0, 1))
+		radial_absorb_health_active:hide()
+        radial_absorb_health_active:animate(callback(self, self, "animate_update_absorb_active"))
     
         local pnlPerk = self._player_panel:panel({
             name = "pnlPerk",
-            visible = false,
+            visible = true,
             layer = 11
         })
         
@@ -102,7 +126,7 @@ if pdth_hud.Options.HUD.MainHud then
         
         local bmpPerkBackground = pnlPerk:bitmap({
             name = "bmpPerkBackground",
-            visible = true,
+            visible = false,
             blend_mode = "normal",
             layer = 1,
             texture = "guis/textures/hud_icons",
@@ -121,7 +145,7 @@ if pdth_hud.Options.HUD.MainHud then
         local bmpPerkBar = pnlPerk:bitmap({
             name = "bmpPerkBar",
             layer = 2,
-            visible = true,
+            visible = false,
             blend_mode = "normal",
             color = Color.green,
             texture = "guis/textures/hud_icons",
@@ -366,6 +390,11 @@ if pdth_hud.Options.HUD.MainHud then
         self._set_max_clip = {}
         self._set_max_clip.primary = 0
         self._set_max_clip.secondary = 0
+        self:set_info_meter({
+            current = 0,
+            total = 0,
+            max = 1
+        })
     end
 
     function HUDTeammate:_create_primary_weapon_firemode()
@@ -627,6 +656,8 @@ if pdth_hud.Options.HUD.MainHud then
     end
 
     function HUDTeammate:set_health(data) 
+        self._health_data = data
+    
         local amount = data.current / data.total
         if amount < self.health_amount then
             self:_damage_taken()
@@ -640,6 +671,8 @@ if pdth_hud.Options.HUD.MainHud then
     end
 
     function HUDTeammate:set_armor(data)
+        self._armor_data = data
+    
         local amount = data.current / data.total
         if amount < self.armor_amount then
             self:_damage_taken()
@@ -1300,9 +1333,117 @@ if pdth_hud.Options.HUD.MainHud then
         
         if alive(bmpPerkBackground) then
             local red = math.min(stored_health_ratio, 1)
+            bmpPerkBackground:set_visible(red > 0)
             bmpPerkBackground:set_color(Color(1, red, 1, 1))
         end
     end
+    
+    function HUDTeammate:_animate_update_absorb(o, radial_absorb_shield_name, radial_absorb_health_name, var_name, blink)
+        repeat
+            coroutine.yield()
+        until alive(self._panel) and self[var_name] and self._armor_data and self._health_data
+        
+        local character
+        if self._main_player then
+            character = managers.network:session():local_peer():character()
+        elseif self._ai then
+            character = managers.criminals:character_name_by_panel_id(self._id)
+        else
+            character = managers.criminals:character_name_by_peer_id(self._peer_id)
+        end
+        
+        local texture, rect = pdth_hud.textures:get_portrait_texture(character, "health", self._main_player)
+        
+        local textureA, rectA = pdth_hud.textures:get_portrait_texture(character, "armor", self._main_player)
+        
+        local teammate_panel = self._panel:child("player")
+        local radial_health_panel = teammate_panel:child("radial_health_panel")
+        local radial_shield = radial_health_panel:child("radial_shield")
+        local radial_health = radial_health_panel:child("radial_health")
+        local radial_bg = radial_health_panel:child("radial_bg")
+        local radial_absorb_shield = radial_health_panel:child(radial_absorb_shield_name)
+        local radial_absorb_health = radial_health_panel:child(radial_absorb_health_name)
+        local radial_shield_rot = radial_shield:color().r
+        local radial_health_rot = radial_health:color().r
+        
+        local height = self.health_h
+        
+        local y_offsetA = (1 - radial_shield_rot) * rectA[4]
+        local h_offsetA = (1 - radial_shield_rot) * height
+        radial_absorb_shield:set_image(textureA, rectA[1], rectA[2] + y_offsetA, rectA[3], rectA[4] - y_offsetA)
+        radial_absorb_shield:set_h(height - h_offsetA)
+        radial_absorb_shield:set_bottom(radial_bg:bottom())
+        
+        --radial_absorb_shield:set_rotation((1 - radial_shield_rot) * 360)
+        
+        local y_offsetH = (1 - radial_health_rot) * rect[4]
+        local h_offsetH = (1 - radial_health_rot) * height
+        radial_absorb_health:set_image(textureA, rect[1], rect[2] + y_offsetH, rect[3], rect[4] - y_offsetH)
+        radial_absorb_health:set_h(height - h_offsetH)
+        radial_absorb_health:set_bottom(radial_bg:bottom())
+        
+        --radial_absorb_health:set_rotation((1 - radial_health_rot) * 360)
+        
+        local current_absorb = 0
+        local current_shield, current_health
+        local step_speed = 1
+        local lerp_speed = 1
+        local dt, update_absorb
+        local t = 0
+        while alive(teammate_panel) do
+            dt = coroutine.yield()
+            if self[var_name] and self._armor_data and self._health_data then
+                update_absorb = false
+                current_shield = self._armor_data.current
+                current_health = self._health_data.current
+                if radial_shield:color().r ~= radial_shield_rot or radial_health:color().r ~= radial_health_rot then
+                    radial_shield_rot = radial_shield:color().r
+                    radial_health_rot = radial_health:color().r
+                    
+                    --radial_absorb_shield:set_rotation((1 - radial_shield_rot) * 360)
+                    --radial_absorb_health:set_rotation((1 - radial_health_rot) * 360)
+                    
+                    
+                    
+                    update_absorb = true
+                end
+                if current_absorb ~= self[var_name] then
+                    current_absorb = math.lerp(current_absorb, self[var_name], lerp_speed * dt)
+                    current_absorb = math.step(current_absorb, self[var_name], step_speed * dt)
+                    update_absorb = true
+                end
+                if blink then
+                    t = (t + dt * 0.5) % 1
+                    radial_absorb_shield:set_alpha(math.abs(math.sin(t * 180)) * 0.25 + 0.75)
+                    radial_absorb_health:set_alpha(math.abs(math.sin(t * 180)) * 0.25 + 0.75)
+                end
+                if update_absorb and current_absorb > 0 then
+                    local shield_ratio = current_shield == 0 and 0 or math.min(current_absorb / current_shield, 1)
+                    local health_ratio = current_health == 0 and 0 or math.min((current_absorb - shield_ratio * current_shield) / current_health, 1)
+                    local shield = math.clamp(shield_ratio * 360, 0, 1)
+                    local health = math.clamp(health_ratio * 360, 0, 1)
+                    
+                    local y_offsetA = shield * rectA[4]
+                    local h_offsetA = shield * height
+                    log("A: " .. h_offsetA)
+                    radial_absorb_shield:set_image(textureA, rectA[1], rectA[2] + y_offsetA, rectA[3], rectA[4] - y_offsetA)
+                    radial_absorb_shield:set_h(height - h_offsetA)
+                    radial_absorb_shield:set_bottom(radial_bg:bottom())
+                  
+                    local y_offsetH = health * rect[4]
+                    local h_offsetH = health * height
+                    log("H:" .. h_offsetH)
+                    radial_absorb_health:set_image(textureA, rect[1], rect[2] + y_offsetH, rect[3], rect[4] - y_offsetH)
+                    radial_absorb_health:set_h(height - h_offsetH)
+                    radial_absorb_health:set_bottom(radial_bg:bottom())
+                    
+                    radial_absorb_shield:set_visible(shield > 0)
+                    radial_absorb_health:set_visible(health > 0)
+                end
+            end
+        end
+    end
+    
     function HUDTeammate:set_stored_health(stored_health_ratio)
         local const = pdth_hud.constants
         local pnlPerk = self._player_panel:child("pnlPerk")
@@ -1311,8 +1452,34 @@ if pdth_hud.Options.HUD.MainHud then
         
         if alive(bmpPerkBar) then
             local red = math.min(stored_health_ratio, 1)
-            pnlPerk:set_visible(red > 0)
+            bmpPerkBar:set_visible(red > 0)
             bmpPerkBar:set_w((pnlPerk:w() - const.main_perk_gap) * red)
+            --bmpPerkBackground:set_w(pnlPerk:w() * red)
         end
+    end
+    
+    function HUDTeammate:set_info_meter(data)
+        local const = pdth_hud.constants
+        
+        local pnlPerk = self._player_panel:child("pnlPerk")
+        local bmpPerkBackground = pnlPerk:child("bmpPerkBackground")
+        local bmpPerkBar = pnlPerk:child("bmpPerkBar")
+        
+        local red = math.clamp(data.total / data.max, 0, 1)
+        bmpPerkBackground:set_color(Color(1, red, 1, 1))
+        bmpPerkBackground:set_visible(red > 0)
+        
+        local red = math.clamp(data.current / data.max, 0, 1)
+        bmpPerkBar:set_w((pnlPerk:w() - const.main_perk_gap) * red)
+        bmpPerkBar:stop()
+        bmpPerkBar:animate(function(o)
+            local s = bmpPerkBar:color().r
+            local e = red
+            over(0.2, function(p)
+                local c = math.lerp(s, e, p)
+                bmpPerkBar:set_color(Color(1, c, 1, 1))
+                bmpPerkBar:set_visible(c > 0)
+            end)
+        end)
     end
 end

@@ -1,7 +1,9 @@
 if pdth_hud.Options.HUD.Interaction then
     local interact_tr = {0, 392, 360, 22}
     local background_tr = {0, 414, 360, 22}
-
+    
+    local ValidColour = Color(1, 1, 0.7647058824, 0)
+    
     function HUDInteraction:init(hud, child_name)
         self._hud_panel = hud.panel
         local const = pdth_hud.constants
@@ -61,7 +63,7 @@ if pdth_hud.Options.HUD.Interaction then
             layer = 2,
             texture = "guis/textures/hud_icons",
             texture_rect = interact_tr,
-            color = Color(1, 1, 0.65882355, 0),
+            color = ValidColour,
             w = self._interaction_w - (const.interact_border * 2),
             h = self._interaction_h - (const.interact_border * 2)
         })
@@ -165,10 +167,10 @@ if pdth_hud.Options.HUD.Interaction then
                 BetterLightFX:UpdateEvent("Interaction", {_custom_color = Color.red, _progress = mul})
             end
         else
-            interact_bar:set_color(Color(1, 1, 0.65882355, 0))
+            interact_bar:set_color(ValidColour)
             if BetterLightFX then
                 BetterLightFX:StartEvent("Interaction")
-                BetterLightFX:UpdateEvent("Interaction", {_custom_color = Color(1, 1, 0.65882355, 0), _progress = mul})
+                BetterLightFX:UpdateEvent("Interaction", {_custom_color = ValidColour, _progress = mul})
             end
         end
     end

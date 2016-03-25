@@ -7,9 +7,9 @@ pdth_hud.textures.portraits["fallback"].bg = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
 		0, 
-		261, 
-		64, 
-		129
+        780, 
+        192, 
+        390
 	}
 }
 
@@ -17,9 +17,9 @@ pdth_hud.textures.portraits["fallback"].health = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
 		0, 
-		1, 
-		64, 
-		129
+        0, 
+        192, 
+        390
 	}
 }
 
@@ -27,17 +27,17 @@ pdth_hud.textures.portraits["fallback"].armor = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
 		0, 
-		131, 
-		64, 
-		129
+        390, 
+        192, 
+        390
 	}
 }
 
 pdth_hud.textures.portraits["fallback"].tm = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
-		1,
-        513,
+		0,
+        1170,
         192,
         192
 	}
@@ -1183,10 +1183,30 @@ pdth_hud.textures.weapons.m37 = {
 pdth_hud.textures.weapons.china = {
 	texture = "guis/textures/upgrade_images",
 	texture_rect = {
-		777, 
-		2267, 
+		780, 
+		2269, 
 		171, 
-		169
+		167
+	}
+}
+
+pdth_hud.textures.weapons.sr2 = {
+	texture = "guis/textures/upgrade_images",
+	texture_rect = {
+		970, 
+		2267, 
+		165, 
+		167
+	}
+}
+
+pdth_hud.textures.weapons.x_sr2 = {
+	texture = "guis/textures/upgrade_images",
+	texture_rect = {
+		1153, 
+		2268, 
+		166, 
+		167
 	}
 }
 
