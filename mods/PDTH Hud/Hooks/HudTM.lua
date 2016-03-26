@@ -1368,22 +1368,6 @@ if pdth_hud.Options.HUD.MainHud then
         
         local height = self.health_h
         
-        local y_offsetA = (1 - radial_shield_rot) * rectA[4]
-        local h_offsetA = (1 - radial_shield_rot) * height
-        radial_absorb_shield:set_image(textureA, rectA[1], rectA[2] + y_offsetA, rectA[3], rectA[4] - y_offsetA)
-        radial_absorb_shield:set_h(height - h_offsetA)
-        radial_absorb_shield:set_bottom(radial_bg:bottom())
-        
-        --radial_absorb_shield:set_rotation((1 - radial_shield_rot) * 360)
-        
-        local y_offsetH = (1 - radial_health_rot) * rect[4]
-        local h_offsetH = (1 - radial_health_rot) * height
-        radial_absorb_health:set_image(textureA, rect[1], rect[2] + y_offsetH, rect[3], rect[4] - y_offsetH)
-        radial_absorb_health:set_h(height - h_offsetH)
-        radial_absorb_health:set_bottom(radial_bg:bottom())
-        
-        --radial_absorb_health:set_rotation((1 - radial_health_rot) * 360)
-        
         local current_absorb = 0
         local current_shield, current_health
         local step_speed = 1
@@ -1394,48 +1378,51 @@ if pdth_hud.Options.HUD.MainHud then
             dt = coroutine.yield()
             if self[var_name] and self._armor_data and self._health_data then
                 update_absorb = false
+                
                 current_shield = self._armor_data.current
                 current_health = self._health_data.current
-                if radial_shield:color().r ~= radial_shield_rot or radial_health:color().r ~= radial_health_rot then
-                    radial_shield_rot = radial_shield:color().r
-                    radial_health_rot = radial_health:color().r
-                    
-                    --radial_absorb_shield:set_rotation((1 - radial_shield_rot) * 360)
-                    --radial_absorb_health:set_rotation((1 - radial_health_rot) * 360)
-                    
-                    
-                    
+                
+                if self.armor_amount ~= radial_shield_rot or self.health_amount ~= radial_health_rot then
+                    radial_shield_rot = self.armor_amount
+                    radial_health_rot = self.health_amount       
                     update_absorb = true
                 end
+                    
                 if current_absorb ~= self[var_name] then
                     current_absorb = math.lerp(current_absorb, self[var_name], lerp_speed * dt)
                     current_absorb = math.step(current_absorb, self[var_name], step_speed * dt)
                     update_absorb = true
                 end
+                
                 if blink then
                     t = (t + dt * 0.5) % 1
                     radial_absorb_shield:set_alpha(math.abs(math.sin(t * 180)) * 0.25 + 0.75)
                     radial_absorb_health:set_alpha(math.abs(math.sin(t * 180)) * 0.25 + 0.75)
                 end
+                
                 if update_absorb and current_absorb > 0 then
                     local shield_ratio = current_shield == 0 and 0 or math.min(current_absorb / current_shield, 1)
                     local health_ratio = current_health == 0 and 0 or math.min((current_absorb - shield_ratio * current_shield) / current_health, 1)
-                    local shield = math.clamp(shield_ratio * 360, 0, 1)
-                    local health = math.clamp(health_ratio * 360, 0, 1)
+                    local shield = math.clamp(shield_ratio * radial_shield_rot, 0, 1)
+                    local health = math.clamp(health_ratio * radial_health_rot, 0, 1)
                     
-                    local y_offsetA = shield * rectA[4]
-                    local h_offsetA = shield * height
-                    log("A: " .. h_offsetA)
-                    radial_absorb_shield:set_image(textureA, rectA[1], rectA[2] + y_offsetA, rectA[3], rectA[4] - y_offsetA)
-                    radial_absorb_shield:set_h(height - h_offsetA)
-                    radial_absorb_shield:set_bottom(radial_bg:bottom())
-                  
-                    local y_offsetH = health * rect[4]
-                    local h_offsetH = health * height
-                    log("H:" .. h_offsetH)
-                    radial_absorb_health:set_image(textureA, rect[1], rect[2] + y_offsetH, rect[3], rect[4] - y_offsetH)
-                    radial_absorb_health:set_h(height - h_offsetH)
-                    radial_absorb_health:set_bottom(radial_bg:bottom())
+                    if shield ~= 0 then
+                        local y_offsetA = (1 - shield) * rectA[4]
+                        local h_offsetA = (1 - shield) * height
+                        log("A: " .. h_offsetA)
+                        radial_absorb_shield:set_image(textureA, rectA[1], rectA[2] + y_offsetA, rectA[3], rectA[4] - y_offsetA)
+                        radial_absorb_shield:set_h(height - h_offsetA)
+                        radial_absorb_shield:set_bottom(radial_bg:bottom())
+                    end
+                    
+                    if health ~= 0 then
+                        local y_offsetH = (1 - health) * rect[4]
+                        local h_offsetH = (1 - health) * height
+                        log("H:" .. h_offsetH)
+                        radial_absorb_health:set_image(texture, rect[1], rect[2] + y_offsetH, rect[3], rect[4] - y_offsetH)
+                        radial_absorb_health:set_h(height - h_offsetH)
+                        radial_absorb_health:set_bottom(radial_bg:bottom())
+                    end
                     
                     radial_absorb_shield:set_visible(shield > 0)
                     radial_absorb_health:set_visible(health > 0)
