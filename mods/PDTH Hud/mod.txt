@@ -52,7 +52,7 @@
 	],
 	"updates" : [
 		{
-			"revision" : 73,
+			"revision" : 74,
 			"identifier" : "pdth_hud"
 		},
 		{
