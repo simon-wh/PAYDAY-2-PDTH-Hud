@@ -64,7 +64,7 @@ if pdth_hud.Options.HUD.MainHud then
         })
         
         local teammate_h = (const.main_health_h - (const.tm_gap * 2)) / 3
-        for i = 1, 4 do
+        for i = 1, HUDManager.PLAYER_PANEL do
             local is_player = i == HUDManager.PLAYER_PANEL
             --[[self._hud.teammate_panels_data[i] = {
                 taken = true,

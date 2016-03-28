@@ -139,7 +139,7 @@ if Hooks then
 	if CriminalsManager then
 		Hooks:PostHook(CriminalsManager, "add_character", "pdth_hud_ai_portrait", function(ply)
 			if pdth_hud.Options.HUD.MainHud then
-				for i = 1, 4 do
+				for i = 1, HUDManager.PLAYER_PANEL do
 					if managers.hud then
 						managers.hud._teammate_panels[i]:RefreshPortraits()
 					end
@@ -171,8 +171,12 @@ if Hooks then
     end
 	
     if HUDChat then
-        Hooks:PostHook(HUDChat, "init", "PDTHHudReposChat", function(self)
-            self._panel:set_bottom(self._hud_panel:h() - pdth_hud.constants.main_health_h)
+        Hooks:PostHook(HUDChat, "_layout_output_panel", "PDTHHudReposChat", function(self)
+            local const = pdth_hud.constants
+            --self._panel:set_right(self._hud_panel:right() - (const.main_equipment_size * 1.5))
+            --self._panel:set_bottom(self._hud_panel:bottom() - (const.main_equipment_size * const.main_equipment_y_offset_multiplier + const.main_equipment_size * 2))
+            self._panel:set_right(self._hud_panel:right())
+            self._panel:set_top(self._hud_panel:top() - self._panel:child("output_panel"):top())
         end)
     end
     
@@ -416,7 +420,7 @@ if Hooks then
 			pdth_hud.Options.HUD.Coloured = item:value() == "on" and true or false
 			pdth_hud:Save()
 			if managers.hud then
-				local tm = managers.hud._teammate_panels[4]
+				local tm = managers.hud._teammate_panels[HUDManager.PLAYER_PANEL]
 				tm._player_panel:child("radial_health_panel"):child("radial_health"):set_color(item:value() == "on" and tm.health_colour or Color.white)
 			end
 		end
@@ -425,7 +429,7 @@ if Hooks then
 			pdth_hud.Options.HUD.Bullet = item:value()
 			pdth_hud:Save()
             if managers.player and managers.hud then
-                managers.hud._teammate_panels[4].bulletChanged = true
+                managers.hud._teammate_panels[HUDManager.PLAYER_PANEL].bulletChanged = true
                 local player = managers.player:local_player()
                 if player then
                     local inventory = player:inventory()
@@ -553,7 +557,7 @@ if Hooks then
 			pdth_hud.Options.HUD.Fireselector = item:value() == "on" and true or false
 			pdth_hud:Save()
 			if managers.hud then
-				local tm = managers.hud._teammate_panels[4]
+				local tm = managers.hud._teammate_panels[HUDManager.PLAYER_PANEL]
 				tm:recreate_weapon_firemode()
 			end
 		end
@@ -581,12 +585,12 @@ if Hooks then
 		MenuCallbackHandler.pdth_toggle_portrait = function(this, item)
 			pdth_hud.Options.portraits[item:name()] = item:value()
 			pdth_hud:Save()
-			for i = 1, 4 do 
-				if managers.hud then
-					local tm = managers.hud._teammate_panels[i]
-					tm:RefreshPortraits()
-				end
-			end
+            if managers.hud then
+                for i = 1, HUDManager.PLAYER_PANEL do 
+                    local tm = managers.hud._teammate_panels[i]
+                    tm:RefreshPortraits()
+                end
+            end
 		end
 		
 		for i, portrait in pairs(pdth_hud.portrait_options) do
