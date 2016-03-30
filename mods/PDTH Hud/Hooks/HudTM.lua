@@ -1409,7 +1409,7 @@ if pdth_hud.Options.HUD.MainHud then
                     if shield ~= 0 then
                         local y_offsetA = (1 - shield) * rectA[4]
                         local h_offsetA = (1 - shield) * height
-                        log("A: " .. h_offsetA)
+                        --log("A: " .. h_offsetA)
                         radial_absorb_shield:set_image(textureA, rectA[1], rectA[2] + y_offsetA, rectA[3], rectA[4] - y_offsetA)
                         radial_absorb_shield:set_h(height - h_offsetA)
                         radial_absorb_shield:set_bottom(radial_bg:bottom())
@@ -1418,7 +1418,7 @@ if pdth_hud.Options.HUD.MainHud then
                     if health ~= 0 then
                         local y_offsetH = (1 - health) * rect[4]
                         local h_offsetH = (1 - health) * height
-                        log("H:" .. h_offsetH)
+                        --log("H:" .. h_offsetH)
                         radial_absorb_health:set_image(texture, rect[1], rect[2] + y_offsetH, rect[3], rect[4] - y_offsetH)
                         radial_absorb_health:set_h(height - h_offsetH)
                         radial_absorb_health:set_bottom(radial_bg:bottom())

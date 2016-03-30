@@ -172,11 +172,17 @@ if Hooks then
 	
     if HUDChat then
         Hooks:PostHook(HUDChat, "_layout_output_panel", "PDTHHudReposChat", function(self)
-            local const = pdth_hud.constants
-            --self._panel:set_right(self._hud_panel:right() - (const.main_equipment_size * 1.5))
-            --self._panel:set_bottom(self._hud_panel:bottom() - (const.main_equipment_size * const.main_equipment_y_offset_multiplier + const.main_equipment_size * 2))
-            self._panel:set_right(self._hud_panel:right())
-            self._panel:set_top(self._hud_panel:top() - self._panel:child("output_panel"):top())
+            if pdth_hud.Options.HUD.MainHud then
+                if BigLobbyGlobals then
+                    local const = pdth_hud.constants
+                    --self._panel:set_right(self._hud_panel:right() - (const.main_equipment_size * 1.5))
+                    --self._panel:set_bottom(self._hud_panel:bottom() - (const.main_equipment_size * const.main_equipment_y_offset_multiplier + const.main_equipment_size * 2))
+                    self._panel:set_right(self._hud_panel:right())
+                    self._panel:set_top(self._hud_panel:top() - self._panel:child("output_panel"):top())
+                else
+                    self._panel:set_bottom(self._hud_panel:h() - pdth_hud.constants.main_health_h)
+                end
+            end
         end)
     end
     
