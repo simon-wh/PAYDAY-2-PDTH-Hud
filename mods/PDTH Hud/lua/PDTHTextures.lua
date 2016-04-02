@@ -886,7 +886,7 @@ pdth_hud.textures.weapons.glock_18c = {
 	}
 }
 pdth_hud.textures.weapons.pistol = {
-	texture = "guis/textures.weapons/hud_icons",
+	texture = "guis/textures/hud_icons",
 	texture_rect = {	
 		368, 
 		288, 

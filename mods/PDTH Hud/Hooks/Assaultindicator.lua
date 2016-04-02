@@ -78,7 +78,7 @@ function HUDAssaultCorner:init(hud, full_hud)
 		font_size = const.no_return_t_font_size,
 		font = tweak_data.menu.small_font
 	})
-	point_of_no_return_text:set_text("TIME TO ESCAPE")
+	point_of_no_return_text:set_text(managers.localization:text("time_escape"))
     managers.hud:make_fine_text(point_of_no_return_text)
     point_of_no_return_text:set_right(point_of_no_return_panel:w())
     point_of_no_return_text:set_top(0)
