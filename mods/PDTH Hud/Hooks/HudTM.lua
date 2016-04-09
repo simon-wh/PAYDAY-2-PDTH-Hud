@@ -275,8 +275,7 @@ if pdth_hud.Options.HUD.MainHud then
             icon = "",
             amount = 400,
             no_flash = true,
-            weapon = true,
-            default = true
+            weapon = true
         })
         
         self:add_special_equipment({
@@ -284,8 +283,7 @@ if pdth_hud.Options.HUD.MainHud then
             icon = "",
             amount = 400,
             no_flash = true,
-            weapon = true,
-            default = true
+            weapon = true
         })
         
         self:add_special_equipment({
@@ -293,31 +291,13 @@ if pdth_hud.Options.HUD.MainHud then
             icon = "frag_grenade",
             amount = 12,
             no_flash = true,
-            weapon = main_player,
-            default = true
+            weapon = main_player
         })
-        
-        self:add_special_equipment({
-            id = "deployable_equipment_panel",
-            icon = "equipment_doctor_bag",
-            amount = 2,
-            no_flash = true,
-            default = true
-        })
-        
-        self:add_special_equipment({
-            id = "cable_ties_panel",
-            icon = tweak_data.equipments.specials.cable_tie.icon,
-            amount = 2,
-            no_flash = true,
-            default = true
-        })
-        
-        self:layout_special_equipments()
         
         if self._main_player then
             local grenades_panel = self._player_panel:child("grenades_panel")
-            local deployable_equipment_panel = self._player_panel:child("deployable_equipment_panel")
+            local main_player_right = teammate_panel:right() - (const.main_equipment_size / 2)
+            
             self._primary_weapon_ammo = self._player_panel:panel({
                 id = "primary_weapon_ammo",
                 h = self._player_panel:h() - grenades_panel:bottom(),
@@ -325,7 +305,7 @@ if pdth_hud.Options.HUD.MainHud then
                 visible = false,
                 layer = 1
             })
-            self._primary_weapon_ammo:set_right(deployable_equipment_panel:right() - const.main_ammo_panel_x_offset)
+            self._primary_weapon_ammo:set_right((main_player_right) - const.main_ammo_panel_x_offset)
             self._primary_weapon_ammo:set_bottom(teammate_panel:bottom())
             self:InitAmmoPanel(self._primary_weapon_ammo)
             self._secondary_weapon_ammo = self._player_panel:panel({
@@ -422,10 +402,8 @@ if pdth_hud.Options.HUD.MainHud then
             local locked_to_auto = managers.weapon_factory:has_perk("fire_mode_auto", equipped_secondary.factory_id, equipped_secondary.blueprint)
             local locked_to_single = managers.weapon_factory:has_perk("fire_mode_single", equipped_secondary.factory_id, equipped_secondary.blueprint)
             if locked_to_single or not locked_to_auto and fire_mode == "single" then
-                log("set single")
                 self:set_weapon_firemode(1, "single")
             else
-                log("set auto")
                 self:set_weapon_firemode(1, "auto")
             end
         end
@@ -444,6 +422,8 @@ if pdth_hud.Options.HUD.MainHud then
     end
 
     function HUDTeammate:_set_weapon_selected(id, hud_icon)
+        self._selected_weapon = id
+    
         local is_secondary = id == 1
         local primary_weapon_panel = self._player_panel:child("primary_weapon")
         local secondary_weapon_panel = self._player_panel:child("secondary_weapon")
@@ -757,7 +737,15 @@ if pdth_hud.Options.HUD.MainHud then
     end
 
     function HUDTeammate:set_cable_tie(data)
-        local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
+        if not self._player_panel:child("cable_ties_panel") and data.amount > 0 then
+            self:add_special_equipment({
+                id = "cable_ties_panel",
+                icon = tweak_data.equipments.specials.cable_tie.icon,
+                amount = data.amount,
+                no_flash = true
+            })
+        end
+        
         self:set_special_equipment_image("cable_ties_panel", "guis/textures/hud_icons", {0, 144, 48, 48})
         self:set_cable_ties_amount(data.amount)
     end
@@ -782,47 +770,13 @@ if pdth_hud.Options.HUD.MainHud then
         self:set_condition("mugshot_normal")
         
         for i, special in pairs(self._special_equipment) do
-            if special.default then
+            if special.weapon then
                 special.panel:set_visible(true)
             end
         end
         
-        if not self._player_panel:child("grenades_panel") then
-            self:add_special_equipment({
-                id = "grenades_panel",
-                icon = "",
-                amount = 12,
-                no_flash = true,
-                weapon = self._main_player,
-                default = true
-            })
-            self._player_panel:child("grenades_panel"):set_visible(false)
-        end
-        
-        if not self._player_panel:child("deployable_equipment_panel") then
-            self:add_special_equipment({
-                id = "deployable_equipment_panel",
-                icon = "",
-                amount = 2,
-                no_flash = true,
-                default = true
-            })
-            self._player_panel:child("deployable_equipment_panel"):set_visible(false)
-        end
-        
-        if not self._player_panel:child("cable_ties_panel") then
-            self:add_special_equipment({
-                id = "cable_ties_panel",
-                icon = tweak_data.equipments.specials.cable_tie.icon,
-                amount = 2,
-                no_flash = true,
-                default = true
-            })
-            self._player_panel:child("cable_ties_panel"):set_visible(false)
-        end
-        
         self:teammate_progress(false, false, false, false)
-        self:_set_weapon_selected(1)
+        self:_set_weapon_selected(self._selected_weapon or 1)
     end
 
     function HUDTeammate:remove_panel()
@@ -830,7 +784,7 @@ if pdth_hud.Options.HUD.MainHud then
         teammate_panel:set_visible(false)
         local special_equipment = self._special_equipment
         for i, special in pairs(special_equipment) do
-            if not special.default then
+            if not special.weapon then
                 teammate_panel:remove(special.panel)
                 table.remove(special_equipment, i)
             end
@@ -898,7 +852,7 @@ if pdth_hud.Options.HUD.MainHud then
                 radial_health_panel:set_visible(true)
             else
                 for i, special in pairs(self._special_equipment) do
-                    if special.default then
+                    if special.weapon then
                         special.panel:set_visible(false)
                     else
                         self:remove_special_equipment(special.panel:name())
@@ -914,6 +868,15 @@ if pdth_hud.Options.HUD.MainHud then
     end
 
     function HUDTeammate:set_deployable_equipment(data)
+        if not self._player_panel:child("deployable_equipment_panel") and data.amount > 0 then
+            self:add_special_equipment({
+                id = "deployable_equipment_panel",
+                icon = "equipment_doctor_bag",
+                amount = data.amount,
+                no_flash = true
+            })
+        end
+    
         local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
         
         self:set_special_equipment_image("deployable_equipment_panel", icon, texture_rect)
@@ -925,18 +888,23 @@ if pdth_hud.Options.HUD.MainHud then
     end
 
     function HUDTeammate:set_grenades(data)
-        --[[if not PlayerBase.USE_GRENADES then
-            return
-        end]]--
+        if not self._player_panel:child("grenades_panel") and data.amount > 0 then
+            self:add_special_equipment({
+                id = "grenades_panel",
+                icon = "",
+                amount = data.amount,
+                no_flash = true,
+                weapon = self._main_player
+            })
+            self._player_panel:child("grenades_panel"):set_visible(false)
+        end
+        
         local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
         self:set_grenades_amount(data)
         self:set_special_equipment_image("grenades_panel", icon, texture_rect)
     end
 
     function HUDTeammate:set_grenades_amount(data)
-        --[[if not PlayerBase.USE_GRENADES then
-            return
-        end]]--
         self:set_special_equipment_amount("grenades_panel", data.amount)
     end
 
@@ -1008,7 +976,7 @@ if pdth_hud.Options.HUD.MainHud then
             end
         end
 
-        local panelData = {panel = equipment_panel, weapon = data.weapon, num_on_right = data.num_on_right, default = data.default}
+        local panelData = {panel = equipment_panel, weapon = data.weapon, num_on_right = data.num_on_right}
         
         if self._main_player and data.weapon then
             table.insert(self._weapons, panelData)
@@ -1020,9 +988,7 @@ if pdth_hud.Options.HUD.MainHud then
             bitmap:animate(callback(self, self, "equipment_flash_icon"))
         end
         
-        if not data.default then
-            self:layout_special_equipments()
-        end
+        self:layout_special_equipments()
     end
 
     function HUDTeammate:remove_special_equipment(equipment)
@@ -1073,7 +1039,7 @@ if pdth_hud.Options.HUD.MainHud then
             local amx, amy, amw, amh = txtAmount:text_rect()
             panel:set_w(panel:child("bitmap"):w() + (special.num_on_right and amw + const.num_on_right_inflation or 0))
             txtAmount:set_right(panel:w())
-            if not special.default then
+            if not special.weapon then
                 txtAmount:set_visible(tonumber(amount) > 1)
             end
             if tonumber(amount) < 1 and not special.weapon then
@@ -1141,7 +1107,7 @@ if pdth_hud.Options.HUD.MainHud then
         if self._main_player then
             for i, weap in ipairs(self._weapons) do
                 local panel = weap.panel
-                panel:set_right((main_player_right - const.main_equipment_size) - (panel:w() * (#self._weapons - i))) -- Has issues when no equipment is present
+                panel:set_right((main_player_right - const.main_equipment_size) - (panel:w() * (#self._weapons - i)))
                 panel:set_top(main_player_bottom)
             end
         end
