@@ -17,14 +17,6 @@
 		{ "hook_id" : "lib/managers/savefilemanager", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/criminalsmanager", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/statisticsmanager", "script_path" : "PDTHHUDCore.lua" },
-		{ "hook_id" : "lib/states/ingamearrested", "script_path" : "PDTHHUDCore.lua" },
-		{ "hook_id" : "lib/states/ingamebleedout", "script_path" : "PDTHHUDCore.lua" },
-		{ "hook_id" : "lib/units/beings/player/playerdamage", "script_path" : "PDTHHUDCore.lua" },
-		{ "hook_id" : "lib/units/beings/player/playerequipment", "script_path" : "PDTHHUDCore.lua" },
-		{ "hook_id" : "lib/units/enemies/cop/logics/coplogictrade", "script_path" : "PDTHHUDCore.lua" },
-		{ "hook_id" : "lib/units/equipment/sentry_gun/sentrygunbase", "script_path" : "PDTHHUDCore.lua" },
-		{ "hook_id" : "lib/units/interactions/interactionext", "script_path" : "PDTHHUDCore.lua" },
-		{ "hook_id" : "lib/units/props/moneywrapbase", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/units/weapons/trip_mine/tripminebase", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/hud/hudhint", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/hud/hudtemp", "script_path" : "PDTHHUDCore.lua" },
@@ -66,8 +58,7 @@
     "libraries" : [
         {
             "display_name" : "BeardLib",
-            "identifier" : "beardlib",
-            "optional" : "true"
+            "identifier" : "beardlib"
         }
     ]
 }
