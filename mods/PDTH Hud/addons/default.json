@@ -77,6 +77,32 @@
                     "sydney"
                 ]
             }
+        },
+        {
+            "name" : "white",
+            "display_name" : "White",
+            "main_texture" : "guis/textures/pd2/healthshield",
+            "portraits_info" : {
+                "w" : 192,
+                "h" : 390,
+                "included_characters" : [
+                    "russian",
+                    "german",
+                    "american",
+                    "spanish",
+                    "female_1",
+                    "old_hoxton",
+                    "jowi",
+                    "dragan",
+                    "jacket",
+                    "bonnie",
+                    "sokol",
+                    "dragon",
+                    "bodhi",
+                    "jimmy",
+                    "sydney"
+                ]
+            }
         }
     ]
 }
