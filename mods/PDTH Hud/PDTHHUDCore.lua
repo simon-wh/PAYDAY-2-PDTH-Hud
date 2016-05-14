@@ -73,9 +73,9 @@ function pdth_hud:_init()
 	for p, d in pairs(pdth_hud.Classes) do
 		dofile(pdth_hud.ClassPath .. d)
 	end
+	
 	self:LoadOptions()
     self:InitConstants()
-	self:LoadAddons()
 end
 
 function pdth_hud:LoadAddons()

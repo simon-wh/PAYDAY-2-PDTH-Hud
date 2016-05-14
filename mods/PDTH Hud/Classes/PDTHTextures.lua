@@ -1278,7 +1278,7 @@ function pdth_hud.textures:get_portrait_texture(character, section, main_player)
 
 	local icon = pdth_hud.textures.portraits[portrait_id][character] and pdth_hud.textures.portraits[portrait_id][character][section] and pdth_hud.textures.portraits[portrait_id][character][section].texture or pdth_hud.textures.portraits["default"][character] and pdth_hud.textures.portraits["default"][character][section] and pdth_hud.textures.portraits["default"][character][section].texture or pdth_hud.textures.portraits["fallback"][section].texture or nil
 	local texture_rect = pdth_hud.textures.portraits[portrait_id][character] and pdth_hud.textures.portraits[portrait_id][character][section] and pdth_hud.textures.portraits[portrait_id][character][section].texture_rect or pdth_hud.textures.portraits["default"][character] and pdth_hud.textures.portraits["default"][character][section] and pdth_hud.textures.portraits["default"][character][section].texture_rect or pdth_hud.textures.portraits["fallback"][section].texture_rect or nil
-	
+
 	return icon, texture_rect
 end
 
@@ -1336,3 +1336,5 @@ function pdth_hud.textures:ProcessAddon(data)
         end
     end
 end
+
+pdth_hud:LoadAddons()
