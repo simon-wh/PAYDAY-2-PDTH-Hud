@@ -80,7 +80,7 @@
         },
         {
             "name" : "white",
-            "display_name" : "White",
+            "display_name" : "White's",
             "main_texture" : "guis/textures/pd2/healthshield",
             "portraits_info" : {
                 "w" : 192,

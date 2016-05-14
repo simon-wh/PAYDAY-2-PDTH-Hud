@@ -111,6 +111,5 @@ if RequiredScript then
 		dofile( pdth_hud.HooksPath .. pdth_hud.Hooks[requiredScript] )
 	end
 
-	pdth_hud._post_hooks_chunk = pdth_hud._post_hooks_chunk or loadfile(self._post_hooks_path)
-	pdth_hud._post_hooks_chunk()
+	dofile(pdth_hud._post_hooks_path)
 end

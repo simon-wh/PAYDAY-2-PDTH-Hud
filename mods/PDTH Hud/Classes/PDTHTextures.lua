@@ -1316,6 +1316,7 @@ function pdth_hud.textures:ProcessAddon(data)
 				local current_x = 0
 
 				for _, character in pairs(info.included_characters) do
+					pdth_hud.textures.portraits[name][character] = pdth_hud.textures.portraits[name][character] or {}
 					local current_y = 0
 					for _, part in pairs(portrait_parts) do
 						pdth_hud.textures.portraits[name][character][part] = {
