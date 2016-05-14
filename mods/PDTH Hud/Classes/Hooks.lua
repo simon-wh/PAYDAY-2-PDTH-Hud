@@ -1,6 +1,8 @@
 Hooks:Add("BeardLibCreateScriptDataMods", "PDTHHudCallBeardLibSequenceFuncs", function()
-    for name, mod_data in pairs(pdth_hud.PDTHEquipment) do
-        BeardLib.ScriptData.Sequence:CreateMod(mod_data)
+    if BeardLib.ScriptData then
+        for name, mod_data in pairs(pdth_hud.PDTHEquipment) do
+            BeardLib.ScriptData.Sequence:CreateMod(mod_data)
+        end
     end
 end)
 
