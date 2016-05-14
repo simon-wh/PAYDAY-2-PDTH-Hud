@@ -4,414 +4,105 @@
             "name" : "default",
             "display_name" : "Default",
             "main_texture" : "guis/textures/pd2/masks",
-            "portraits" : [
-                {
-                    "character_id" : "russian",
-                    "texture_rects" : {
-                        "health" : [
-                            0, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            0, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            0, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            0,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "german",
-                    "texture_rects" : {
-                        "health" : [
-                            192, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            192, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            192, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            192,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "american",
-                    "texture_rects" : {
-                        "health" : [
-                            384, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            384, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            384, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            384,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "spanish",
-                    "texture_rects" : {
-                        "health" : [
-                            576, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            576, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            576, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            576,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "female_1",
-                    "texture_rects" : {
-                        "health" : [
-                            768, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            768, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            768, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            768,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "old_hoxton",
-                    "texture_rects" : {
-                        "health" : [
-                            960, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            960, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            960, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            960,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "jowi",
-                    "texture_rects" : {
-                        "health" : [
-                            1152, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            1152, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            1152, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            1152,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "dragan",
-                    "texture_rects" : {
-                        "health" : [
-                            1344, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            1344, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            1344, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            1344,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "jacket",
-                    "texture_rects" : {
-                        "health" : [
-                            1536, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            1536, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            1536, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            1536,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "bonnie",
-                    "texture_rects" : {
-                        "health" : [
-                            1728, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            1728, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            1728, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            1728,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "sokol",
-                    "texture_rects" : {
-                        "health" : [
-                            1920, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            1920, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            1920, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            1920,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "dragon",
-                    "texture_rects" : {
-                        "health" : [
-                            2112, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            2112, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            2112, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            2112,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "bodhi",
-                    "texture_rects" : {
-                        "health" : [
-                            2304, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            2304, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            2304, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            2304,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                },
-                {
-                    "character_id" : "jimmy",
-                    "texture_rects" : {
-                        "health" : [
-                            2496, 
-                            0, 
-                            192, 
-                            390
-                        ],
-                        "armor" : [
-                            2496, 
-                            390, 
-                            192, 
-                            390
-                        ],
-                        "bg" : [
-                            2496, 
-                            780, 
-                            192, 
-                            390
-                        ],
-                        "tm" : [
-                            2496,
-                            1170,
-                            192,
-                            192
-                        ]
-                    }
-                }
-            ]
+            "portraits_info" : {
+                "w" : 192,
+                "h" : 390,
+                "included_characters" : [
+                    "russian",
+                    "german",
+                    "american",
+                    "spanish",
+                    "female_1",
+                    "old_hoxton",
+                    "jowi",
+                    "dragan",
+                    "jacket",
+                    "bonnie",
+                    "sokol",
+                    "dragon",
+                    "bodhi",
+                    "jimmy",
+                    "sydney"
+                ]
+            }
+        },
+        {
+            "name" : "default_begins",
+            "display_name" : "Default (Begins)",
+            "main_texture" : "guis/textures/pd2/healthshield_divider",
+            "portraits_info" : {
+                "w" : 192,
+                "h" : 390,
+                "included_characters" : [
+                    "russian",
+                    "german",
+                    "american",
+                    "spanish",
+                    "female_1",
+                    "old_hoxton",
+                    "jowi",
+                    "dragan",
+                    "jacket",
+                    "bonnie",
+                    "sokol",
+                    "dragon",
+                    "bodhi",
+                    "jimmy",
+                    "sydney"
+                ]
+            }
+        },
+        {
+            "name" : "default_unmasked",
+            "display_name" : "Default (Unmasked)",
+            "main_texture" : "guis/textures/pd2/job_circles",
+            "portraits_info" : {
+                "w" : 192,
+                "h" : 390,
+                "included_characters" : [
+                    "russian",
+                    "german",
+                    "american",
+                    "spanish",
+                    "female_1",
+                    "old_hoxton",
+                    "jowi",
+                    "dragan",
+                    "jacket",
+                    "bonnie",
+                    "sokol",
+                    "dragon",
+                    "bodhi",
+                    "jimmy",
+                    "sydney"
+                ]
+            }
+        },
+        {
+            "name" : "white",
+            "display_name" : "White's",
+            "main_texture" : "guis/textures/pd2/healthshield",
+            "portraits_info" : {
+                "w" : 192,
+                "h" : 390,
+                "included_characters" : [
+                    "russian",
+                    "german",
+                    "american",
+                    "spanish",
+                    "female_1",
+                    "old_hoxton",
+                    "jowi",
+                    "dragan",
+                    "jacket",
+                    "bonnie",
+                    "sokol",
+                    "dragon",
+                    "bodhi",
+                    "jimmy",
+                    "sydney"
+                ]
+            }
         }
     ]
 }
