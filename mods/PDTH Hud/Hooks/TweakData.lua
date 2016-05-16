@@ -26,16 +26,16 @@ tweak_data.contour.interactable_icon.standard_color = Vector3(0, 0, 0)
 tweak_data.contour.interactable_icon.selected_color = Vector3(0, 1, 0)
 tweak_data.contour.interactable_icon.standard_opacity = 0
 
-if pdth_hud.Options.Grading then
-    for level_id, value in pairs(pdth_hud.Options.Grading) do
-        if tweak_data.levels[level_id] then
-            tweak_data.levels[level_id].env_params = tweak_data.levels[level_id].env_params or {}
-            tweak_data.levels[level_id].env_params.color_grading = value == 1 and pdth_hud.colour_gradings[pdth_hud.Options.Menu.Grading] or pdth_hud.heist_colour_gradings[value]
-        end
+for _, level in pairs(tweak_data.levels._level_index) do
+    local val = pdth_hud.Options:GetValue("Gradings/"..level, true)
+    if val and tweak_data.levels[level] ~= nil then
+        tweak_data.levels[level].env_params = tweak_data.levels[level].env_params or {}
+        tweak_data.levels[level].env_params.color_grading = (val == pdth_hud.heist_colour_gradings[1] and pdth_hud.Options:GetValue("Grading", true) or val)
     end
 end
 
-if pdth_hud.Options.HUD.MainHud then
+
+if pdth_hud.Options:GetValue("HUD/MainHud") then
     tweak_data.hud_icons.equipment_body_bag = {
         texture = "guis/textures/pd2/equipment",
         texture_rect = {
@@ -159,9 +159,9 @@ if pdth_hud.Options.HUD.MainHud then
     tweak_data.hud_icons.four_projectile = {
         texture = "guis/textures/upgrade_images",
         texture_rect = {
-            972, 
-            1886, 
-            160, 
+            972,
+            1886,
+            160,
             167
         }
     }
@@ -169,9 +169,9 @@ if pdth_hud.Options.HUD.MainHud then
     tweak_data.hud_icons.ace_projectile = {
         texture = "guis/textures/upgrade_images",
         texture_rect = {
-            406, 
-            2079, 
-            163, 
+            406,
+            2079,
+            163,
             167
         }
     }
@@ -179,9 +179,9 @@ if pdth_hud.Options.HUD.MainHud then
     tweak_data.hud_icons.jav_projectile = {
         texture = "guis/textures/upgrade_images",
         texture_rect = {
-            1151, 
+            1151,
             2082,
-            176, 
+            176,
             164
         }
     }
@@ -613,7 +613,7 @@ if pdth_hud.Options.HUD.MainHud then
             48
         }
     }
-    
+
     tweak_data.hud_icons.equipment_printer_ink = {
         texture = "guis/textures/hud_icons",
         texture_rect = {
@@ -623,7 +623,7 @@ if pdth_hud.Options.HUD.MainHud then
             48
         }
     }
-    
+
     tweak_data.hud_icons.equipment_plates = {
         texture = "guis/textures/hud_icons",
         texture_rect = {
@@ -633,7 +633,7 @@ if pdth_hud.Options.HUD.MainHud then
             48
         }
     }
-    
+
     tweak_data.hud_icons.equipment_paper_roll = {
         texture = "guis/textures/hud_icons",
         texture_rect = {
@@ -643,7 +643,7 @@ if pdth_hud.Options.HUD.MainHud then
             48
         }
     }
-    
+
     tweak_data.hud_icons.equipment_stash_server = {
         texture = "guis/textures/hud_icons",
         texture_rect = {

@@ -1222,7 +1222,7 @@ function pdth_hud.textures:get_icon_data(icon_id)
 end
 
 function pdth_hud.textures:get_bullet_texture(category)
-    local option = pdth_hud.Options.HUD.Bullet
+    local option = pdth_hud.Options:GetValue("HUD/Bullet")
 
     local bulletTexture
 
@@ -1244,66 +1244,72 @@ function pdth_hud.textures:get_bullet_texture(category)
 end
 
 function pdth_hud.textures:get_weapon_texture(weapon_id, category)
-	local rectangle = pdth_hud.textures.weapons[weapon_id] and pdth_hud.textures.weapons[weapon_id].texture_rect or pdth_hud.textures.weapons[category] and pdth_hud.textures.weapons[category].texture_rect or {
+	local rectangle = self.weapons[weapon_id] and self.weapons[weapon_id].texture_rect or self.weapons[category] and self.weapons[category].texture_rect or {
 		0,
 		0,
 		0,
 		0
 	}
-	local texture = pdth_hud.textures.weapons[weapon_id] and pdth_hud.textures.weapons[weapon_id].texture or pdth_hud.textures.weapons[category] and pdth_hud.textures.weapons[category].texture or "guis/textures/upgrade_images"
+	local texture = self.weapons[weapon_id] and self.weapons[weapon_id].texture or self.weapons[category] and self.weapons[category].texture or "guis/textures/upgrade_images"
 
     return texture, rectangle
 end
 
+pdth_hud.textures._portrait_order = {}
+
+function pdth_hud.textures:refresh_portrait_order()
+	self._portrait_order = clone(pdth_hud.portrait_options)
+
+	table.sort(self._portrait_order, function(a, b)
+        return pdth_hud.Options:GetValue("HUD/portraits/" .. a) < pdth_hud.Options:GetValue("HUD/portraits/" .. b)
+    end)
+end
+
 function pdth_hud.textures:get_portrait_texture(character, section, main_player)
-    if not main_player and section ~= "tm" and pdth_hud.Options.HUD.OGTMHealth then
-        local icon = pdth_hud.textures.portraits.teammate[section].texture
-        local texture_rect = pdth_hud.textures.portraits.teammate[section].texture_rect
+    if not main_player and section ~= "tm" and pdth_hud.Options:GetValue("HUD/OGTMHealth") then
+        local icon = self.portraits.teammate[section].texture
+        local texture_rect = self.portraits.teammate[section].texture_rect
         return icon, texture_rect
     end
 
-	local order = deep_clone(pdth_hud.portrait_options)
-
-    table.sort(order, function(a, b)
-        return pdth_hud.Options.portraits[a] < pdth_hud.Options.portraits[b]
-    end)
+	local order = self._portrait_order
 
 	local portrait_id = "default"
 	for i, portrait in pairs(order) do
-		if portrait and pdth_hud.textures.portraits[portrait] and pdth_hud.textures.portraits[portrait][character] then
+		if portrait and self.portraits[portrait] and self.portraits[portrait][character] then
 			portrait_id = portrait
 			break
 		end
 	end
 
-	local icon = pdth_hud.textures.portraits[portrait_id][character] and pdth_hud.textures.portraits[portrait_id][character][section] and pdth_hud.textures.portraits[portrait_id][character][section].texture or pdth_hud.textures.portraits["default"][character] and pdth_hud.textures.portraits["default"][character][section] and pdth_hud.textures.portraits["default"][character][section].texture or pdth_hud.textures.portraits["fallback"][section].texture or nil
-	local texture_rect = pdth_hud.textures.portraits[portrait_id][character] and pdth_hud.textures.portraits[portrait_id][character][section] and pdth_hud.textures.portraits[portrait_id][character][section].texture_rect or pdth_hud.textures.portraits["default"][character] and pdth_hud.textures.portraits["default"][character][section] and pdth_hud.textures.portraits["default"][character][section].texture_rect or pdth_hud.textures.portraits["fallback"][section].texture_rect or nil
+	local icon = self.portraits[portrait_id][character] and self.portraits[portrait_id][character][section] and self.portraits[portrait_id][character][section].texture or self.portraits["default"][character] and self.portraits["default"][character][section] and self.portraits["default"][character][section].texture or self.portraits["fallback"][section].texture or nil
+	local texture_rect = self.portraits[portrait_id][character] and self.portraits[portrait_id][character][section] and self.portraits[portrait_id][character][section].texture_rect or self.portraits["default"][character] and self.portraits["default"][character][section] and self.portraits["default"][character][section].texture_rect or self.portraits["fallback"][section].texture_rect or nil
 
 	return icon, texture_rect
 end
 
 local portrait_parts = { "health", "armor", "bg", "tm" }
-function pdth_hud.textures:ProcessAddon(data)
+function pdth_hud.textures:ProcessAddon(data, portrait_tbl)
     if data.portraits then
         for _, portait_set in pairs(data.portraits) do
             local name = portait_set.name
             local display_name = portait_set.display_name
             local main_texture = portait_set.main_texture
             if display_name then
-				pdth_hud.portrait_options[#pdth_hud.portrait_options + 1] = name
+				table.insert(portrait_tbl, name)
                 Hooks:Add("LocalizationManagerPostInit", "PDTHHudPortrait" .. name, function(loc)
                     LocalizationManager:add_localized_strings({
                         ["pdth_" .. name] = display_name
                     })
                 end)
             end
-            pdth_hud.textures.portraits[name] = {}
+            self.portraits[name] = {}
 			if portait_set.portraits then
 	            for _, portrait in pairs(portait_set.portraits) do
 	                local character_id = portrait.character_id
-	                pdth_hud.textures.portraits[name][character_id] = {}
+	                self.portraits[name][character_id] = {}
 	                for ptype, rect in pairs(portrait.texture_rects) do
-	                    pdth_hud.textures.portraits[name][character_id][ptype] = {
+	                    self.portraits[name][character_id][ptype] = {
 	                        texture = portait_set.texture or main_texture,
 	                        texture_rect = rect
 	                    }
@@ -1316,10 +1322,10 @@ function pdth_hud.textures:ProcessAddon(data)
 				local current_x = 0
 
 				for _, character in pairs(info.included_characters) do
-					pdth_hud.textures.portraits[name][character] = pdth_hud.textures.portraits[name][character] or {}
+					self.portraits[name][character] = self.portraits[name][character] or {}
 					local current_y = 0
 					for _, part in pairs(portrait_parts) do
-						pdth_hud.textures.portraits[name][character][part] = {
+						self.portraits[name][character][part] = {
 							texture = main_texture,
 							texture_rect = {
 								current_x,
@@ -1337,4 +1343,4 @@ function pdth_hud.textures:ProcessAddon(data)
     end
 end
 
-pdth_hud:LoadAddons()
+--pdth_hud:LoadAddons()

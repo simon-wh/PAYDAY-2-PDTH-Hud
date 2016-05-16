@@ -1,4 +1,4 @@
-if pdth_hud.Options.HUD.Assault and not (Restoration and Restoration.options.restoration_assault_global) then
+if pdth_hud.Options:GetValue("HUD/Assault") and not (Restoration and Restoration.options.restoration_assault_global) then
 function HUDAssaultCorner:init(hud, full_hud)
     local const = pdth_hud.constants
 
@@ -10,9 +10,9 @@ function HUDAssaultCorner:init(hud, full_hud)
     self._assault_color_fx = Color.red
     self._vip_assault_color_fx = Color(1, 1, 1, 0)
     self._fx_color =Color.red
-    
+
     self._is_casing_mode = false
-    
+
     local num_hostages = self._hud_panel:text({
 		name = "num_hostages",
 		text = managers.localization:text("pdth_hud_hostages") .. " 0",
@@ -22,7 +22,7 @@ function HUDAssaultCorner:init(hud, full_hud)
 		font = tweak_data.menu.small_font_noshadow
 	})
     self:reposition_hostages()
-    
+
 	local assault_panel = self._hud_panel:panel({
 		visible = false,
 		name = "assault_panel",
@@ -32,7 +32,7 @@ function HUDAssaultCorner:init(hud, full_hud)
 	})
 	assault_panel:set_bottom(num_hostages:top())
 	assault_panel:set_center_x(self._hud_panel:center_x())
-    
+
 	local icon_assaultbox = assault_panel:bitmap({
 		name = "icon_assaultbox",
 		blend_mode = "normal",
@@ -43,7 +43,7 @@ function HUDAssaultCorner:init(hud, full_hud)
 		w = assault_panel:w(),
 		h = assault_panel:h()
 	})
-    
+
 	local control_assault_title = assault_panel:text({
 		name = "control_assault_title",
 		text = managers.localization:text("menu_assault"),
@@ -57,16 +57,16 @@ function HUDAssaultCorner:init(hud, full_hud)
     managers.hud:make_fine_text(control_assault_title)
     control_assault_title:set_center_x(icon_assaultbox:center_x())
     control_assault_title:set_top(icon_assaultbox:center_y() - const.assault_y_offset)
-    
+
 	if self._hud_panel:child("point_of_no_return_panel") then
 		self._hud_panel:remove(self._hud_panel:child("point_of_no_return_panel"))
 	end
-    
+
 	local point_of_no_return_panel = self._hud_panel:panel({
 		visible = false,
 		name = "point_of_no_return_panel",
 	})
-	
+
 	self._noreturn_color = Color(1, 1, 0, 0)
 
 	local point_of_no_return_text = point_of_no_return_panel:text({
@@ -82,7 +82,7 @@ function HUDAssaultCorner:init(hud, full_hud)
     managers.hud:make_fine_text(point_of_no_return_text)
     point_of_no_return_text:set_right(point_of_no_return_panel:w())
     point_of_no_return_text:set_top(0)
-    
+
 	local point_of_no_return_timer = point_of_no_return_panel:text({
 		name = "point_of_no_return_timer",
 		text = "",
@@ -95,11 +95,11 @@ function HUDAssaultCorner:init(hud, full_hud)
     managers.hud:make_fine_text(point_of_no_return_timer)
 	point_of_no_return_timer:set_right(point_of_no_return_text:right())
 	point_of_no_return_timer:set_top(point_of_no_return_text:bottom())
-	
+
 	if self._hud_panel:child("casing_panel") then
 		self._hud_panel:remove(self._hud_panel:child("casing_panel"))
 	end
-    
+
 	local casing_panel = self._hud_panel:panel({
 		visible = false,
 		name = "casing_panel",
@@ -108,7 +108,7 @@ function HUDAssaultCorner:init(hud, full_hud)
 	})
     casing_panel:set_bottom(num_hostages:bottom())
 	casing_panel:set_center_x(self._hud_panel:center_x())
-    
+
 	local icon_casingbox = casing_panel:bitmap({
 		name = "icon_casingbox",
 		blend_mode = "add",
@@ -117,9 +117,9 @@ function HUDAssaultCorner:init(hud, full_hud)
 		w = casing_panel:w(),
 		h = casing_panel:h()
 	})
-	
-	
-	
+
+
+
 end
 
 function HUDAssaultCorner:set_buff_enabled(buff_name, enabled)
@@ -137,17 +137,17 @@ function HUDAssaultCorner:_start_assault(text_list)
 	num_hostages:set_alpha(0.5)
 	casing_panel:set_visible(false)
     self._is_casing_mode = false
-    
+
     local color = self._assault_color
-    
+
     if self._assault_mode == "phalanx" then
 		color = self._vip_assault_color
         self._fx_color = self._vip_assault_color_fx
 	end
-    
+
     icon_assaultbox:set_color(color)
     control_assault_title:set_color(color)
-    
+
 	assault_panel:animate(callback(self, self, "flash_assault_title"), true)
 end
 
@@ -180,15 +180,15 @@ function HUDAssaultCorner:_end_assault()
 		return
 	end
 	self._assault = false
-    
-    if BetterLightFX then		
-        BetterLightFX:EndEvent("AssaultIndicator")		
+
+    if BetterLightFX then
+        BetterLightFX:EndEvent("AssaultIndicator")
     end
-    
+
 	assault_panel:set_visible(false)
 	assault_panel:stop()
 end
-	
+
 function HUDAssaultCorner:set_control_info(data)
 	local hostages_panel = self._hud_panel:child("hostages_panel")
 	local num_hostages = self._hud_panel:child("num_hostages")
@@ -236,7 +236,7 @@ function HUDAssaultCorner:_show_icon_assaultbox(icon_assaultbox)
 end
 
 function HUDAssaultCorner:_hide_icon_assaultbox(icon_assaultbox)
-    
+
 end
 
 function HUDAssaultCorner:_set_hostage_offseted(is_offseted)
@@ -262,11 +262,11 @@ function HUDAssaultCorner:_animate_show_noreturn(point_of_no_return_panel, delay
 	local icon_noreturnbox = point_of_no_return_panel:child("icon_noreturnbox")
 	local point_of_no_return_text = point_of_no_return_panel:child("point_of_no_return_text")
 	local point_of_no_return_timer = point_of_no_return_panel:child("point_of_no_return_timer")
-    
+
 	point_of_no_return_panel:set_visible(false)
 	wait(delay_time)
 	point_of_no_return_panel:set_visible(true)
-    
+
     self._PoNR_flashing = true
 end
 
@@ -274,12 +274,12 @@ function HUDAssaultCorner:feed_point_of_no_return_timer(time, is_inside)
 	local point_of_no_return_panel = self._hud_panel:child("point_of_no_return_panel")
     local point_of_no_return_timer = point_of_no_return_panel:child("point_of_no_return_timer")
     local point_of_no_return_text = point_of_no_return_panel:child("point_of_no_return_text")
-    
+
 	time = math.floor(time)
 	local minutes = math.floor(time / 60)
 	local seconds = math.round(time - minutes * 60)
 	local text = (minutes < 10 and "0" .. minutes or minutes) .. ":" .. (seconds < 10 and "0" .. seconds or seconds)
-    
+
 	point_of_no_return_timer:set_text(text)
     managers.hud:make_fine_text(point_of_no_return_timer)
 	point_of_no_return_timer:set_right(point_of_no_return_text:right())
@@ -299,12 +299,12 @@ function HUDAssaultCorner:flash_point_of_no_return_timer(beep)
 			local g = math.lerp(0 or self._point_of_no_return_color.g, 0.8, n)
 			local b = math.lerp(0 or self._point_of_no_return_color.b, 0.2, n)
 			o:set_color(Color(r, g, b))
-            
+
             if BetterLightFX then
                 BetterLightFX:StartEvent("PointOfNoReturn")
                 BetterLightFX:SetColor(r, g, b, 1, "PointOfNoReturn")
             end
-            
+
 			o:set_font_size(math.lerp(const.no_return_timer_font_size , const.no_return_timer_font_size_pulse, n))
 		end
         if BetterLightFX then
@@ -319,17 +319,16 @@ end
 
 function HUDAssaultCorner:flash_assault_title(o, assault)
 	while true do
-        local alpha_d = 0.5 + (math.sin( Application:time()*750 )+1)/4  
+        local alpha_d = 0.5 + (math.sin( Application:time()*750 )+1)/4
 		o:set_alpha(alpha_d)
-        
+
         if BetterLightFX and self._assault and assault then
             BetterLightFX:StartEvent("AssaultIndicator")
             BetterLightFX:UpdateEvent("AssaultIndicator", {color = Color(alpha_d, self._fx_color.red, self._fx_color.green, self._fx_color.blue)})
         end
-        
+
 		coroutine.yield()
 	end
 end
 
 end
-

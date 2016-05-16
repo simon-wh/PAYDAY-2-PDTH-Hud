@@ -1,24 +1,24 @@
 if not _G.pdth_hud then
-	_G.pdth_hud = {}
+	_G.pdth_hud = ModCore:new(ModPath .. "main_config.xml")
 	local self = pdth_hud
-    self.name = "PDTHHudReborn"
-	self.Options = {}
 
-	self.ModPath = ModPath
+	--self.Options = {}
+
 	self.AddonPath = self.ModPath .. "addons/"
 	self.ClassPath = self.ModPath .. "Classes/"
 	self.HooksPath = self.ModPath .. "Hooks/"
-	self.SavePath = SavePath
     self.Classes = {
         "Constants.lua",
         "PDTHTextures.lua",
         "PDTHEquipment.lua",
-        "DefaultOptions.lua",
-        "Options.lua",
+		"OptionsCallbacks.lua",
+        --"DefaultOptions.lua",
+        --"Options.lua",
         "ChallengesManager.lua",
         "ChallengesTweakData.lua",
 		"Menu.lua",
-		"Hooks.lua"
+		"Hooks.lua",
+
     }
 
     self.Hooks = {
@@ -33,39 +33,43 @@ if not _G.pdth_hud then
         ["lib/managers/hudmanagerpd2"] = "HudManagerPD2.lua",
         ["lib/managers/hud/hudteammate"] = "HudTeammate.lua",
         ["lib/managers/hud/hudpresenter"] = "HudPresenter.lua",
-        ["lib/tweak_data/tweakdata"] = "TweakData.lua"
+        ["lib/tweak_data/tweakdata"] = "TweakData.lua",
+		["lib/managers/menu/menucomponentmanager"] = "MenuComponentManager.lua",
+		["lib/managers/menu/textboxgui"] = "PortraitPreviewGUI.lua"
     }
 
 	self._post_hooks_path = self.ClassPath .. "PostHooks.lua"
 
     self.colour_gradings = {
-        [1] = "color_payday",
-        [2] = "color_heat",
-        [3] = "color_nice",
-        [4] = "color_sin",
-        [5] = "color_bhd",
-        [6] = "color_xgen",
-        [7] = "color_xxxgen",
-        [8] = "color_matrix",
+        "color_payday",
+        "color_heat",
+        "color_nice",
+        "color_sin",
+        "color_bhd",
+        "color_xgen",
+        "color_xxxgen",
+        "color_matrix",
     }
     self.heist_colour_gradings = {
-        [1] = "color_main",
-        [2] = "color_payday",
-        [3] = "color_heat",
-        [4] = "color_nice",
-        [5] = "color_sin",
-        [6] = "color_bhd",
-        [7] = "color_xgen",
-        [8] = "color_xxxgen",
-        [9] = "color_matrix",
+        "color_main",
+        "color_payday",
+        "color_heat",
+        "color_nice",
+        "color_sin",
+        "color_bhd",
+        "color_xgen",
+        "color_xxxgen",
+        "color_matrix"
     }
 
     self.portrait_options = {}
 
+	self.portrait_value_options = {}
+
     self.bullet_style_options = {
-        [1] = "off",
-        [2] = "normal",
-        [3] = "coloured"
+        "off",
+        "normal",
+        "coloured"
     }
 end
 
@@ -73,8 +77,10 @@ function pdth_hud:_init()
 	for p, d in pairs(pdth_hud.Classes) do
 		dofile(pdth_hud.ClassPath .. d)
 	end
-	
-	self:LoadOptions()
+	log("init modules")
+	self:init_modules()
+	--self:LoadOptions()
+	pdth_hud.textures:refresh_portrait_order()
     self:InitConstants()
 end
 
@@ -85,19 +91,54 @@ function pdth_hud:LoadAddons()
             local file = io.open(self.AddonPath .. path, "r")
             local file_contents = file:read("*all")
             local data = json.decode( file_contents )
-            pdth_hud.textures:ProcessAddon(data)
+            pdth_hud.textures:ProcessAddon(data, self.portrait_options)
             file:close()
         end
     end
 
-    pdth_hud.portrait_value_options = pdth_hud.portrait_value_options or {}
-    for i, portait in pairs(pdth_hud.portrait_options) do
+
+    for i, portait in pairs(self.portrait_options) do
         pdth_hud.portrait_value_options[i] = "portrait_value_" .. i
     end
+	local portrait_tbl = {}
+	for i, portrait in pairs(self.portrait_options) do
+		portrait_tbl[i] = { name = portrait, title_id = "pdth_" .. portrait, default_value = i }
+	end
+
+	return portrait_tbl
 end
 
-function pdth_hud:log(string)
-	log("PDTH Hud: " .. string)
+local level_blacklist = {
+	"mia2_new",
+	"driving_escapes_industry_day",
+	"driving_escapes_city_day"
+}
+function pdth_hud:GetLevels()
+	local level_tbl = {}
+	for _, level in pairs(tweak_data.levels._level_index) do
+		if tweak_data.levels[level] ~= nil and not table.contains(level_blacklist, level) then
+			local suffix = ""
+            if string.ends(level, "_night") then
+                suffix = " Night"
+            end
+            if string.ends(level, "_day") then
+                suffix = " Day"
+            end
+
+			local is_current_level = not Global.load_start_menu and Global.game_settings and level == Global.game_settings.level_id
+			table.insert(level_tbl, {
+				name = level,
+				title_id = function() return managers.localization:exists(tweak_data.levels[level].name_id) and managers.localization:text(tweak_data.levels[level].name_id) .. suffix or level end,
+				default_value = 1,
+				merge_data = is_current_level and {
+					row_item_color = Color.yellow,
+                    hightlight_color = Color.yellow,
+				} or nil
+			})
+		end
+	end
+
+	return level_tbl
 end
 
 if not pdth_hud.setup then

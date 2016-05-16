@@ -19,7 +19,7 @@ if MenuSetup then
 end
 if CriminalsManager then
     Hooks:PostHook(CriminalsManager, "add_character", "pdth_hud_ai_portrait", function(ply)
-        if pdth_hud.Options.HUD.MainHud and managers.hud then
+        if pdth_hud.Options:GetValue("HUD/MainHud") and managers.hud then
             for i = 1, HUDManager.PLAYER_PANEL do
                 managers.hud._teammate_panels[i]:RefreshPortraits()
             end
@@ -35,21 +35,21 @@ if MenuSceneManager then
     Hooks:PostHook(MenuSceneManager, "_set_up_environments", "PDTHHudApplyMenuCGrade", function(self)
         for env, data in pairs(self._environments) do
             if data.color_grading then
-                data.color_grading = pdth_hud.colour_gradings[pdth_hud.Options.Menu.Grading]
+                data.color_grading = pdth_hud.Options:GetValue("Grading", true)
             end
         end
     end)
 end
 if IngameAccessCamera then
     Hooks:PostHook(IngameAccessCamera, "at_enter", "PDTHHudApplyCameraGrade", function(self)
-        if not pdth_hud.Options.HUD.CameraGrading then
+        if not pdth_hud.Options:GetValue("HUD/CameraGrading") then
             managers.environment_controller:set_default_color_grading(self._saved_default_color_grading)
             managers.environment_controller:refresh_render_settings()
         end
     end)
 end
 
-if HUDChat and pdth_hud.Options.HUD.MainHud then
+if HUDChat and pdth_hud.Options:GetValue("HUD/MainHud") then
     Hooks:PostHook(HUDChat, "_layout_output_panel", "PDTHHudReposChat", function(self)
         if BigLobbyGlobals then
             local const = pdth_hud.constants
@@ -72,7 +72,7 @@ end
 
 if SecurityCamera then
     Hooks:PostHook(SecurityCamera, "generate_cooldown", "PDTHHudDestroyedCamera", function(self, amount)
-        if pdth_hud.Options.HUD.Cameras then
+        if pdth_hud.Options:GetValue("HUD/Cameras") then
             if managers.job:current_level_id() ~= "safehouse" then
                 managers.hint:show_hint("destroyed_security_camera")
             end

@@ -3,16 +3,16 @@ if not GoonBase then
 
     function NewRaycastWeaponBase.toggle_gadget(self)
         local state = self.orig.toggle_gadget(self)
-        if pdth_hud.Options.HUD.Gadget then
+        if pdth_hud.Options:GetValue("Gadget") then
             if state then
-                self._stored_gadget_on = self._gadget_on 
+                self._stored_gadget_on = self._gadget_on
             end
         end
         return state
     end
 
     function NewRaycastWeaponBase.on_equip(self)
-        if pdth_hud.Options.HUD.Gadget then
+        if pdth_hud.Options:GetValue("Gadget") then
             self:set_gadget_on(self._stored_gadget_on or 0, false)
         else
             self._stored_gadget_on = nil

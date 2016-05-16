@@ -7,22 +7,11 @@ Hooks:Add("BeardLibCreateScriptDataMods", "PDTHHudCallBeardLibSequenceFuncs", fu
 end)
 
 Hooks:Add("LocalizationManagerPostInit", "PDTH_Localization", function(loc)
-    if Idstring("russian"):key() == SystemInfo:language():key() then
-        LocalizationManager:load_localization_file(pdth_hud.ModPath ..  "/Localization/russian.txt" )
-    elseif Idstring("german"):key() == SystemInfo:language():key() then
-        LocalizationManager:load_localization_file(pdth_hud.ModPath ..  "/Localization/german.txt" )
-    elseif Idstring("french"):key() == SystemInfo:language():key() then
-        LocalizationManager:load_localization_file(pdth_hud.ModPath ..  "/Localization/french.txt" )
-    elseif Idstring("dutch"):key() == SystemInfo:language():key() then
-        LocalizationManager:load_localization_file(pdth_hud.ModPath ..  "/Localization/dutch.txt" )
-    else
-        LocalizationManager:load_localization_file(pdth_hud.ModPath ..  "/Localization/english.txt" )
-    end
+    local portrait_localization_tbl = {}
     for i = 1, #pdth_hud.portrait_options do
-        LocalizationManager:add_localized_strings({
-            ["portrait_value_" .. i] = i
-        })
+        portrait_localization_tbl["portrait_value_" .. i] = i
     end
+    LocalizationManager:add_localized_strings(portrait_localization_tbl)
 end)
 
 Hooks:Add("StatisticsManagerKilledByAnyone", "PDTHHudStatisticsManagerKilledByAnyone", function( self, data )

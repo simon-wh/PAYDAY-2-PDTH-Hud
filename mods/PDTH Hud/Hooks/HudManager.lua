@@ -1,4 +1,4 @@
-if pdth_hud.Options.HUD.MainHud then
+if pdth_hud.Options:GetValue("HUD/MainHud") then
     Hooks:PostHook(HUDManager, "set_mugshot_talk", "PDTHHudset_mugshot_talk", function(self, id, active)
         local data = self:_get_mugshot_data(id)
         if not data then

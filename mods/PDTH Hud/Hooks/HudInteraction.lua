@@ -1,4 +1,4 @@
-if pdth_hud.Options.HUD.Interaction then
+if pdth_hud.Options:GetValue("HUD/Interaction") then
     local interact_tr = {0, 392, 360, 22}
     local background_tr = {0, 414, 360, 22}
 

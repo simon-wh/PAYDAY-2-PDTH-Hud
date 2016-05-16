@@ -1,0 +1,62 @@
+<mod name="PDTHHudReborn" global_key="pdth_hud">
+    <modules>
+        <LocalizationModule directory="Localization" default="english.txt">
+            <localization language="russian" file="russian.txt"/>
+            <localization language="german" file="german.txt"/>
+            <localization language="french" file="french.txt"/>
+            <localization language="dutch" file="dutch.txt"/>
+        </LocalizationModule>
+        <OptionModule build_menu="true" auto_load="true" save_file="PDTHHudRebornoptions.txt">
+            <options>
+                <merge_data>
+                    <merge_data area_bg="half">
+                    </merge_data>
+                </merge_data>
+                <option_group name="HUD">
+                    <merge_data>
+                        <merge_data area_bg="half">
+                        </merge_data>
+                    </merge_data>
+                    <option type="bool" default_value="true" name="MainHud"/>
+                    <option type="bool" default_value="true" name="Assault"/>
+                    <option type="bool" default_value="true" name="Interaction"/>
+                    <option type="bool" default_value="true" name="Objectives"/>
+                    <option type="bool" default_value="true" name="Swansong"/>
+                    <divider name="hud_main_tweak_divider" size="20"/>
+                    <option_set name="portraits" populate_items="$global$:LoadAddons">
+                        <merge_data menu_components="portrait">
+                            <merge_data area_bg="half">
+                            </merge_data>
+                        </merge_data>
+                        <item_parameters type="multichoice" values_tbl="$global$.portrait_value_options" value_changed="$global$.callbacks:PortraitSelectionChanged">
+                            <merge_data localized_help="false" desc=""/>
+                        </item_parameters>
+                    </option_set>
+                    <option type="number" default_value="1" name="Scale" min="0" max="2" step="0.05" show_value="true"/>
+                    <option type="bool" default_value="true" name="OGTMHealth"/>
+                    <option type="multichoice" default_value="2" name="Bullet" values_tbl="$global$.bullet_style_options" value_changed="$global$.callbacks:BulletStyleChanged"/>
+                    <divider name="hud_tweak_divider" size="20"/>
+                    <option type="bool" default_value="true" name="Coloured" value_changed="$global$.callbacks:PortraitColourChanged"/>
+                    <option type="bool" default_value="true" name="Fireselector" value_changed="$global$.callbacks:FiremodeEnabledChanged"/>
+                    <option type="bool" default_value="false" name="spooky_ammo"/>
+                    <option type="bool" default_value="true" name="CameraGrading"/>
+                    <option type="bool" default_value="true" name="Cameras"/>
+                </option_group>
+                <divider name="hud_non_hud_divider" size="20"/>
+                <option type="multichoice" default_value="8" name="Grading" values_tbl="$global$.colour_gradings" value_changed="$global$.callbacks:ColourGradingChanged"/>
+                <option_set name="Gradings" populate_items="$global$:GetLevels">
+                    <merge_data>
+                        <merge_data area_bg="half">
+                        </merge_data>
+                    </merge_data>
+                    <item_parameters type="multichoice" values_tbl="$global$.heist_colour_gradings" value_changed="$global$.callbacks:HeistColourGradingChanged">
+                        <merge_data localized="false" localized_help="false" desc=""/>
+                    </item_parameters>
+                </option_set>
+                <divider name="grading_divider" size="20"/>
+                <option type="bool" default_value="true" name="Gadget"/>
+                <option type="bool" default_value="true" name="Equipment"/>
+            </options>
+        </OptionModule>
+    </modules>
+</mod>

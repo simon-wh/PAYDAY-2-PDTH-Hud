@@ -1,14 +1,14 @@
-if pdth_hud.Options.HUD.MainHud and not (Restoration and Restoration.options.restoration_bagpanel_global) then
+if pdth_hud.Options:GetValue("HUD/MainHud") and not (Restoration and Restoration.options.restoration_bagpanel_global) then
     function HUDTemp:_animate_show_bag_panel(bag_panel)
         local w, h = self._bag_panel_w, self._bag_panel_h
         local const = pdth_hud.constants
-        
+
         local scx = self._temp_panel:w() / 2
         local ecx = self._temp_panel:w() - ((w / 2) + (const.main_equipment_size *  1.5) + const.main_bag_gap)
-        
+
         local scy = self._temp_panel:h() / 2
         local ecy = self._temp_panel:h() - ((h / 2) + (const.main_equipment_size * const.main_equipment_y_offset_multiplier))
-        
+
         local bottom = bag_panel:bottom()
         local center_y = bag_panel:center_y()
         local bag_text = self._bg_box:child("bag_text")
@@ -34,7 +34,7 @@ if pdth_hud.Options.HUD.MainHud and not (Restoration and Restoration.options.res
         bag_panel:set_size(w, h)
         bag_panel:set_center_x(ecx)
         bag_panel:set_center_y(ecy)
-        
+
         local throw_instruction = self._temp_panel:child("throw_instruction")
         throw_instruction:set_visible(true)
         throw_instruction:set_bottom(bag_panel:top())

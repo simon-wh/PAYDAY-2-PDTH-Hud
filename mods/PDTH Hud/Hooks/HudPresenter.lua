@@ -1,12 +1,12 @@
-if pdth_hud.Options.HUD.Objectives then
+if pdth_hud.Options:GetValue("HUD/Objectives") then
     function HUDPresenter:init(hud)
         local const = pdth_hud.constants
         self._hud_panel = managers.hud._fullscreen_workspace:panel():gui(PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2, {})
-        
+
         if self._hud_panel:child("present_panel") then
             self._hud_panel:remove(self._hud_panel:child("present_panel"))
         end
-        
+
         local present_panel = self._hud_panel:panel({
             visible = false,
             name = "present_panel",
@@ -35,7 +35,7 @@ if pdth_hud.Options.HUD.Objectives then
         })
         bitmap:set_left(managers.gui_data._saferect_data.x)
         bitmap:set_bottom(present_panel:h())
-        
+
         local title = present_panel:text({
             name = "title",
             text = "TITLE",
@@ -46,8 +46,8 @@ if pdth_hud.Options.HUD.Objectives then
             font = tweak_data.menu.small_font_noshadow,
             font_size = const.present_title_fsize
         })
-        
-        
+
+
         local text = present_panel:text({
             name = "text",
             text = "TEXT",
@@ -58,7 +58,7 @@ if pdth_hud.Options.HUD.Objectives then
         })
         self:_reposition_text()
     end
-    
+
     function HUDPresenter:_reposition_text()
         local const = pdth_hud.constants
         local present_panel = self._hud_panel:child("present_panel")
@@ -66,16 +66,16 @@ if pdth_hud.Options.HUD.Objectives then
         local text = present_panel:child("text")
         local background = present_panel:child("background")
         local bitmap = present_panel:child("bitmap")
-        
+
         managers.hud:make_fine_text(title)
         title:set_left(bitmap:right() + const.present_text_gap)
         title:set_top(const.present_title_y_offset)
-        
+
         managers.hud:make_fine_text(text)
         text:set_left(bitmap:right() + const.present_text_gap)
         text:set_top(title:bottom())
     end
-    
+
     function HUDPresenter:_present_information(params)
         local const = pdth_hud.constants
         local present_panel = self._hud_panel:child("present_panel")
@@ -83,17 +83,17 @@ if pdth_hud.Options.HUD.Objectives then
         local text = present_panel:child("text")
         local background = present_panel:child("background")
         local bitmap = present_panel:child("bitmap")
-        
+
         title:set_text(utf8.to_upper(params.title or "ERROR"))
         text:set_text(utf8.to_upper(params.text))
         self:_reposition_text()
-        
+
         self._presenting = true
-        
+
         if params.event then
             managers.hud._sound_source:post_event(params.event)
         end
-        
+
         present_panel:animate(callback(self, self, "_animate_present_information"), {
             done_cb = callback(self, self, "_present_done"),
             seconds = params.time or 4,
@@ -112,7 +112,7 @@ if pdth_hud.Options.HUD.Objectives then
             local icon, texture_rect = tweak_data.hud_icons:get_icon_data(params.use_icon)
             bitmap:set_image(icon, unpack(texture_rect))
         end
-        
+
         present_panel:set_visible(true)
         present_panel:set_alpha(1)
         local function open_done()

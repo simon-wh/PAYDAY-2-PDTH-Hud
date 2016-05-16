@@ -3,7 +3,7 @@ function pdth_hud:UseEquipment()
         return false
     end
 
-	return pdth_hud.Options.HUD.Equipment
+	return pdth_hud.Options:GetValue("Equipment")
 end
 
 pdth_hud.PDTHEquipment = {
