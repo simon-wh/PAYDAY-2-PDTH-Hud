@@ -876,11 +876,50 @@ if pdth_hud.Options.HUD.MainHud then
                 no_flash = true
             })
         end
-    
+
         local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
-        
+
         self:set_special_equipment_image("deployable_equipment_panel", icon, texture_rect)
         self:set_deployable_equipment_amount(1, data)
+    end
+
+    function HUDTeammate:set_deployable_equipment_from_string(data)
+        local visible = false
+    	for i = 1, #data.amount do
+    		if data.amount[i] > 0 then
+    			visible = true
+    		end
+    	end
+
+        if not self._player_panel:child("deployable_equipment_panel") and visible then
+            self:add_special_equipment({
+                id = "deployable_equipment_panel",
+                icon = "equipment_doctor_bag",
+                amount = data.amount_str,
+                no_flash = true
+            })
+        elseif not self._player_panel:child("deployable_equipment_panel") then
+            return
+        end
+
+        local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
+
+        self:set_special_equipment_image("deployable_equipment_panel", icon, texture_rect)
+    	self:set_deployable_equipment_amount_from_string(1, data)
+    end
+
+    function HUDTeammate:set_deployable_equipment_amount_from_string(index, data)
+        local visible = false
+    	for i = 1, #data.amount do
+    		if data.amount[i] > 0 then
+    			visible = true
+    		end
+    	end
+        self:set_special_equipment_amount("deployable_equipment_panel", data.amount_str)
+
+        if not visible then
+            self:remove_special_equipment("deployable_equipment_panel")
+        end
     end
 
     function HUDTeammate:set_deployable_equipment_amount(index, data)
@@ -950,25 +989,27 @@ if pdth_hud.Options.HUD.MainHud then
             w = w,
             h = h
         })
-        
+
         local amount, amount_bg
         if data.amount then
             amount = equipment_panel:text({
                 name = "amount",
-                text = tostring(data.amount),
+                text = data.amount,
                 font = tweak_data.menu.small_font,
                 font_size = (self._main_player and const.main_equipment_font_size or const.tm_equipment_font_size),
                 color = Color.white,
                 layer = 4,
             })
             managers.hud:make_fine_text(amount)
-            amount:set_visible(data.amount > 1)
-            
+            if type(data.amount) == "number" then
+                amount:set_visible(data.amount > 1)
+            end
+
             local amx, amy, amw, amh = amount:text_rect()
             equipment_panel:set_w(w + (data.num_on_right and amw + const.num_on_right_inflation or 0))
-            
+
             amount:set_right(equipment_panel:w())
-            
+
             if data.num_on_right then
                 amount:set_center_y(equipment_panel:center_y())
             else
@@ -1039,28 +1080,28 @@ if pdth_hud.Options.HUD.MainHud then
             local amx, amy, amw, amh = txtAmount:text_rect()
             panel:set_w(panel:child("bitmap"):w() + (special.num_on_right and amw + const.num_on_right_inflation or 0))
             txtAmount:set_right(panel:w())
-            if not special.weapon then
+            if not special.weapon and tonumber(amount) then
                 txtAmount:set_visible(tonumber(amount) > 1)
             end
-            if tonumber(amount) < 1 and not special.weapon then
+            if tonumber(amount) and tonumber(amount) < 1 and not special.weapon then
                 self:remove_special_equipment(equipment_id)
             end
         end
-        
+
         for i, special in ipairs(special_equipment) do
             local panel = special.panel
             if panel and panel:name() == equipment_id then
                 apply_setting(i, special, panel)
             end
         end
-        
+
         for i, weap in ipairs(self._weapons) do
             local panel = weap.panel
             if panel and panel:name() == equipment_id then
                 apply_setting(i, weap, panel)
             end
         end
-        
+
         self:layout_special_equipments()
     end
 
