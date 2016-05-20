@@ -993,7 +993,7 @@ if pdth_hud.Options.HUD.MainHud then
         if data.amount then
             amount = equipment_panel:text({
                 name = "amount",
-                text = data.amount,
+                text = tostring(data.amount),
                 font = tweak_data.menu.small_font,
                 font_size = (self._main_player and const.main_equipment_font_size or const.tm_equipment_font_size),
                 color = Color.white,
@@ -1071,7 +1071,7 @@ if pdth_hud.Options.HUD.MainHud then
         local function apply_setting(i, special, panel)
             local txtAmount = panel:child("amount")
             panel:set_visible(true)
-            txtAmount:set_text(amount)
+            txtAmount:set_text(tostring(amount))
             managers.hud:make_fine_text(txtAmount)
             local amx, amy, amw, amh = txtAmount:text_rect()
             panel:set_w(panel:child("bitmap"):w() + (special.num_on_right and amw + const.num_on_right_inflation or 0))
