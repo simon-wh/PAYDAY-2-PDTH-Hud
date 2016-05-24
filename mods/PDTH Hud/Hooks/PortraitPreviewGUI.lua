@@ -14,17 +14,16 @@ function PortraitPreviewGUI:_create_gui()
     local size = managers.gui_data:scaled_size()
 
     local columns = math.floor(((size.width / 2) + self.portrait_x_gap) / (self.portrait_w + self.portrait_x_gap))
-    local raw_rows = (#tweak_data.criminals.characters / columns)
-    local rows = math.floor(raw_rows + 1)
-    local remainder = rows ~= raw_rows
-    local remaining_chars = (raw_rows - math.floor(raw_rows)) * columns
+    local rows = math.ceil(#tweak_data.criminals.characters / columns)
+    local remaining_chars = #tweak_data.criminals.characters % columns
+
 	self._panel = self._ws:panel():panel({
 		name = "main",
 		w = (columns * self.portrait_w) + ((columns - 1) * self.portrait_x_gap),
 		h = (rows * self.portrait_h) + ((rows - 1) * self.portrait_y_gap)
 	})
     self._panel:set_center_y(self._ws:panel():center_y())
-
+    local final_width = remaining_chars == 0 and self._panel:w() or ((remaining_chars * self.portrait_w) + ((remaining_chars - 1) * self.portrait_x_gap))
     self._portraits = {}
     local cur_char = 1
     --for i, char_tbl in pairs(tweak_data.criminals.characters) do
@@ -33,7 +32,7 @@ function PortraitPreviewGUI:_create_gui()
             name = "row"..j,
             layer = 1,
             y = (j * self.portrait_h) + (j * self.portrait_y_gap),
-            w = (remainder and  j == (rows - 1)) and ((remaining_chars * self.portrait_w) + ((remaining_chars - 1) * self.portrait_x_gap)) or self._panel:w(),
+            w = j == (rows - 1) and final_width or self._panel:w(),
             h = self.portrait_h
         })
         row_panel:set_center_x(self._panel:center_x())

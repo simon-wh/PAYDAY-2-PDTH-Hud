@@ -35,6 +35,7 @@
                     <option type="number" default_value="1" name="Scale" min="0" max="2" step="0.05" show_value="true"/>
                     <option type="bool" default_value="true" name="OGTMHealth"/>
                     <option type="multichoice" default_value="2" name="Bullet" values_tbl="$global$.bullet_style_options" value_changed="$global$.callbacks:BulletStyleChanged"/>
+                    <option type="multichoice" default_value="1" name="WeaponIcon" values_tbl="$global$.weapon_icon_style_options" value_changed="$global$.callbacks:WeaponIconStyleChanged"/>
                     <divider name="hud_tweak_divider" size="20"/>
                     <option type="bool" default_value="true" name="Coloured" value_changed="$global$.callbacks:PortraitColourChanged"/>
                     <option type="bool" default_value="true" name="Fireselector" value_changed="$global$.callbacks:FiremodeEnabledChanged"/>

@@ -125,65 +125,40 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             48
         }
     }
-
+    local texture, texture_rect = pdth_hud.textures:get_weapon_texture("frag_grenade")
     tweak_data.hud_icons.frag_grenade = {
-        texture = "guis/textures/hud_icons",
-        texture_rect = {
-            416,
-            384,
-            48,
-            48
-        }
+        texture = texture,
+        texture_rect = texture_rect
     }
 
+    texture, texture_rect = pdth_hud.textures:get_weapon_texture("molotov_grenade")
     tweak_data.hud_icons.molotov_grenade = {
-        texture = "guis/textures/upgrade_images",
-        texture_rect = {
-            784,
-            1709,
-            160,
-            167
-        }
+        texture = texture,
+        texture_rect = texture_rect
     }
 
+    texture, texture_rect = pdth_hud.textures:get_weapon_texture("dynamite_grenade")
     tweak_data.hud_icons.dynamite_grenade = {
-        texture = "guis/textures/upgrade_images",
-        texture_rect = {
-            213,
-            1887,
-            184,
-            167
-        }
+        texture = texture,
+        texture_rect = texture_rect
     }
 
+    texture, texture_rect = pdth_hud.textures:get_weapon_texture("four_projectile")
     tweak_data.hud_icons.four_projectile = {
-        texture = "guis/textures/upgrade_images",
-        texture_rect = {
-            972,
-            1886,
-            160,
-            167
-        }
+        texture = texture,
+        texture_rect = texture_rect
     }
 
+    texture, texture_rect = pdth_hud.textures:get_weapon_texture("ace_projectile")
     tweak_data.hud_icons.ace_projectile = {
-        texture = "guis/textures/upgrade_images",
-        texture_rect = {
-            406,
-            2079,
-            163,
-            167
-        }
+        texture = texture,
+        texture_rect = texture_rect
     }
 
+    texture, texture_rect = pdth_hud.textures:get_weapon_texture("jav_projectile")
     tweak_data.hud_icons.jav_projectile = {
-        texture = "guis/textures/upgrade_images",
-        texture_rect = {
-            1151,
-            2082,
-            176,
-            164
-        }
+        texture = texture,
+        texture_rect = texture_rect
     }
 
     tweak_data.hud_icons.cable = {
@@ -653,6 +628,107 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             48
         }
     }
+
+    local self = tweak_data.weapon
+    self.ak74.ammo = "rifle_762"
+    self.akm.ammo = "rifle_762"
+    self.ak5.ammo = "rifle_556"
+    self.amcar.ammo = "rifle_556"
+    self.m16.ammo = "rifle_556"
+    self.tecci.ammo = "rifle_556"
+    self.new_m4.ammo = "rifle_556"
+    self.sub2000.ammo = "pistol_40"
+    self.famas.ammo = "rifle_556"
+    self.s552.ammo = "rifle_556"
+    self.scar.ammo = "rifle_762"
+    self.fal.ammo = "rifle_762"
+    self.galil.ammo = "rifle_556"
+    self.g3.ammo = "rifle_762"
+    self.akm_gold.ammo = "rifle_762"
+    self.g36.ammo = "rifle_556"
+    self.vhs.ammo = "rifle_556"
+    self.new_m14.ammo = "rifle_762"
+    self.l85a2.ammo = "rifle_556"
+    self.aug.ammo = "rifle_556"
+    self.asval.ammo = "rifle_762"
+    self.saiga.ammo = "shotgun_shell"
+    self.b682.ammo = "shotgun_shell"
+    self.benelli.ammo = "shotgun_shell"
+    self.ksg.ammo = "shotgun_shell"
+    self.r870.ammo = "shotgun_shell"
+    self.aa12.ammo = "shotgun_shell"
+    self.wa2000.ammo = "rifle_762"
+    self.mosin.ammo = "rifle_762"
+    self.model70.ammo = "rifle_762"
+    self.r93.ammo = "rifle_762"
+    self.msr.ammo = "rifle_762"
+    self.winchester1874.ammo = "snp_44"
+    self.m95.ammo = "snp_50"
+    self.long.ammo = "arrow"
+    self.flamethrower_mk2.ammo = "fuel_tank"
+    self.gre_m79.ammo = "grenade"
+    self.arblast.ammo = "crossbow_bolt"
+    self.frankish.ammo = "crossbow_bolt"
+    self.saw.ammo = "saw_blade"
+    self.m32.ammo = "grenade"
+    self.plainsrider.ammo = "arrow"
+    --self.m134.ammo = "rifle_762"
+    self.hk21.ammo = "rifle_762"
+    self.mg42.ammo = "rifle_762"
+    self.m249.ammo = "rifle_556"
+    self.par.ammo = "rifle_762"
+    self.rpk.ammo = "rifle_762"
+    self.x_b92fs.ammo = "pistol_9mm"
+    self.x_g17.ammo = "pistol_9mm"
+    self.jowi.ammo = "pistol_9mm"
+    self.x_g22c.ammo = "pistol_9mm"
+    self.x_mp5.ammo = "pistol_9mm"
+    self.x_1911.ammo = "pistol_45"
+    self.x_deagle.ammo = "snp_44"
+    self.x_sr2.ammo = "pistol_9mm"
+    self.x_usp.ammo = "pistol_9mm"
+    self.x_akmsu.ammo = "rifle_762"
+    self.china.ammo = "grenade"
+    self.rpg7.ammo = "rpg"
+    self.hunter.ammo = "crossbow_bolt"
+    self.m37.ammo = "shotgun_shell"
+    self.serbu.ammo = "shotgun_shell"
+    self.striker.ammo = "shotgun_shell"
+    self.judge.ammo = "shotgun_shell"
+    self.sparrow.ammo = "pistol_9mm"
+    self.b92fs.ammo = "pistol_9mm"
+    self.new_raging_bull.ammo = "snp_44"
+    self.c96.ammo = "pistol_9mm"
+    self.glock_17.ammo = "pistol_9mm"
+    self.g26.ammo = "pistol_9mm"
+    self.g22c.ammo = "pistol_9mm"
+    self.colt_1911.ammo = "pistol_45"
+    self.deagle.ammo = "snp_44"
+    self.ppk.ammo = "pistol_9mm"
+    self.usp.ammo = "pistol_9mm"
+    self.hs2000.ammo = "pistol_9mm"
+    self.mateba.ammo = "snp_44"
+    self.peacemaker.ammo = "snp_44"
+    self.p226.ammo = "pistol_40"
+    self.glock_18c.ammo = "pistol_9mm"
+    self.pl14.ammo = "pistol_9mm"
+    self.tec9.ammo = "pistol_9mm"
+    self.m1928.ammo = "pistol_45"
+    self.mp9.ammo = "pistol_9mm"
+    self.scorpion.ammo = "pistol_9mm"
+    self.new_mp5.ammo = "pistol_9mm"
+    self.sr2.ammo = "pistol_9mm"
+    self.cobray.ammo = "pistol_9mm"
+    self.p90.ammo = "rifle_556"
+    self.akmsu.ammo = "rifle_762"
+    self.polymer.ammo = "pistol_9mm"
+    self.mac10.ammo = "pistol_9mm"
+    self.baka.ammo = "pistol_45"
+    self.olympic.ammo = "rifle_556"
+    self.sterling.ammo = "pistol_9mm"
+    self.mp7.ammo = "rifle_556"
+    self.m45.ammo = "pistol_9mm"
+    self.uzi.ammo = "pistol_9mm"
 end
 tweak_data.interaction.copy_machine_smuggle.icon = "equipment_gasoline"
 tweak_data.interaction.safety_deposit.icon = "develop"

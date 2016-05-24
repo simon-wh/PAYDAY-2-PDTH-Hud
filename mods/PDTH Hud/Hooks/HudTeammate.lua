@@ -287,20 +287,20 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         })
 
         self:add_special_equipment({
-            id = "grenades_panel",
-            icon = "frag_grenade",
-            amount = 12,
+            id = "melee_weapon",
+            icon = "",
+            amount = 1,
             no_flash = true,
-            weapon = main_player
+            weapon = true
         })
 
         if self._main_player then
-            local grenades_panel = self._player_panel:child("grenades_panel")
+            local melee_weapon = self._player_panel:child("melee_weapon")
             local main_player_right = teammate_panel:right() - (const.main_equipment_size / 2)
 
             self._primary_weapon_ammo = self._player_panel:panel({
                 id = "primary_weapon_ammo",
-                h = self._player_panel:h() - grenades_panel:bottom(),
+                h = self._player_panel:h() - melee_weapon:bottom(),
                 w = self._panel:w(),
                 visible = false,
                 layer = 1
@@ -363,13 +363,10 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self.health_amount = 1
         self.armor_amount = 1
         self.health_colour = Color(0.5, 0.8, 0.4)
-        self._max_clip = 0
         self._current_primary = nil
         self._current_secondary = nil
+        self._current_melee = nil
         self:RefreshPortraits()
-        self._set_max_clip = {}
-        self._set_max_clip.primary = 0
-        self._set_max_clip.secondary = 0
         self:set_info_meter({
             current = 0,
             total = 0,
@@ -437,42 +434,8 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             self._secondary_weapon_ammo:set_visible(is_secondary)
         end
 
-        local peer, blackmarket_outfit
-        if managers.network:session() then
-            peer = managers.network:session():peer(self._peer_id)
-
-            if peer and peer._profile["outfit_string"] then
-                blackmarket_outfit = peer:blackmarket_outfit()
-            elseif not self._main_player then
-                return
-            end
-        elseif not self._main_player then
-            return
-        end
-
-        local prim_factory_id = self._main_player and managers.blackmarket:equipped_primary().factory_id or blackmarket_outfit.primary.factory_id
-        local prim_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(prim_factory_id)
-        local prim_category = tweak_data.weapon[prim_weapon_id].category
-
-        local sec_factory_id = self._main_player and managers.blackmarket:equipped_secondary().factory_id or blackmarket_outfit.secondary.factory_id
-        local sec_weapon_id = managers.weapon_factory:get_weapon_id_by_factory_id(sec_factory_id)
-        local sec_category = tweak_data.weapon[sec_weapon_id].category
-
-        if self._current_primary == prim_weapon_id and self._current_secondary == sec_weapon_id then
-            return
-        end
-
-        self._current_primary = prim_weapon_id
-        self._current_secondary = sec_weapon_id
-
-        local texture, rectangle = pdth_hud.textures:get_weapon_texture(prim_weapon_id, prim_category)
-        if texture ~= nil and rectangle ~= nil then
-            primary_weapon_panel:child("bitmap"):set_image(texture, unpack(rectangle))
-        end
-
-        local texture, rectangle = pdth_hud.textures:get_weapon_texture(sec_weapon_id, sec_category)
-        if texture ~= nil and rectangle ~= nil then
-            secondary_weapon_panel:child("bitmap"):set_image(texture, unpack(rectangle))
+        if not self._current_primary or not self._current_secondary or not self._current_melee then
+            self:get_weapon_info()
         end
     end
 
@@ -524,13 +487,21 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             ammo:set_right(firemode:left() - const.main_firemode_gap)
         end
 
+        local ammo_panel = panel:child("ammo_panel")
+        if not ammo_panel then
+            ammo_panel = panel:panel({
+                name = "ammo_panel",
+                layer = 1,
+                h = panel:h(),
+                w = panel:w()
+            })
+            ammo_panel:set_center_y(panel:h() / 2)
+            ammo_panel:set_right(ammo:left() - const.main_ammo_image_gap)
+        end
+
         self:recreate_weapon_firemode()
     end
 
-    local forbid_cat = {
-        "saw",
-        "minigun"
-    }
     function HUDTeammate:set_ammo_amount_by_type(type, max_clip, current_clip, current_left, max)
         local const = pdth_hud.constants
         local scale = pdth_hud.Options:GetValue("HUD/Scale")
@@ -539,24 +510,20 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self:set_special_equipment_amount(type .. "_weapon", ammoAmount)
 
         if self._main_player then
-            local ammo_panel = type == "primary" and self._primary_weapon_ammo or self._secondary_weapon_ammo
+            local weapon_panel = type == "primary" and self._primary_weapon_ammo or self._secondary_weapon_ammo
 
-            local weapon
-            if type == "primary" then
-                weapon = managers.blackmarket:equipped_primary()
-            else
-                weapon = managers.blackmarket:equipped_secondary()
-            end
-
-            local category = tweak_data.weapon[managers.weapon_factory:get_weapon_id_by_factory_id(weapon.factory_id)].category
-
-            local firemode = ammo_panel:child("firemode")
-            local ammo = ammo_panel:child("ammo")
+            local firemode = weapon_panel:child("firemode")
+            local ammo = weapon_panel:child("ammo")
 
             local clip_string = (current_clip < 10 and "00" or current_clip < 100 and "0" or "") .. current_clip
             local left_string = (current_left < 10 and "00" or current_left < 100 and "0" or "") .. current_left
 
-            ammo:set_text(clip_string .. "/" .. left_string)
+            local update_ammo_icons = false
+            local ammo_text = clip_string .. "/" .. left_string
+            if ammo_text ~= ammo:text() then
+                update_ammo_icons = true
+                ammo:set_text(ammo_text)
+            end
 
             if current_left <= 0 then
                 ammo:set_range_color(4, 7, Color.red)
@@ -571,65 +538,80 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             end
             ammo:set_range_color(0, 3, Color(1, r, g, b))
 
-            local icon, texture_rect = pdth_hud.textures:get_bullet_texture(category)
+            if update_ammo_icons then
+                self:update_ammo_icons(type, max_clip, current_clip, current_left, max, update_ammo_icons)
+            end
+        end
+    end
 
-            if icon and not table.contains(forbid_cat, category) and not (max_clip > 200) then
-                if self._set_max_clip[type] > max_clip then
-                    for i = max_clip + 1, self._set_max_clip[type] do
-                        local bullet = ammo_panel:child("bullet_" .. i)
-                        if bullet then
-                            ammo_panel:remove(bullet)
-                        end
-                    end
-                end
+    function HUDTeammate:update_ammo_icons(type, max_clip, current_clip, current_left, max, changed)
+        if (max_clip > 200) then
+            return
+        end
 
-                local h = ammo:h() * const.main_ammo_size_multiplier
-                local w = (h / texture_rect[4]) * texture_rect[3]
+        if not self._current_primary or not self._current_secondary or not self._current_melee then
+            self:get_weapon_info()
+        end
 
+        local weapon_panel = type == "primary" and self._primary_weapon_ammo or self._secondary_weapon_ammo
+        local ammo_panel = weapon_panel:child("ammo_panel")
 
-                local r, g, b = 1, 1, 1
-                if current_clip <= math.round(max_clip / 4) then
-                    g = current_clip / (max_clip / 2)
-                    b = current_clip / (max_clip / 2)
-                end
+        local weap_details = type == "primary" and self._current_primary or self._current_secondary
+        local weap_id = weap_details.id
+        local category = weap_details.sub_category or weap_details.category
 
-                for i = 1, max_clip do
+        local icon, details = pdth_hud.textures:get_bullet_details(weap_id, category)
+
+        if details then
+            if ammo_panel:num_children() > max_clip then
+                for i = max_clip + 1, ammo_panel:num_children() do
                     local bullet = ammo_panel:child("bullet_" .. i)
-                    if not bullet then
-                        bullet = ammo_panel:bitmap({
-                            name = "bullet_" .. i,
-                            visible = true,
-                            layer = 1,
-                            blend_mode = "normal",
-                            w = w,
-                            h = h,
-                        })
-                        local prev_bullet = ammo_panel:child("bullet_" .. i - 1)
-                        bullet:set_right(prev_bullet and prev_bullet:left() or ammo:left() - const.main_ammo_image_gap)
-                        bullet:set_center_y(ammo:center_y())
-                        bullet:set_image(icon, unpack(texture_rect))
-                    elseif self[type .. "_set_texture_rect"] ~= texture_rect then
-                        bullet:set_image(icon, unpack(texture_rect))
-                    end
-
-                    if i <= current_clip then
-                        bullet:set_alpha(1)
-                        bullet:set_color(Color(0.8, r, g, b))
-                    elseif i >= current_clip then
-                        bullet:set_alpha(0.5)
-                        bullet:set_color(Color(0.2, r, g, b))
-                    end
-                end
-                self[type .. "_set_texture_rect"] = texture_rect
-
-                self._set_max_clip[type] = max_clip
-            else
-                for _, child in pairs(ammo_panel:children()) do
-                    if string.begins(child:name(), "bullet_") then
-                        ammo_panel:remove(child)
+                    if bullet then
+                        ammo_panel:remove(bullet)
                     end
                 end
             end
+
+            local h = ammo_panel:h()-- * const.main_ammo_size_multiplier
+            local w = (h / details.texture_rect[4]) * details.texture_rect[3]
+
+            local rotated = details.rotation and (details.rotation == 90 or details.rotation == 270) or nil
+
+            local r, g, b = 1, 1, 1
+            if current_clip <= math.round(max_clip / 4) then
+                g = current_clip / (max_clip / 2)
+                b = current_clip / (max_clip / 2)
+            end
+
+            for i = 1, max_clip do
+                local bullet = ammo_panel:child("bullet_" .. i)
+                if not bullet then
+                    bullet = ammo_panel:bitmap({
+                        name = "bullet_" .. i,
+                        layer = 1,
+                        blend_mode = "normal",
+                        w = rotated and h or w,
+                        h = rotated and w or h,
+                        rotation = details.rotation
+                    })
+                    local prev_bullet = ammo_panel:child("bullet_" .. i - 1)
+                    bullet:set_right(prev_bullet and prev_bullet:left() - (details.gap and details.gap or 0) or ammo_panel:w())
+                    bullet:set_center_y(ammo_panel:h() / 2)
+                    bullet:set_image(icon, unpack(details.texture_rect))
+                else
+                    bullet:set_image(icon, unpack(details.texture_rect))
+                end
+
+                if i <= current_clip then
+                    bullet:set_alpha(1)
+                    bullet:set_color(Color(0.8, r, g, b))
+                elseif i >= current_clip then
+                    bullet:set_alpha(0.5)
+                    bullet:set_color(Color(0.2, r, g, b))
+                end
+            end
+        else
+            ammo_panel:clear()
         end
     end
 
@@ -790,21 +772,16 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self:set_condition("mugshot_normal")
         self._player_panel:child("primary_weapon"):set_visible(false)
         self._player_panel:child("secondary_weapon"):set_visible(false)
-        local deployable_equipment_panel = self._player_panel:child("deployable_equipment_panel")
-        if deployable_equipment_panel then
-            deployable_equipment_panel:set_visible(false)
-        end
-
-        local cable_ties_panel = self._player_panel:child("cable_ties_panel")
-        if cable_ties_panel then
-            cable_ties_panel:set_visible(false)
-        end
         self._player_panel:child("carry_panel"):set_visible(false)
         self:set_cheater(false)
         self:stop_timer()
         self:teammate_progress(false, false, false, false)
         self._peer_id = nil
         self._ai = nil
+        self._character = nil
+        self._current_primary = nil
+        self._current_secondary = nil
+        self._current_melee = nil
     end
 
     function HUDTeammate:set_name(teammate_name)
@@ -823,10 +800,74 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         end
         carry_panel:set_left(name:right())
         carry_panel:set_top(name:top())
+
+        if not self._ai then
+            self:get_weapon_info()
+        end
+        self._character = nil
     end
 
-    function HUDTeammate:set_callsign(id)
+    function HUDTeammate:get_weapon_info()
+        local peer, blackmarket_outfit
+        if managers.network:session() then
+            peer = managers.network:session():peer(self._peer_id)
+
+            if peer and peer._profile["outfit_string"] then
+                blackmarket_outfit = peer:blackmarket_outfit()
+            elseif not self._main_player then
+                return
+            end
+        elseif not self._main_player then
+            return
+        end
+
+        local prim_weapon_id = self._main_player and managers.blackmarket:equipped_primary().weapon_id or managers.weapon_factory:get_weapon_id_by_factory_id(blackmarket_outfit.primary.factory_id)
+        local prim_category = tweak_data.weapon[prim_weapon_id].category
+        local prim_sub_category = tweak_data.weapon[prim_weapon_id].sub_category
+
+        local sec_weapon_id = self._main_player and managers.blackmarket:equipped_secondary().weapon_id or managers.weapon_factory:get_weapon_id_by_factory_id(blackmarket_outfit.secondary.factory_id)
+        local sec_category = tweak_data.weapon[sec_weapon_id].category
+        local sec_sub_category = tweak_data.weapon[sec_weapon_id].sub_category
+
+        local melee_id = self._main_player and managers.blackmarket:equipped_melee_weapon() or blackmarket_outfit.melee_weapon
+
+        local update_icons = false
+        if not self._current_primary or self._current_primary and self._current_primary.id ~= prim_weapon_id or not self._current_secondary or self._current_secondary and self._current_secondary.id ~= sec_weapon_id or not self._current_melee or self._current_melee and self._current_melee.id ~= melee_id then
+            update_icons = true
+        end
+
+        self._current_primary = {id = prim_weapon_id, category = prim_category, sub_category = prim_sub_category}
+        self._current_secondary = {id = sec_weapon_id, category = sec_category, sub_category = sec_sub_category}
+        self._current_melee = {id = melee_id, category = "melee"}
+
+        if update_icons then
+            self:update_weapon_icons()
+        end
     end
+
+    function HUDTeammate:update_weapon_icons()
+        if not self._current_primary or not self._current_secondary or not self._current_melee then
+            self:get_weapon_info()
+            return
+        end
+
+        local texture, rectangle = pdth_hud.textures:get_weapon_texture(self._current_primary.id, self._current_primary.sub_category or self._current_primary.category)
+        if texture ~= nil and rectangle ~= nil then
+            self:set_special_equipment_image("primary_weapon", texture, rectangle)
+        end
+
+        texture, rectangle = pdth_hud.textures:get_weapon_texture(self._current_secondary.id, self._current_secondary.sub_category or self._current_secondary.category)
+        if texture ~= nil and rectangle ~= nil then
+            self:set_special_equipment_image("secondary_weapon", texture, rectangle)
+        end
+
+        texture, rectangle = pdth_hud.textures:get_weapon_texture(self._current_melee.id, self._current_melee.category)
+        if texture ~= nil and rectangle ~= nil then
+            self:set_special_equipment_image("melee_weapon", texture, rectangle)
+        end
+    end
+
+    function HUDTeammate:set_callsign(id) end
 
     function HUDTeammate:set_state(state)
         local const = pdth_hud.constants
@@ -873,12 +914,54 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 amount = data.amount,
                 no_flash = true
             })
+        elseif not self._player_panel:child("deployable_equipment_panel") then
+            return
         end
 
         local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
 
         self:set_special_equipment_image("deployable_equipment_panel", icon, texture_rect)
         self:set_deployable_equipment_amount(1, data)
+    end
+
+    function HUDTeammate:set_deployable_equipment_from_string(data)
+        local visible = false
+        for i = 1, #data.amount do
+            if data.amount[i] > 0 then
+                visible = true
+            end
+        end
+
+        if not self._player_panel:child("deployable_equipment_panel") and visible then
+            self:add_special_equipment({
+                id = "deployable_equipment_panel",
+                icon = "equipment_doctor_bag",
+                amount = data.amount_str,
+                no_flash = true
+            })
+        elseif not self._player_panel:child("deployable_equipment_panel") then
+            return
+        end
+
+        local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
+
+        self:set_special_equipment_image("deployable_equipment_panel", icon, texture_rect)
+      self:set_deployable_equipment_amount_from_string(1, data)
+    end
+
+    function HUDTeammate:set_deployable_equipment_amount_from_string(index, data)
+        local visible = false
+        for i = 1, #data.amount do
+            if data.amount[i] > 0 then
+                visible = true
+            end
+        end
+
+        self:set_special_equipment_amount("deployable_equipment_panel", data.amount_str)
+
+        if not visible then
+            self:remove_special_equipment("deployable_equipment_panel")
+        end
     end
 
     function HUDTeammate:set_deployable_equipment_amount(index, data)
@@ -891,10 +974,10 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 id = "grenades_panel",
                 icon = "",
                 amount = data.amount,
-                no_flash = true,
-                weapon = self._main_player
+                no_flash = true
             })
-            self._player_panel:child("grenades_panel"):set_visible(false)
+        elseif not self._player_panel:child("grenades_panel") then
+            return
         end
 
         local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
@@ -905,6 +988,11 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     function HUDTeammate:set_grenades_amount(data)
         self:set_special_equipment_amount("grenades_panel", data.amount)
     end
+
+    local icon_conversion = {
+        pd2_c4 = "equipment_c4",
+        pd2_generic_saw = "equipment_saw"
+    }
 
     function HUDTeammate:add_special_equipment(data)
         -- id, icon, amount, no_flash
@@ -931,14 +1019,11 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             h = h
         })
 
-        local icon, texture_rect
-        if data.icon == "pd2_c4" then
-            icon, texture_rect = tweak_data.hud_icons:get_icon_data("equipment_c4")
-        elseif data.icon == "pd2_generic_saw" then
-            icon, texture_rect = tweak_data.hud_icons:get_icon_data("equipment_saw")
-        else
-            icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
+        if icon_conversion[data.icon] then
+            data.icon = icon_conversion[data.icon]
         end
+
+        local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
 
         local bitmap = equipment_panel:bitmap({
             name = "bitmap",
@@ -949,9 +1034,8 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             h = h
         })
 
-        local amount, amount_bg
         if data.amount then
-            amount = equipment_panel:text({
+            local amount = equipment_panel:text({
                 name = "amount",
                 text = tostring(data.amount),
                 font = tweak_data.menu.small_font,
@@ -960,7 +1044,9 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 layer = 4,
             })
             managers.hud:make_fine_text(amount)
-            amount:set_visible(data.amount > 1)
+            if type(data.amount) == "number" then
+                amount:set_visible(data.amount > 1)
+            end
 
             local amx, amy, amw, amh = amount:text_rect()
             equipment_panel:set_w(w + (data.num_on_right and amw + const.num_on_right_inflation or 0))
@@ -1037,10 +1123,10 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             local amx, amy, amw, amh = txtAmount:text_rect()
             panel:set_w(panel:child("bitmap"):w() + (special.num_on_right and amw + const.num_on_right_inflation or 0))
             txtAmount:set_right(panel:w())
-            if not special.weapon then
+            if not special.weapon and tonumber(amount) then
                 txtAmount:set_visible(tonumber(amount) > 1)
             end
-            if tonumber(amount) < 1 and not special.weapon then
+            if tonumber(amount) and tonumber(amount) < 1 and not special.weapon then
                 self:remove_special_equipment(equipment_id)
             end
         end
@@ -1222,6 +1308,18 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         local value_text = carry_panel:child("value")
     end
 
+    function HUDTeammate:get_character_name()
+        if not self._character then
+            if self._main_player then
+                self._character = managers.network:session():local_peer():character()
+            elseif self._ai then
+                self._character = managers.criminals:character_name_by_panel_id(self._id)
+            else
+                self._character = managers.criminals:character_name_by_peer_id(self._peer_id)
+            end
+        end
+    end
+
     function HUDTeammate:RefreshPortraits()
         local const = pdth_hud.constants
         local radial_health_panel = self._player_panel:child("radial_health_panel")
@@ -1231,45 +1329,41 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         local character_text = radial_health_panel:child("character_text")
         local character_icon = self._player_panel:child("character_icon")
 
-        local character
-        if self._main_player then
-            character = managers.network:session():local_peer():character()
-        elseif self._ai then
-            character = managers.criminals:character_name_by_panel_id(self._id)
-        else
-            character = managers.criminals:character_name_by_peer_id(self._peer_id)
-        end
+        self:get_character_name()
 
-        if self._main_player and character then
-            local character_name = string.upper(managers.localization:text("menu_" .. character))
+        if self._main_player then
+            local character_name = string.upper(managers.localization:text("menu_" .. self._character))
             character_text:set_text(character_name)
             managers.hud:make_fine_text(character_text)
             character_text:set_center_x(radial_health_panel:center_x())
             character_text:set_bottom(radial_health_panel:h() - const.main_character_y_offset)
+        elseif pdth_hud.Options:GetValue("HUD/OGTMHealth") then
+            local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "tm")
+            if texture ~= character_icon:texture_name() then
+                character_icon:set_image(texture, unpack(rect))
+            end
         end
 
-        if character then
-            local height = self.health_h
+        local height = self.health_h
 
-            local texture, rect = pdth_hud.textures:get_portrait_texture(character, "health", self._main_player)
-            local y_offset = rect[4] * (1 - self.health_amount)
-            local h_offset = self.health_h * (1 - self.health_amount)
-            radial_health:set_color(pdth_hud.Options:GetValue("HUD/Coloured") and self.health_colour or Color.white)
+        local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "health", self._main_player)
+        local y_offset = rect[4] * (1 - self.health_amount)
+        local h_offset = self.health_h * (1 - self.health_amount)
+        radial_health:set_color(pdth_hud.Options:GetValue("HUD/Coloured") and self.health_colour or Color.white)
 
-            radial_health:set_image(texture, rect[1], rect[2] + y_offset, rect[3], rect[4] - y_offset)
-            radial_health:set_h(height - h_offset)
-            radial_health:set_bottom(radial_bg:bottom())
+        radial_health:set_image(texture, rect[1], rect[2] + y_offset, rect[3], rect[4] - y_offset)
+        radial_health:set_h(height - h_offset)
+        radial_health:set_bottom(radial_bg:bottom())
 
-            local texture, rect = pdth_hud.textures:get_portrait_texture(character, "armor", self._main_player)
-            local y_offset = rect[4] * (1 - self.armor_amount)
-            local h_offset = self.health_h * (1 - self.armor_amount)
-            radial_shield:set_image(texture, rect[1], rect[2] + y_offset, rect[3], rect[4] - y_offset)
-            radial_shield:set_h(height - h_offset)
-            radial_shield:set_bottom(radial_bg:bottom())
+        local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "armor", self._main_player)
+        local y_offset = rect[4] * (1 - self.armor_amount)
+        local h_offset = self.health_h * (1 - self.armor_amount)
+        radial_shield:set_image(texture, rect[1], rect[2] + y_offset, rect[3], rect[4] - y_offset)
+        radial_shield:set_h(height - h_offset)
+        radial_shield:set_bottom(radial_bg:bottom())
 
-            local texture, rect = pdth_hud.textures:get_portrait_texture(character, "bg", self._main_player)
-            radial_bg:set_image(texture, unpack(rect))
-        end
+        local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "bg", self._main_player)
+        radial_bg:set_image(texture, unpack(rect))
 
         if not self._ai or not pdth_hud.Options:GetValue("HUD/OGTMHealth") then
             radial_health_panel:set_visible(true)
@@ -1280,13 +1374,6 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         radial_health:set_blend_mode(self._ai and "normal" or "add")
         if self._ai then
             radial_health:set_color(Color.white)
-        end
-
-        if character and not self._main_player and pdth_hud.Options:GetValue("HUD/OGTMHealth") then
-            local texture, rect = pdth_hud.textures:get_portrait_texture(character, "tm")
-            if texture ~= character_icon:texture_name() then
-                character_icon:set_image(texture, unpack(rect))
-            end
         end
     end
 
@@ -1307,18 +1394,11 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             coroutine.yield()
         until alive(self._panel) and self[var_name] and self._armor_data and self._health_data
 
-        local character
-        if self._main_player then
-            character = managers.network:session():local_peer():character()
-        elseif self._ai then
-            character = managers.criminals:character_name_by_panel_id(self._id)
-        else
-            character = managers.criminals:character_name_by_peer_id(self._peer_id)
-        end
+        self:get_character_name()
 
-        local texture, rect = pdth_hud.textures:get_portrait_texture(character, "health", self._main_player)
+        local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "health", self._main_player)
 
-        local textureA, rectA = pdth_hud.textures:get_portrait_texture(character, "armor", self._main_player)
+        local textureA, rectA = pdth_hud.textures:get_portrait_texture(self._character, "armor", self._main_player)
 
         local teammate_panel = self._panel:child("player")
         local radial_health_panel = teammate_panel:child("radial_health_panel")

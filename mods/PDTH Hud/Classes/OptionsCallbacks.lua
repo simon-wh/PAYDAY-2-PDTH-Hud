@@ -37,6 +37,17 @@ function pdth_hud.callbacks:BulletStyleChanged(key, value)
     end
 end
 
+function pdth_hud.callbacks:WeaponIconStyleChanged(key, value)
+    if managers.hud then
+        for i = 1, HUDManager.PLAYER_PANEL do
+            local tm = managers.hud._teammate_panels[i]
+            if not tm._ai then
+                tm:update_weapon_icons()
+            end
+        end
+    end
+end
+
 function pdth_hud.callbacks:FiremodeEnabledChanged(key, value)
     if managers.hud then
         managers.hud._teammate_panels[HUDManager.PLAYER_PANEL]:recreate_weapon_firemode()

@@ -6,7 +6,6 @@
 	"version" : "1",
 	"priority" : 44,
 	"hooks" : [
-		{ "hook_id" : "lib/managers/menu/newsfeedgui", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/experiencemanager", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/managers/menu/items/menuitemchallenge", "script_path" : "PDTHHUDCore.lua" },
 		{ "hook_id" : "lib/setups/setup", "script_path" : "PDTHHUDCore.lua" },
@@ -44,7 +43,7 @@
 	],
 	"updates" : [
 		{
-			"revision" : 79,
+			"revision" : 80,
 			"identifier" : "pdth_hud"
 		},
 		{

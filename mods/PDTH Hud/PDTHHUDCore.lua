@@ -8,6 +8,7 @@ if not _G.pdth_hud then
 	self.ClassPath = self.ModPath .. "Classes/"
 	self.HooksPath = self.ModPath .. "Hooks/"
     self.Classes = {
+		"Definitions.lua",
         "Constants.lua",
         "PDTHTextures.lua",
         "PDTHEquipment.lua",
@@ -71,6 +72,11 @@ if not _G.pdth_hud then
         "normal",
         "coloured"
     }
+
+	self.weapon_icon_style_options = {
+		"default",
+		"coloured"
+	}
 end
 
 function pdth_hud:_init()
