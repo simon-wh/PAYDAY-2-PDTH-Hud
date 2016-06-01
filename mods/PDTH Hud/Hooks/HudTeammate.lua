@@ -572,10 +572,18 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 end
             end
 
-            local h = ammo_panel:h()-- * const.main_ammo_size_multiplier
-            local w = (h / details.texture_rect[4]) * details.texture_rect[3]
+
 
             local rotated = details.rotation and (details.rotation == 90 or details.rotation == 270) or nil
+            local w, h
+
+            if rotated then
+                w = ammo_panel:h()
+                h = (w / details.texture_rect[3]) * details.texture_rect[4]
+            else
+                h = ammo_panel:h()-- * const.main_ammo_size_multiplier
+                w = (h / details.texture_rect[4]) * details.texture_rect[3]
+            end
 
             local r, g, b = 1, 1, 1
             if current_clip <= math.round(max_clip / 4) then
@@ -590,8 +598,8 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                         name = "bullet_" .. i,
                         layer = 1,
                         blend_mode = "normal",
-                        w = rotated and h or w,
-                        h = rotated and w or h,
+                        w = w,
+                        h = h,
                         rotation = details.rotation
                     })
                     local prev_bullet = ammo_panel:child("bullet_" .. i - 1)
@@ -912,7 +920,8 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 id = "deployable_equipment_panel",
                 icon = "equipment_doctor_bag",
                 amount = data.amount,
-                no_flash = true
+                no_flash = true,
+                show_single_amount = true
             })
         elseif not self._player_panel:child("deployable_equipment_panel") then
             return
@@ -924,10 +933,10 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self:set_deployable_equipment_amount(1, data)
     end
 
-    function HUDTeammate:set_deployable_equipment_from_string(data)
+    function HUDTeammate:is_deployable_equipment_visible(data)
         local visible = false
-        for i = 1, #data.amount do
-            if data.amount[i] > 0 then
+        for i, amount in pairs(data.amount) do
+            if amount > 0 then
                 visible = true
             end
         end
@@ -937,24 +946,30 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 id = "deployable_equipment_panel",
                 icon = "equipment_doctor_bag",
                 amount = data.amount_str,
-                no_flash = true
+                no_flash = true,
+                show_single_amount = true
             })
-        elseif not self._player_panel:child("deployable_equipment_panel") then
+        end
+
+        return visible
+    end
+
+    function HUDTeammate:set_deployable_equipment_from_string(data)
+        local visible = self:is_deployable_equipment_visible(data)
+        if not visible then
             return
         end
 
         local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
 
         self:set_special_equipment_image("deployable_equipment_panel", icon, texture_rect)
-      self:set_deployable_equipment_amount_from_string(1, data)
+        self:set_deployable_equipment_amount_from_string(1, data)
     end
 
     function HUDTeammate:set_deployable_equipment_amount_from_string(index, data)
-        local visible = false
-        for i = 1, #data.amount do
-            if data.amount[i] > 0 then
-                visible = true
-            end
+        local visible = self:is_deployable_equipment_visible(data)
+        if not visible then
+            return
         end
 
         self:set_special_equipment_amount("deployable_equipment_panel", data.amount_str)
@@ -974,7 +989,8 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 id = "grenades_panel",
                 icon = "",
                 amount = data.amount,
-                no_flash = true
+                no_flash = true,
+                show_single_amount = true
             })
         elseif not self._player_panel:child("grenades_panel") then
             return
@@ -1123,10 +1139,10 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             local amx, amy, amw, amh = txtAmount:text_rect()
             panel:set_w(panel:child("bitmap"):w() + (special.num_on_right and amw + const.num_on_right_inflation or 0))
             txtAmount:set_right(panel:w())
-            if not special.weapon and tonumber(amount) then
-                txtAmount:set_visible(tonumber(amount) > 1)
+            if not special.weapon and not special.show_single_amount and type(amount) == "number" then
+                txtAmount:set_visible(amount > 1)
             end
-            if tonumber(amount) and tonumber(amount) < 1 and not special.weapon then
+            if type(amount) == "number" and amount < 1 and not special.weapon then
                 self:remove_special_equipment(equipment_id)
             end
         end

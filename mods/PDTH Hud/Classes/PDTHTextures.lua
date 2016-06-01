@@ -186,7 +186,7 @@ pdth_hud.textures.bullets = {
 			150,
 			150
 		},
-		rotate_on_change = true,
+		spin_on_change = true,
 		single = true
 	},
 	fuel_tank = {
