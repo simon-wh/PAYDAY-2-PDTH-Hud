@@ -883,38 +883,45 @@ if pdth_hud.Options.HUD.MainHud then
         self:set_deployable_equipment_amount(1, data)
     end
 
-    function HUDTeammate:set_deployable_equipment_from_string(data)
+    function HUDTeammate:is_deployable_equipment_visible(data)
         local visible = false
-    	for i = 1, #data.amount do
-    		if data.amount[i] > 0 then
-    			visible = true
-    		end
-    	end
+        for i, amount in pairs(data.amount) do
+            if amount > 0 then
+                visible = true
+            end
+        end
 
         if not self._player_panel:child("deployable_equipment_panel") and visible then
             self:add_special_equipment({
                 id = "deployable_equipment_panel",
                 icon = "equipment_doctor_bag",
                 amount = data.amount_str,
-                no_flash = true
+                no_flash = true,
+                show_single_amount = true
             })
-        elseif not self._player_panel:child("deployable_equipment_panel") then
+        end
+
+        return visible
+    end
+
+    function HUDTeammate:set_deployable_equipment_from_string(data)
+        local visible = self:is_deployable_equipment_visible(data)
+        if not visible then
             return
         end
 
         local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
 
         self:set_special_equipment_image("deployable_equipment_panel", icon, texture_rect)
-    	self:set_deployable_equipment_amount_from_string(1, data)
+        self:set_deployable_equipment_amount_from_string(1, data)
     end
 
     function HUDTeammate:set_deployable_equipment_amount_from_string(index, data)
-        local visible = false
-    	for i = 1, #data.amount do
-    		if data.amount[i] > 0 then
-    			visible = true
-    		end
-    	end
+        local visible = self:is_deployable_equipment_visible(data)
+        if not visible then
+            return
+        end
+
         self:set_special_equipment_amount("deployable_equipment_panel", data.amount_str)
 
         if not visible then
@@ -1076,7 +1083,10 @@ if pdth_hud.Options.HUD.MainHud then
             local amx, amy, amw, amh = txtAmount:text_rect()
             panel:set_w(panel:child("bitmap"):w() + (special.num_on_right and amw + const.num_on_right_inflation or 0))
             txtAmount:set_right(panel:w())
-            if tonumber(amount) and tonumber(amount) < 1 and not special.weapon then
+            if not special.weapon and not special.show_single_amount and type(amount) == "number" then
+                txtAmount:set_visible(amount > 1)
+            end
+            if type(amount) == "number" and amount < 1 and not special.weapon then
                 self:remove_special_equipment(equipment_id)
             end
         end
