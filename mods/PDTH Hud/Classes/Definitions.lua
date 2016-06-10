@@ -188,7 +188,16 @@ pdth_hud.definitions.weapon_texture = {
         "whiskey",
         "wing",
         "x46",
-        "zeus"
+        "zeus",
+        "equipment_ammo_bag",
+        "equipment_doctor_bag",
+        "equipment_ecm_jammer",
+        "equipment_first_aid_kit",
+        "equipment_sentry",
+        "equipment_trip_mine",
+        "equipment_armor_kit",
+        "equipment_body_bag",
+        "weapon"
     },
     category_conversion = {
         pistol = "glock_17",

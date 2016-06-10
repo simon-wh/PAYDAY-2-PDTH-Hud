@@ -734,7 +734,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             })
         end
 
-        self:set_special_equipment_image("cable_ties_panel", "guis/textures/hud_icons", {0, 144, 48, 48})
+        self:set_special_equipment_image("cable_ties_panel", "equipment_cable_ties")
         self:set_cable_ties_amount(data.amount)
     end
 
@@ -760,6 +760,9 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         for i, special in pairs(self._special_equipment) do
             if special.weapon then
                 special.panel:set_visible(true)
+            else
+                teammate_panel:remove(special.panel)
+                table.remove(self._special_equipment, i)
             end
         end
 
@@ -770,16 +773,15 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     function HUDTeammate:remove_panel()
         local teammate_panel = self._panel
         teammate_panel:set_visible(false)
-        local special_equipment = self._special_equipment
-        for i, special in pairs(special_equipment) do
+        for i, special in pairs(self._special_equipment) do
             if not special.weapon then
                 teammate_panel:remove(special.panel)
-                table.remove(special_equipment, i)
+                table.remove(self._special_equipment, i)
+            else
+                special.panel:set_visible(false)
             end
         end
         self:set_condition("mugshot_normal")
-        self._player_panel:child("primary_weapon"):set_visible(false)
-        self._player_panel:child("secondary_weapon"):set_visible(false)
         self._player_panel:child("carry_panel"):set_visible(false)
         self:set_cheater(false)
         self:stop_timer()
@@ -859,20 +861,9 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             return
         end
 
-        local texture, rectangle = pdth_hud.textures:get_weapon_texture(self._current_primary.id, self._current_primary.sub_category or self._current_primary.category)
-        if texture ~= nil and rectangle ~= nil then
-            self:set_special_equipment_image("primary_weapon", texture, rectangle)
-        end
-
-        texture, rectangle = pdth_hud.textures:get_weapon_texture(self._current_secondary.id, self._current_secondary.sub_category or self._current_secondary.category)
-        if texture ~= nil and rectangle ~= nil then
-            self:set_special_equipment_image("secondary_weapon", texture, rectangle)
-        end
-
-        texture, rectangle = pdth_hud.textures:get_weapon_texture(self._current_melee.id, self._current_melee.category)
-        if texture ~= nil and rectangle ~= nil then
-            self:set_special_equipment_image("melee_weapon", texture, rectangle)
-        end
+        self:set_special_equipment_image("primary_weapon", self._current_primary.id, self._current_primary.sub_category or self._current_primary.category)
+        self:set_special_equipment_image("secondary_weapon", self._current_secondary.id, self._current_secondary.sub_category or self._current_secondary.category)
+        self:set_special_equipment_image("melee_weapon", self._current_melee.id, self._current_melee.category)
     end
 
     function HUDTeammate:set_callsign(id) end
@@ -927,9 +918,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             return
         end
 
-        local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
-
-        self:set_special_equipment_image("deployable_equipment_panel", icon, texture_rect)
+        self:set_special_equipment_image("deployable_equipment_panel", data.icon)
         self:set_deployable_equipment_amount(1, data)
     end
 
@@ -960,9 +949,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             return
         end
 
-        local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
-
-        self:set_special_equipment_image("deployable_equipment_panel", icon, texture_rect)
+        self:set_special_equipment_image("deployable_equipment_panel", data.icon)
         self:set_deployable_equipment_amount_from_string(1, data)
     end
 
@@ -996,9 +983,8 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             return
         end
 
-        local icon, texture_rect = tweak_data.hud_icons:get_icon_data(data.icon)
         self:set_grenades_amount(data)
-        self:set_special_equipment_image("grenades_panel", icon, texture_rect)
+        self:set_special_equipment_image("grenades_panel", data.icon)
     end
 
     function HUDTeammate:set_grenades_amount(data)
@@ -1076,7 +1062,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             end
         end
 
-        local panelData = {panel = equipment_panel, weapon = data.weapon, num_on_right = data.num_on_right}
+        local panelData = {panel = equipment_panel, weapon = data.weapon, num_on_right = data.num_on_right, icon_data = {data.icon}}
 
         if self._main_player and data.weapon then
             table.insert(self._weapons, panelData)
@@ -1100,7 +1086,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 teammate_panel:remove(panel)
                 table.remove(special_equipment, i)
                 self:layout_special_equipments()
-                break
+                return
             end
         end
 
@@ -1110,7 +1096,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 teammate_panel:remove(panel)
                 table.remove(self._weapons, i)
                 self:layout_special_equipments()
-                break
+                return
             end
         end
     end
@@ -1164,18 +1150,24 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self:layout_special_equipments()
     end
 
-    function HUDTeammate:set_special_equipment_image(equipment_id, image, texture_rect)
+    function HUDTeammate:set_special_equipment_image(equipment_id, ...)
         for i, special in ipairs(self._special_equipment) do
             local panel = special.panel
             if panel and panel:name() == equipment_id then
+                special.icon_data = {...}
+                local image, texture_rect = tweak_data.hud_icons:get_icon_data(...)
                 panel:child("bitmap"):set_image(image, unpack(texture_rect))
+                return
             end
         end
 
         for i, special in ipairs(self._weapons) do
             local panel = special.panel
             if panel and panel:name() == equipment_id then
+                special.icon_data = {...}
+                local image, texture_rect = pdth_hud.textures:get_weapon_texture(...)
                 panel:child("bitmap"):set_image(image, unpack(texture_rect))
+                return
             end
         end
     end
@@ -1210,6 +1202,20 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 panel:set_right((main_player_right - const.main_equipment_size) - (panel:w() * (#self._weapons - i)))
                 panel:set_top(main_player_bottom)
             end
+        end
+    end
+
+    function HUDTeammate:refresh_special_equipment()
+        for i, special in ipairs(self._special_equipment) do
+            local panel = special.panel
+            local image, texture_rect = tweak_data.hud_icons:get_icon_data(unpack(special.icon_data))
+            panel:child("bitmap"):set_image(image, unpack(texture_rect))
+        end
+
+        for i, special in ipairs(self._weapons) do
+            local panel = special.panel
+            local image, texture_rect = pdth_hud.textures:get_weapon_texture(unpack(special.icon_data))
+            panel:child("bitmap"):set_image(image, unpack(texture_rect))
         end
     end
 

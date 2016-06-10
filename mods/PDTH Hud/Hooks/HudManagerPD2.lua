@@ -124,9 +124,9 @@ function HUDManager:set_teammate_ammo_amount(id, selection_index, max_clip, curr
 	self._teammate_panels[id]:set_ammo_amount_by_type(typ, max_clip, current_clip, send_real and left_ammo_value or current_left, max)
 end
 
-CloneClass(HUDManager)
+local HUDManagerset_teammate_custom_radial = HUDManager.set_teammate_custom_radial
 
-function HUDManager.set_teammate_custom_radial(self, i, data)
+function HUDManager:set_teammate_custom_radial(i, data)
 	local hud = managers.hud:script( PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
 	if pdth_hud.Options:GetValue("HUD/Swansong") then
 		if not hud.panel:child("swan_song_left") then
@@ -163,5 +163,5 @@ function HUDManager.set_teammate_custom_radial(self, i, data)
 		end
 	end
 
-    self.orig.set_teammate_custom_radial(self, i, data)
+    HUDManagerset_teammate_custom_radial(self, i, data)
 end

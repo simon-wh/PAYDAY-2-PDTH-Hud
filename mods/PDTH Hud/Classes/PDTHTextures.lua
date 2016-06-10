@@ -229,24 +229,46 @@ function pdth_hud.textures:get_bullet_details(weapon_id, category)
     return texture, details
 end
 
-function pdth_hud.textures:get_weapon_texture(weapon_id, category)
-	local texture = pdth_hud.definitions.weapon_texture.textures[1]
+function pdth_hud.textures:apply_tweak_data_icons()
+	local icons = tweak_data.hud_icons
+	icons.equipment_body_bag = pdth_hud.textures:get_weapon_texture("equipment_body_bag", nil, true)
+    icons.equipment_ammo_bag = pdth_hud.textures:get_weapon_texture("equipment_ammo_bag", nil, true)
+    icons.equipment_doctor_bag = pdth_hud.textures:get_weapon_texture("equipment_doctor_bag", nil, true)
+    icons.equipment_sentry = pdth_hud.textures:get_weapon_texture("equipment_sentry", nil, true)
+    icons.equipment_trip_mine = pdth_hud.textures:get_weapon_texture("equipment_trip_mine", nil, true)
+    icons.equipment_ecm_jammer = pdth_hud.textures:get_weapon_texture("equipment_ecm_jammer", nil, true)
+    icons.equipment_armor_kit = pdth_hud.textures:get_weapon_texture("equipment_armor_kit", nil, true)
+    icons.equipment_first_aid_kit = pdth_hud.textures:get_weapon_texture("equipment_first_aid_kit", nil, true)
+    icons.equipment_bodybags_bag = pdth_hud.textures:get_weapon_texture("equipment_body_bag", nil, true)
+
+    icons.frag_grenade = pdth_hud.textures:get_weapon_texture("frag_grenade", nil, true)
+    icons.molotov_grenade = pdth_hud.textures:get_weapon_texture("molotov_grenade", nil, true)
+    icons.dynamite_grenade = pdth_hud.textures:get_weapon_texture("dynamite_grenade", nil, true)
+    icons.four_projectile = pdth_hud.textures:get_weapon_texture("four_projectile", nil, true)
+    icons.ace_projectile = pdth_hud.textures:get_weapon_texture("ace_projectile", nil, true)
+    icons.jav_projectile = pdth_hud.textures:get_weapon_texture("jav_projectile", nil, true)
+end
+
+function pdth_hud.textures:get_weapon_texture(weapon_id, category, ret_tbl)
+	local def = pdth_hud.definitions.weapon_texture
+	local texture = def.textures[pdth_hud.Options:GetValue("HUD/WeaponIcon")]
 	local rectangle = {0,0,0,0}
 
 	if self.weapons[weapon_id] then
-		local weap = self.weapons[weapon_id]
-		texture = weap.texture
-		rectangle = weap.texture_rect
+		rectangle = self.weapons[weapon_id]
 	else
 		local weap_index = table.index_of(pdth_hud.definitions.weapon_texture.weapon_order, weapon_id)
 		if weap_index == -1 and pdth_hud.definitions.weapon_texture.category_conversion[category] then
 			weap_index = table.index_of(pdth_hud.definitions.weapon_texture.weapon_order, pdth_hud.definitions.weapon_texture.category_conversion[category])
 		end
 		if weap_index == -1 then
-			return texture, rectangle
+			if ret_tbl then
+				return {texture = texture, texture_rect = rectangle}
+			else
+				return texture, rectangle
+			end
 		end
 
-		local def = pdth_hud.definitions.weapon_texture
 		local row = math.floor((weap_index-1) / (def.texture_size.w / def.icon_size.w))
 		local column = (weap_index-1) % (def.texture_size.w / def.icon_size.w)
 		row = math.floor(row)
@@ -256,14 +278,14 @@ function pdth_hud.textures:get_weapon_texture(weapon_id, category)
 			def.icon_size.w,
 			def.icon_size.h
 		}
-		texture = def.textures[pdth_hud.Options:GetValue("HUD/WeaponIcon")]
-		self.weapons[weapon_id] = {
-			texture = texture,
-			texture_rect = rectangle
-		}
+		self.weapons[weapon_id] = rectangle
 	end
 
-    return texture, rectangle
+	if ret_tbl then
+		return {texture = texture, texture_rect = rectangle}
+	else
+		return texture, rectangle
+	end
 end
 
 pdth_hud.textures._portrait_order = {}
@@ -310,7 +332,7 @@ function pdth_hud.textures:ProcessAddon(data, portrait_tbl)
 				table.insert(portrait_tbl, name)
                 Hooks:Add("LocalizationManagerPostInit", "PDTHHudPortrait" .. name, function(loc)
                     LocalizationManager:add_localized_strings({
-                        ["pdth_" .. name] = display_name
+                        [name .. "_title_id"] = display_name
                     })
                 end)
             end

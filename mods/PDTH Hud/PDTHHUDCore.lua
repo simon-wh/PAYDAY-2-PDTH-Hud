@@ -4,15 +4,16 @@ if not _G.pdth_hud then
 
 	--self.Options = {}
 
-	self.AddonPath = self.ModPath .. "addons/"
+	self.AddonPath = LuaModManager.Constants.mods_directory .. "PDTH HUD addons/"
+	self.LocalAddonPath = self.ModPath .. "addons/"
 	self.ClassPath = self.ModPath .. "Classes/"
 	self.HooksPath = self.ModPath .. "Hooks/"
     self.Classes = {
 		"Definitions.lua",
         "Constants.lua",
         "PDTHTextures.lua",
-        "PDTHEquipment.lua",
-		"OptionsCallbacks.lua",
+        --"PDTHEquipment.lua",
+		"Callbacks.lua",
         --"DefaultOptions.lua",
         --"Options.lua",
         "ChallengesManager.lua",
@@ -34,6 +35,7 @@ if not _G.pdth_hud then
         ["lib/managers/hudmanagerpd2"] = "HudManagerPD2.lua",
         ["lib/managers/hud/hudteammate"] = "HudTeammate.lua",
         ["lib/managers/hud/hudpresenter"] = "HudPresenter.lua",
+		["lib/network/matchmaking/networkaccountsteam"] = "NetworkAccountSteam.lua",
         ["lib/tweak_data/tweakdata"] = "TweakData.lua",
 		["lib/managers/menu/menucomponentmanager"] = "MenuComponentManager.lua",
 		["lib/managers/menu/textboxgui"] = "PortraitPreviewGUI.lua"
@@ -80,6 +82,10 @@ if not _G.pdth_hud then
 end
 
 function pdth_hud:_init()
+	if not file.DirectoryExists(self.AddonPath) then
+        os.execute("mkdir \"" .. self.AddonPath .. "\"")
+    end
+
 	for p, d in pairs(pdth_hud.Classes) do
 		dofile(pdth_hud.ClassPath .. d)
 	end
@@ -91,24 +97,26 @@ function pdth_hud:_init()
 end
 
 function pdth_hud:LoadAddons()
-    local addons = file.GetFiles(self.AddonPath)
-    for _, path in pairs(addons) do
-        if string.ends(path, "json") then
-            local file = io.open(self.AddonPath .. path, "r")
-            local file_contents = file:read("*all")
-            local data = json.decode( file_contents )
-            pdth_hud.textures:ProcessAddon(data, self.portrait_options)
-            file:close()
-        end
-    end
-
+	local dirs = {self.AddonPath, self.LocalAddonPath}
+	for _, dir in pairs(dirs) do
+	    local addons = file.GetFiles(dir)
+	    for _, path in pairs(addons) do
+	        if string.ends(path, "json") then
+	            local file = io.open(dir .. path, "r")
+	            local file_contents = file:read("*all")
+	            local data = json.decode( file_contents )
+	            pdth_hud.textures:ProcessAddon(data, self.portrait_options)
+	            file:close()
+	        end
+	    end
+	end
 
     for i, portait in pairs(self.portrait_options) do
         pdth_hud.portrait_value_options[i] = "portrait_value_" .. i
     end
 	local portrait_tbl = {}
 	for i, portrait in pairs(self.portrait_options) do
-		portrait_tbl[i] = { name = portrait, title_id = "pdth_" .. portrait, default_value = i }
+		portrait_tbl[i] = { name = portrait, title_id = portrait .. "_title_id", default_value = i }
 	end
 
 	return portrait_tbl
@@ -148,6 +156,7 @@ function pdth_hud:GetLevels()
 end
 
 if not pdth_hud.setup then
+	pdth_hud.post_hook_call = loadstring(io.open(pdth_hud._post_hooks_path, 'r'):read("*all"))
 	pdth_hud:_init()
 	pdth_hud.setup = true
 end
@@ -158,5 +167,5 @@ if RequiredScript then
 		dofile( pdth_hud.HooksPath .. pdth_hud.Hooks[requiredScript] )
 	end
 
-	dofile(pdth_hud._post_hooks_path)
+	pdth_hud.post_hook_call()
 end

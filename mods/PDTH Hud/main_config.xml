@@ -6,7 +6,28 @@
             <localization language="french" file="french.txt"/>
             <localization language="dutch" file="dutch.txt"/>
         </LocalizationModule>
-        <OptionModule build_menu="true" auto_load="true" save_file="PDTHHudRebornoptions.txt">
+        <ModAssetsModule name="asset_updates" id="16438" folder_name="PDTH Hud" provider="lastbullet"/>
+        <MenuModule>
+            <menu>
+                <sub_menu key="Options"/>
+                <divider name="UpdateDivider" size="20"/>
+                <item_group key="asset_updates"/>
+            </menu>
+        </MenuModule>
+        <ScriptReplacementsModule directory="ScriptData">
+            <repl file="item_door_drill_small.xml" type="custom_xml" target_file="units/payday2/equipment/item_door_drill_small/item_door_drill_small" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="item_door_drill_small.xml" type="custom_xml" target_file="units/payday2/equipment/gen_interactable_drill_small/gen_interactable_drill_small" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="gen_plant_c4.xml" type="custom_xml" target_file="units/pd2_dlc_jolly/equipment/gen_plant_c4/gen_plant_c4" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="gen_equipment_shape_charge.xml" type="custom_xml" target_file="units/payday2/equipment/gen_equipment_shape_charge/gen_equipment_shape_charge" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="gen_interactable_door_keycard_jammer.xml" type="custom_xml" target_file="units/payday2/equipment/gen_interactable_door_keycard/gen_interactable_door_keycard_jammer" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="gen_interactable_door_keycard_jammer.xml" type="custom_xml" target_file="units/payday2/equipment/gen_interactable_door_keycard/item_door_keycard_jammer_double" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="gen_interactable_door_keycard_jammer.xml" type="custom_xml" target_file="units/payday2/props/gen_prop_bank_atm_standing/gen_prop_bank_atm_jammer" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="gen_interactable_drill_large_thermic.xml" type="custom_xml" target_file="units/payday2/equipment/gen_interactable_drill_large_thermic/gen_interactable_drill_large_thermic" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="gen_interactable_drill_large_thermic.xml" type="custom_xml" target_file="units/payday2/equipment/gen_interactable_lance_large/gen_interactable_lance_large" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="hlm_equipment_gas_can_shoot.xml" type="custom_xml" target_file="units/payday2/equipment/hlm_equipment_gas_can_shoot/hlm_equipment_gas_can_shoot" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="gen_equipment_shape_charge_plantable.xml" type="custom_xml" target_file="units/payday2/equipment/gen_equipment_shape_charge_plantable/gen_equipment_shape_charge_plantable" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+        </ScriptReplacementsModule>
+        <OptionModule name="Options" auto_build_menu="false" auto_load="true" save_file="PDTHHudRebornoptions.txt">
             <options>
                 <merge_data>
                     <merge_data area_bg="half">
