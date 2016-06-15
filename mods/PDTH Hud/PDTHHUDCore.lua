@@ -20,7 +20,10 @@ if not _G.pdth_hud then
         "ChallengesTweakData.lua",
 		"Menu.lua",
 		"Hooks.lua",
-
+        "HudAmmoHandlers/Default.lua",
+        "HudAmmoHandlers/Saw.lua",
+        "HudAmmoHandlers/Flamethrower.lua",
+        "HudAmmo.lua"
     }
 
     self.Hooks = {
@@ -89,7 +92,6 @@ function pdth_hud:_init()
 	for p, d in pairs(pdth_hud.Classes) do
 		dofile(pdth_hud.ClassPath .. d)
 	end
-	log("init modules")
 	self:init_modules()
 	--self:LoadOptions()
 	pdth_hud.textures:refresh_portrait_order()

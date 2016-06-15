@@ -108,20 +108,17 @@ function HUDManager:GetCategoryFromWeaponCategory(cat)
     return category
 end
 
-function HUDManager:set_teammate_ammo_amount(id, selection_index, max_clip, current_clip, current_left, max)
+function HUDManager:set_teammate_ammo_amount(id, selection_index, max_clip, current_clip, current_left, max, force)
 	local typ = selection_index == 1 and "secondary" or "primary"
 	local send_real = false
-	local category = self:GetCategoryFromWeaponCategory(typ)
 
-	if id == 4 and pdth_hud.Options:GetValue("HUD/spooky_ammo") then
-		if category == "saw" then
-			send_real = false
-		else
+	if id == HUDManager.PLAYER_PANEL and pdth_hud.Options:GetValue("HUD/spooky_ammo") then
+		if self:GetCategoryFromWeaponCategory(typ) ~= "saw" then
 			send_real = true
 		end
 	end
 	local left_ammo_value = (current_left - max_clip) + (max_clip - current_clip)
-	self._teammate_panels[id]:set_ammo_amount_by_type(typ, max_clip, current_clip, send_real and left_ammo_value or current_left, max)
+	self._teammate_panels[id]:set_ammo_amount_by_type(typ, max_clip, current_clip, send_real and left_ammo_value or current_left, max, force)
 end
 
 local HUDManagerset_teammate_custom_radial = HUDManager.set_teammate_custom_radial

@@ -295,26 +295,9 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         })
 
         if self._main_player then
-            local melee_weapon = self._player_panel:child("melee_weapon")
-            local main_player_right = teammate_panel:right() - (const.main_equipment_size / 2)
-
-            self._primary_weapon_ammo = self._player_panel:panel({
-                id = "primary_weapon_ammo",
-                h = self._player_panel:h() - melee_weapon:bottom(),
-                w = self._panel:w(),
-                visible = false,
-                layer = 1
-            })
-            self._primary_weapon_ammo:set_right((main_player_right) - const.main_ammo_panel_x_offset)
-            self._primary_weapon_ammo:set_bottom(teammate_panel:bottom())
-            self:InitAmmoPanel(self._primary_weapon_ammo)
-            self._secondary_weapon_ammo = self._player_panel:panel({
-                id = "secondary_weapon_ammo",
-                visible = false,
-                layer = 1
-            })
-            self._secondary_weapon_ammo:set_shape(self._primary_weapon_ammo:shape())
-            self:InitAmmoPanel(self._secondary_weapon_ammo)
+            self._primary_weapon_ammo = HUDAmmo:new(self._player_panel, "primary")
+            self._secondary_weapon_ammo = HUDAmmo:new(self._player_panel, "secondary")
+            self:recreate_weapon_firemode()
         end
 
         local tabs_texture = "guis/textures/pd2/hud_tabs"
@@ -374,47 +357,45 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         })
     end
 
+    function HUDTeammate:_create_weapon_firemode(weap_details, i)
+        local weapon_tweak_data = tweak_data.weapon[weap_details.weapon_id]
+        local fire_mode = weapon_tweak_data.FIRE_MODE
+        local can_toggle_firemode = weapon_tweak_data.CAN_TOGGLE_FIREMODE
+        local locked_to_auto = managers.weapon_factory:has_perk("fire_mode_auto", weap_details.factory_id, weap_details.blueprint)
+        local locked_to_single = managers.weapon_factory:has_perk("fire_mode_single", weap_details.factory_id, weap_details.blueprint)
+        if locked_to_single or not locked_to_auto and fire_mode == "single" then
+            self:set_weapon_firemode(i, "single")
+        else
+            self:set_weapon_firemode(i, "auto")
+        end
+    end
+
     function HUDTeammate:_create_primary_weapon_firemode()
         if self._main_player then
-            local equipped_primary = managers.blackmarket:equipped_primary()
-            local weapon_tweak_data = tweak_data.weapon[equipped_primary.weapon_id]
-            local fire_mode = weapon_tweak_data.FIRE_MODE
-            local can_toggle_firemode = weapon_tweak_data.CAN_TOGGLE_FIREMODE
-            local locked_to_auto = managers.weapon_factory:has_perk("fire_mode_auto", equipped_primary.factory_id, equipped_primary.blueprint)
-            local locked_to_single = managers.weapon_factory:has_perk("fire_mode_single", equipped_primary.factory_id, equipped_primary.blueprint)
-            if locked_to_single or not locked_to_auto and fire_mode == "single" then
-                self:set_weapon_firemode(2, "single")
-            else
-                self:set_weapon_firemode(2, "auto")
+            if not self._current_primary or not self._current_secondary or not self._current_melee then
+                self:get_weapon_info()
             end
+
+            local equipped_primary = managers.blackmarket:equipped_primary()
+            self:_create_weapon_firemode(equipped_primary, 2)
         end
     end
 
     function HUDTeammate:_create_secondary_weapon_firemode()
         if self._main_player then
-            local equipped_secondary = managers.blackmarket:equipped_secondary()
-            local weapon_tweak_data = tweak_data.weapon[equipped_secondary.weapon_id]
-            local fire_mode = weapon_tweak_data.FIRE_MODE
-            local can_toggle_firemode = weapon_tweak_data.CAN_TOGGLE_FIREMODE
-            local locked_to_auto = managers.weapon_factory:has_perk("fire_mode_auto", equipped_secondary.factory_id, equipped_secondary.blueprint)
-            local locked_to_single = managers.weapon_factory:has_perk("fire_mode_single", equipped_secondary.factory_id, equipped_secondary.blueprint)
-            if locked_to_single or not locked_to_auto and fire_mode == "single" then
-                self:set_weapon_firemode(1, "single")
-            else
-                self:set_weapon_firemode(1, "auto")
+            if not self._current_primary or not self._current_secondary or not self._current_melee then
+                self:get_weapon_info()
             end
+
+            local equipped_secondary = managers.blackmarket:equipped_secondary()
+            self:_create_weapon_firemode(equipped_secondary, 1)
         end
     end
 
     function HUDTeammate:set_weapon_firemode_burst(id, firemode, burst_fire)
-        local is_secondary = id == 1
-        local weapPanel = is_secondary and self._secondary_weapon_ammo or self._primary_weapon_ammo
-        if alive(weapPanel) then
-            local firemodeText = weapPanel:child("firemode")
-            if alive(firemodeText)then
-                firemodeText:set_text("BRST")
-                firemodeText:set_visible(pdth_hud.Options:GetValue("HUD/Fireselector"))
-            end
+        local weap_panel = id == 1 and self._secondary_weapon_ammo or self._primary_weapon_ammo
+        if weap_panel then
+            weap_panel:set_firemode_burst(firemode, burst_fire)
         end
     end
 
@@ -440,69 +421,13 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     end
 
     function HUDTeammate:set_weapon_firemode(id, firemode)
-        local is_secondary = id == 1
-        local weapPanel = is_secondary and self._secondary_weapon_ammo or self._primary_weapon_ammo
-        if alive(weapPanel) then
-            local firemodeText = weapPanel:child("firemode")
-            if alive(firemodeText)then
-                if firemode == "single" then
-                    firemodeText:set_text("SEMI")
-                else
-                    firemodeText:set_text("AUTO")
-                end
-                firemodeText:set_visible(pdth_hud.Options:GetValue("HUD/Fireselector"))
-            end
+        local weap_panel = id == 1 and self._secondary_weapon_ammo or self._primary_weapon_ammo
+        if weap_panel then
+            weap_panel:set_firemode(firemode)
         end
     end
 
-    function HUDTeammate:InitAmmoPanel(panel)
-        local const = pdth_hud.constants
-        local scale = pdth_hud.Options:GetValue("HUD/Scale")
-
-        local firemode = panel:child("firemode")
-        if not firemode then
-            firemode = panel:text({
-                name = "firemode",
-                text = "AUTO",
-                layer = 1,
-                font = tweak_data.menu.small_font,
-                font_size = const.main_firemode_font_size
-            })
-            managers.hud:make_fine_text(firemode)
-            firemode:set_center_y(panel:h() / 2)
-            firemode:set_right(panel:w())
-        end
-
-        local ammo = panel:child("ammo")
-        if not ammo then
-            ammo = panel:text({
-                name = "ammo",
-                text = "000/000",
-                layer = 1,
-                font = tweak_data.menu.small_font,
-                font_size = const.main_ammo_font_size
-            })
-            managers.hud:make_fine_text(ammo)
-            ammo:set_center_y(panel:h() / 2)
-            ammo:set_right(firemode:left() - const.main_firemode_gap)
-        end
-
-        local ammo_panel = panel:child("ammo_panel")
-        if not ammo_panel then
-            ammo_panel = panel:panel({
-                name = "ammo_panel",
-                layer = 1,
-                h = panel:h(),
-                w = panel:w()
-            })
-            ammo_panel:set_center_y(panel:h() / 2)
-            ammo_panel:set_right(ammo:left() - const.main_ammo_image_gap)
-        end
-
-        self:recreate_weapon_firemode()
-    end
-
-    function HUDTeammate:set_ammo_amount_by_type(type, max_clip, current_clip, current_left, max)
+    function HUDTeammate:set_ammo_amount_by_type(type, max_clip, current_clip, current_left, max, force)
         local const = pdth_hud.constants
         local scale = pdth_hud.Options:GetValue("HUD/Scale")
         local ammoAmount = self._main_player and pdth_hud.Options:GetValue("HUD/spooky_ammo") and current_left + current_clip or current_left
@@ -512,114 +437,13 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         if self._main_player then
             local weapon_panel = type == "primary" and self._primary_weapon_ammo or self._secondary_weapon_ammo
 
-            local firemode = weapon_panel:child("firemode")
-            local ammo = weapon_panel:child("ammo")
-
-            local clip_string = (current_clip < 10 and "00" or current_clip < 100 and "0" or "") .. current_clip
-            local left_string = (current_left < 10 and "00" or current_left < 100 and "0" or "") .. current_left
-
-            local update_ammo_icons = false
-            local ammo_text = clip_string .. "/" .. left_string
-            if ammo_text ~= ammo:text() then
-                update_ammo_icons = true
-                ammo:set_text(ammo_text)
-            end
-
-            if current_left <= 0 then
-                ammo:set_range_color(4, 7, Color.red)
-            else
-                ammo:set_range_color(4, 7, Color.white)
-            end
-
-            local r, g, b = 1, 1, 1
-            if current_clip <= math.round(max_clip / 4) then
-                g = current_clip / (max_clip / 2)
-                b = current_clip / (max_clip / 2)
-            end
-            ammo:set_range_color(0, 3, Color(1, r, g, b))
-
-            if update_ammo_icons then
-                self:update_ammo_icons(type, max_clip, current_clip, current_left, max, update_ammo_icons)
-            end
+            weapon_panel:set_ammo(max_clip, current_clip, current_left, max, force)
         end
     end
 
-    function HUDTeammate:update_ammo_icons(type, max_clip, current_clip, current_left, max, changed)
-        if (max_clip > 200) then
-            return
-        end
-
-        if not self._current_primary or not self._current_secondary or not self._current_melee then
-            self:get_weapon_info()
-        end
-
-        local weapon_panel = type == "primary" and self._primary_weapon_ammo or self._secondary_weapon_ammo
-        local ammo_panel = weapon_panel:child("ammo_panel")
-
-        local weap_details = type == "primary" and self._current_primary or self._current_secondary
-        local weap_id = weap_details.id
-        local category = weap_details.sub_category or weap_details.category
-
-        local icon, details = pdth_hud.textures:get_bullet_details(weap_id, category)
-
-        if details then
-            if ammo_panel:num_children() > max_clip then
-                for i = max_clip + 1, ammo_panel:num_children() do
-                    local bullet = ammo_panel:child("bullet_" .. i)
-                    if bullet then
-                        ammo_panel:remove(bullet)
-                    end
-                end
-            end
-
-
-
-            local rotated = details.rotation and (details.rotation == 90 or details.rotation == 270) or nil
-            local w, h
-
-            if rotated then
-                w = ammo_panel:h()
-                h = (w / details.texture_rect[3]) * details.texture_rect[4]
-            else
-                h = ammo_panel:h()-- * const.main_ammo_size_multiplier
-                w = (h / details.texture_rect[4]) * details.texture_rect[3]
-            end
-
-            local r, g, b = 1, 1, 1
-            if current_clip <= math.round(max_clip / 4) then
-                g = current_clip / (max_clip / 2)
-                b = current_clip / (max_clip / 2)
-            end
-
-            for i = 1, max_clip do
-                local bullet = ammo_panel:child("bullet_" .. i)
-                if not bullet then
-                    bullet = ammo_panel:bitmap({
-                        name = "bullet_" .. i,
-                        layer = 1,
-                        blend_mode = "normal",
-                        w = w,
-                        h = h,
-                        rotation = details.rotation
-                    })
-                    local prev_bullet = ammo_panel:child("bullet_" .. i - 1)
-                    bullet:set_right(prev_bullet and prev_bullet:left() - (details.gap and details.gap or 0) or ammo_panel:w())
-                    bullet:set_center_y(ammo_panel:h() / 2)
-                    bullet:set_image(icon, unpack(details.texture_rect))
-                else
-                    bullet:set_image(icon, unpack(details.texture_rect))
-                end
-
-                if i <= current_clip then
-                    bullet:set_alpha(1)
-                    bullet:set_color(Color(0.8, r, g, b))
-                elseif i >= current_clip then
-                    bullet:set_alpha(0.5)
-                    bullet:set_color(Color(0.2, r, g, b))
-                end
-            end
-        else
-            ammo_panel:clear()
+    function HUDTeammate:refresh_ammo_icons()
+        for _, weapon_panel in pairs({self._primary_weapon_ammo, self._secondary_weapon_ammo}) do
+            weapon_panel:refresh()
         end
     end
 
@@ -842,13 +666,16 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         local melee_id = self._main_player and managers.blackmarket:equipped_melee_weapon() or blackmarket_outfit.melee_weapon
 
         local update_icons = false
-        if not self._current_primary or self._current_primary and self._current_primary.id ~= prim_weapon_id or not self._current_secondary or self._current_secondary and self._current_secondary.id ~= sec_weapon_id or not self._current_melee or self._current_melee and self._current_melee.id ~= melee_id then
+        if not self._current_primary or self._current_primary.id ~= prim_weapon_id or not self._current_secondary or self._current_secondary.id ~= sec_weapon_id or not self._current_melee or self._current_melee.id ~= melee_id then
             update_icons = true
         end
 
         self._current_primary = {id = prim_weapon_id, category = prim_category, sub_category = prim_sub_category}
         self._current_secondary = {id = sec_weapon_id, category = sec_category, sub_category = sec_sub_category}
         self._current_melee = {id = melee_id, category = "melee"}
+
+        self._primary_weapon_ammo:set_weapon_details(self._current_primary)
+        self._secondary_weapon_ammo:set_weapon_details(self._current_secondary)
 
         if update_icons then
             self:update_weapon_icons()
@@ -864,6 +691,11 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self:set_special_equipment_image("primary_weapon", self._current_primary.id, self._current_primary.sub_category or self._current_primary.category)
         self:set_special_equipment_image("secondary_weapon", self._current_secondary.id, self._current_secondary.sub_category or self._current_secondary.category)
         self:set_special_equipment_image("melee_weapon", self._current_melee.id, self._current_melee.category)
+    end
+
+    function HUDTeammate:refresh_ammo()
+        self._current_primary:refresh()
+        self._current_secondary:refresh()
     end
 
     function HUDTeammate:set_callsign(id) end

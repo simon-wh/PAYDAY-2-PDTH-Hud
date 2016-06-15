@@ -2,8 +2,8 @@ pdth_hud.textures = {}
 
 pdth_hud.textures.portraits = {}
 
-pdth_hud.textures.portraits["fallback"] = {}
-pdth_hud.textures.portraits["fallback"].bg = {
+pdth_hud.textures.portraits.fallback = {}
+pdth_hud.textures.portraits.fallback.bg = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
 		0,
@@ -13,7 +13,7 @@ pdth_hud.textures.portraits["fallback"].bg = {
 	}
 }
 
-pdth_hud.textures.portraits["fallback"].health = {
+pdth_hud.textures.portraits.fallback.health = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
 		0,
@@ -23,7 +23,7 @@ pdth_hud.textures.portraits["fallback"].health = {
 	}
 }
 
-pdth_hud.textures.portraits["fallback"].armor = {
+pdth_hud.textures.portraits.fallback.armor = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
 		0,
@@ -33,7 +33,7 @@ pdth_hud.textures.portraits["fallback"].armor = {
 	}
 }
 
-pdth_hud.textures.portraits["fallback"].tm = {
+pdth_hud.textures.portraits.fallback.tm = {
 	texture = "guis/textures/pd2/masks",
 	texture_rect = {
 		0,
@@ -86,7 +86,8 @@ pdth_hud.textures.bullets = {
 			5,
 			55,
 			150
-		}
+		},
+		style = 1
 	},
 	pistol_45 = {
 		texture_rect = {
@@ -94,7 +95,8 @@ pdth_hud.textures.bullets = {
 			5,
 			55,
 			150
-		}
+		},
+		style = 1
 	},
 	pistol_40 = {
 		texture_rect = {
@@ -102,7 +104,8 @@ pdth_hud.textures.bullets = {
 			5,
 			55,
 			150
-		}
+		},
+		style = 1
 	},
 	shotgun_shell = {
 		texture_rect = {
@@ -110,7 +113,8 @@ pdth_hud.textures.bullets = {
 			5,
 			61,
 			150
-		}
+		},
+		style = 1
 	},
 	rifle_556 = {
 		texture_rect = {
@@ -118,7 +122,8 @@ pdth_hud.textures.bullets = {
 			5,
 			34,
 			150
-		}
+		},
+		style = 1
 	},
 	rifle_762 = {
 		texture_rect = {
@@ -126,7 +131,8 @@ pdth_hud.textures.bullets = {
 			165,
 			29,
 			151
-		}
+		},
+		style = 1
 	},
 	snp_44 = {
 		texture_rect = {
@@ -134,7 +140,8 @@ pdth_hud.textures.bullets = {
 			165,
 			47,
 			150
-		}
+		},
+		style = 1
 	},
 	snp_50 = {
 		texture_rect = {
@@ -142,7 +149,8 @@ pdth_hud.textures.bullets = {
 			165,
 			29,
 			150
-		}
+		},
+		style = 1
 	},
 	grenade = {
 		texture_rect = {
@@ -150,34 +158,35 @@ pdth_hud.textures.bullets = {
 			165,
 			56,
 			150
-		}
+		},
+		style = 1
 	},
 	rpg = {
 		texture_rect = {
-			702,
-			165,
-			37,
-			150
+			645,
+			221,
+			150,
+			37
 		},
-		rotation = 270
+		style = 1
 	},
 	arrow = {
 		texture_rect = {
-			65,
-			325,
-			30,
-			150
+			5,
+			385,
+			150,
+			30
 		},
-		rotation = 270
+		style = 1
 	},
 	crossbow_bolt = {
 		texture_rect = {
-			233,
-			325,
-			15,
-			150
+			165,
+			392,
+			150,
+			15
 		},
-		rotation = 270
+		style = 1
 	},
 	saw_blade = {
 		texture_rect = {
@@ -186,18 +195,16 @@ pdth_hud.textures.bullets = {
 			150,
 			150
 		},
-		spin_on_change = true,
-		single = true
+		style = 3
 	},
 	fuel_tank = {
 		texture_rect = {
-			525,
-			325,
-			68,
-			150
+			485,
+			367,
+			150,
+			68
 		},
-		rotation = 270,
-		single = true
+		style = 3
 	}
 }
 

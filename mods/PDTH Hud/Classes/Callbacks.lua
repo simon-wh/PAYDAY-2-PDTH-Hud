@@ -29,9 +29,7 @@ function pdth_hud.callbacks:BulletStyleChanged(key, value)
         if player then
             local inventory = player:inventory()
             if inventory then
-                for id, weapon in pairs(inventory:available_selections()) do
-                    managers.hud:set_ammo_amount(id, weapon.unit:base():ammo_info())
-                end
+                managers.hud._teammate_panels[HUDManager.PLAYER_PANEL]:refresh_ammo_icons()
             end
         end
     end
