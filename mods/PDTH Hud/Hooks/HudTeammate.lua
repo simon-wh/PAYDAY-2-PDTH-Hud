@@ -674,8 +674,10 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self._current_secondary = {id = sec_weapon_id, category = sec_category, sub_category = sec_sub_category}
         self._current_melee = {id = melee_id, category = "melee"}
 
-        self._primary_weapon_ammo:set_weapon_details(self._current_primary)
-        self._secondary_weapon_ammo:set_weapon_details(self._current_secondary)
+        if self._main_player then
+            self._primary_weapon_ammo:set_weapon_details(self._current_primary)
+            self._secondary_weapon_ammo:set_weapon_details(self._current_secondary)
+        end
 
         if update_icons then
             self:update_weapon_icons()
