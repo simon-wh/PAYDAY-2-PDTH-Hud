@@ -44,7 +44,7 @@
 	],
 	"updates" : [
 		{
-			"revision" : 80,
+			"revision" : 81,
 			"identifier" : "pdth_hud"
 		},
 		{
