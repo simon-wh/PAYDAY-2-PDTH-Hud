@@ -43,15 +43,8 @@
 	],
 	"updates" : [
 		{
-			"revision" : 80,
+			"revision" : 81,
 			"identifier" : "pdth_hud"
-		},
-		{
-			"revision" : "./assets/mod_overrides/PDTH Hud/revision.txt",
-			"identifier" : "pdth_hud_mod_overrides",
-			"install_dir" : "assets/mod_overrides/",
-			"install_folder" : "PDTH Hud",
-			"display_name" : "PDTH Hud mod_overrides"
 		}
 	],
     "libraries" : [
