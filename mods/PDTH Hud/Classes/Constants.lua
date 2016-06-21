@@ -87,5 +87,6 @@ function pdth_hud:InitConstants()
     const.tm_health_gap = 4 * scale
 
     const.tm_gradient_width = 300 * scale
-
+    const.interaction_main_texture_rect = {0, 392, 360, 22}
+    const.interaction_bg_texture_rect = {0, 414, 360, 22}
 end

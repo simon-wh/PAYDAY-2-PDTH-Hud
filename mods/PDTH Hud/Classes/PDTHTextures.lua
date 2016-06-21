@@ -238,22 +238,29 @@ end
 
 function pdth_hud.textures:apply_tweak_data_icons()
 	local icons = tweak_data.hud_icons
-	icons.equipment_body_bag = pdth_hud.textures:get_weapon_texture("equipment_body_bag", nil, true)
-    icons.equipment_ammo_bag = pdth_hud.textures:get_weapon_texture("equipment_ammo_bag", nil, true)
-    icons.equipment_doctor_bag = pdth_hud.textures:get_weapon_texture("equipment_doctor_bag", nil, true)
-    icons.equipment_sentry = pdth_hud.textures:get_weapon_texture("equipment_sentry", nil, true)
-    icons.equipment_trip_mine = pdth_hud.textures:get_weapon_texture("equipment_trip_mine", nil, true)
-    icons.equipment_ecm_jammer = pdth_hud.textures:get_weapon_texture("equipment_ecm_jammer", nil, true)
-    icons.equipment_armor_kit = pdth_hud.textures:get_weapon_texture("equipment_armor_kit", nil, true)
-    icons.equipment_first_aid_kit = pdth_hud.textures:get_weapon_texture("equipment_first_aid_kit", nil, true)
-    icons.equipment_bodybags_bag = pdth_hud.textures:get_weapon_texture("equipment_body_bag", nil, true)
-
-    icons.frag_grenade = pdth_hud.textures:get_weapon_texture("frag_grenade", nil, true)
-    icons.molotov_grenade = pdth_hud.textures:get_weapon_texture("molotov_grenade", nil, true)
-    icons.dynamite_grenade = pdth_hud.textures:get_weapon_texture("dynamite_grenade", nil, true)
-    icons.four_projectile = pdth_hud.textures:get_weapon_texture("four_projectile", nil, true)
-    icons.ace_projectile = pdth_hud.textures:get_weapon_texture("ace_projectile", nil, true)
-    icons.jav_projectile = pdth_hud.textures:get_weapon_texture("jav_projectile", nil, true)
+	local icon_replacement_tbl = {
+		"equipment_body_bag",
+		"equipment_ammo_bag",
+		"equipment_doctor_bag",
+		"equipment_sentry",
+		"equipment_sentry_silent",
+		"equipment_trip_mine",
+		"equipment_ecm_jammer",
+		"equipment_armor_kit",
+		"equipment_first_aid_kit",
+		"equipment_bodybags_bag",
+		"frag_grenade",
+		"com_frag_grenade",
+		"molotov_grenade",
+		"dynamite_grenade",
+		"four_projectile",
+		"ace_projectile",
+		"jav_projectile",
+		"throwing_axe"
+	}
+	for _, icon in pairs(icon_replacement_tbl) do
+		icons[icon] = self:get_weapon_texture(icon, nil, true)
+	end
 end
 
 function pdth_hud.textures:get_weapon_texture(weapon_id, category, ret_tbl)

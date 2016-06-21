@@ -193,11 +193,17 @@ pdth_hud.definitions.weapon_texture = {
         "equipment_doctor_bag",
         "equipment_ecm_jammer",
         "equipment_first_aid_kit",
-        "equipment_sentry",
+        "equipment_sentry_silent",
         "equipment_trip_mine",
         "equipment_armor_kit",
         "equipment_body_bag",
-        "weapon"
+        "weapon",
+        "boot",
+        "hajk",
+        "equipment_sentry",
+        "com_frag_grenade",
+        "road",
+        "throwing_axe"
     },
     category_conversion = {
         pistol = "glock_17",

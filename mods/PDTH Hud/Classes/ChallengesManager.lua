@@ -23,7 +23,7 @@ function ChallengesManager:_setup( reset )
 		for name,challenge in pairs( challenges ) do
 			--if managers.dlc:has_full_game() or (not challenge.awards_achievment and challenge.in_trial) then
 				self._challenges_map[ name ] = challenge
-				
+
 				if challenge.counter_id then
 					self._counter_map[ challenge.counter_id ] = self._counter_map[ challenge.counter_id ] or {}
 					table.insert( self._counter_map[ challenge.counter_id ], name )
@@ -35,7 +35,7 @@ function ChallengesManager:_setup( reset )
 				if challenge.reset_criterias then
 					for _,criteria in ipairs( challenge.reset_criterias ) do
 						self._reset_map[ criteria ] = self._reset_map[ criteria ] or {}
-						table.insert( self._reset_map[ criteria ], name ) 
+						table.insert( self._reset_map[ criteria ], name )
 					end
 				end
 				if challenge.session_stopped then
@@ -113,7 +113,7 @@ function ChallengesManager:check_active_challenges()
 			end
 		end
 	end
-		
+
 	if added then
 		if managers.hud then
 		--	managers.hud:present_mid_text( { text = "NEW CHALLENGES AVAILABLE", time = 4, icon = nil, event = "stinger_levelup" } )
@@ -146,7 +146,7 @@ function ChallengesManager:_check_depends_on( name )
 			end
 		end
 	end
-	
+
 	return true
 end
 
@@ -155,7 +155,7 @@ function ChallengesManager:add_by_name( name )
 		Application:error( "No challenges named", name )
 		return
 	end
-	
+
 	if self._global.active[ name ] then
 		self._global.active[ name ].amount = self._global.active[ name ].amount + 1
 		self:_check_completed( name )
@@ -195,7 +195,7 @@ function ChallengesManager:set_flag( flag_id )
 		Application:error( "No flag id named", flag_id )
 		return
 	end
-	
+
 	for _,name in ipairs( self._flag_map[ flag_id ] ) do
 		if self._global.active[ name ] and (not self._global.completed[ name ] or self._global.active[ name ].already_awarded) then
 			self._global.active[ name ].flag = true
@@ -219,7 +219,7 @@ end
 function ChallengesManager:_check_completed( name )
 	local counter_ok = (not self._global.active[ name ].amount) or self._global.active[ name ].amount >= self._challenges_map[ name ].count
 	local flag_ok = self._global.active[ name ].flag == nil or self._global.active[ name ].flag
-		
+
 	if counter_ok and flag_ok then
 		self:_completed_challenge( name )
 	end
@@ -259,7 +259,7 @@ function ChallengesManager:reset( criteria )
 	if not self._reset_map[ criteria ] then
 		return
 	end
-	
+
 	for _,name in ipairs( self._reset_map[ criteria ] ) do
 		if self._global.active[ name ] then
 			if self._global.active[ name ].amount then
@@ -287,29 +287,28 @@ function ChallengesManager:get_near_completion()
 				count = 1
 				amount = 0
 			end
-			
+
 			local name = self:get_title_text( id )
 			local description = self:get_description_text( id )
 			table.insert( t, { id = id, progress = progress, count = count, amount = amount, name = name, description = description } )
 		end
 	end
-	
+
 	local sort_func = function( data1, data2 )
 		if data1.progress == data2.progress then
 			return data1.id < data2.id
 		end
-	
+
 		return data1.progress > data2.progress
 	end
 	table.sort( t, sort_func )
-	
+
 	return t
 end
 
 function ChallengesManager:is_completed( id )
 	return self._global.completed[ id ]
 end
-
 
 function ChallengesManager:get_completed()
 	local t = {}
@@ -320,13 +319,12 @@ function ChallengesManager:get_completed()
 			table.insert( t, { id = id, name = name, description = description } )
 		end
 	end
-	
-	
+
 	local sort_func = function( data1, data2 )
 		return data1.id < data2.id
 	end
 	table.sort( t, sort_func )
-	
+
 	return t
 end
 
@@ -334,14 +332,14 @@ end
 function ChallengesManager:get_last_comleted_title_text()
 	if not self._global.last_completed or not self._challenges_map[ self._global.last_completed ] then
 		return ""
-	end 
+	end
 	return self:get_title_text( self._global.last_completed )
 end
 
 function ChallengesManager:get_last_comleted_description_text()
 	if not self._global.last_completed or not self._challenges_map[ self._global.last_completed ] then
 		return ""
-	end 
+	end
 	return self:get_description_text( self._global.last_completed, true )
 end
 
@@ -400,12 +398,12 @@ end
 
 function ChallengesManager:get_awarded_achievment( name )
 	local achievment = self._challenges_map[ name ].awards_achievment
-	
+
 	if managers.achievment:exists( achievment ) then
 		return achievment
 	end
-	
- 	return nil 
+
+ 	return nil
 end
 
 function ChallengesManager:check_text()
@@ -427,7 +425,7 @@ end
 
 function ChallengesManager:amount_of_completed_challenges()
 	local i = 0
-	
+
 	for id,_ in pairs( self._global.completed ) do
 		if self._challenges_map[ id ] then
 			i = i + 1
@@ -462,19 +460,19 @@ end
 function ChallengesManager:_correct_difficulty( difficulty )
 	local curr_diff = Global.game_settings.difficulty
 	if type( difficulty ) == "table" then
-		for _, diff in ipairs( difficulty ) do 
+		for _, diff in ipairs( difficulty ) do
 			if diff == curr_diff then
 				return true
 			end
 		end
-	
+
 		return false
 	end
 
 	if difficulty ~= curr_diff then
 		return false
 	end
-	
+
 	return true
 end
 
@@ -507,14 +505,14 @@ function ChallengesManager:aquired_money()
 		return
 	end
 
-	self:_completed_challenge( ach_name )	
+	self:_completed_challenge( ach_name )
 end
 
 function ChallengesManager:no_civilians_killed( name, data )
 	if not self:_correct_level( self._challenges_map[ name ].level_id ) then
 		return
 	end
-		
+
 	if not self:_correct_difficulty( self._challenges_map[ name ].difficulty ) then
 		return
 	end
@@ -531,7 +529,7 @@ function ChallengesManager:no_kills( name, data )
 	if not self:_correct_level( self._challenges_map[ name ].level_id ) then
 		return
 	end
-		
+
 	if not self:_correct_difficulty( self._challenges_map[ name ].difficulty ) then
 		return
 	end
@@ -552,11 +550,11 @@ function ChallengesManager:never_died( name, data )
 	if not self:_correct_level( self._challenges_map[ name ].level_id ) then
 		return
 	end
-		
+
 	if not self:_correct_difficulty( self._challenges_map[ name ].difficulty ) then
 		return
 	end
-	
+
 	if not self:_check_level_completed( data ) then
 		return
 	end
@@ -570,11 +568,11 @@ function ChallengesManager:never_bleedout( name, data )
 	if not self:_correct_level( self._challenges_map[ name ].level_id ) then
 		return
 	end
-		
+
 	if not self:_correct_difficulty( self._challenges_map[ name ].difficulty ) then
 		return
 	end
-	
+
 	if not self:_check_level_completed( data ) then
 		return
 	end
@@ -589,15 +587,15 @@ function ChallengesManager:overkill_success( name, data )
 	if not self:_correct_level( self._challenges_map[ name ].level_id ) then
 		return
 	end
-	
+
 	if not self:_check_level_completed( data ) then
 		return
 	end
-		
+
 	if not self:_correct_difficulty( self._challenges_map[ name ].difficulty ) then
 		return
 	end
-	
+
 	return true
 end
 
@@ -606,19 +604,19 @@ function ChallengesManager:overkill_no_trade( name, data )
 	if not self:_correct_level( self._challenges_map[ name ].level_id ) then
 		return
 	end
-	
+
 	if not self:_check_level_completed( data ) then
 		return
 	end
-		
+
 	if not self:_correct_difficulty( self._challenges_map[ name ].difficulty ) then
 		return
 	end
-	
+
 	if managers.trade._num_trades > 0 then
 		return
 	end
-	
+
 	return true
 end
 
@@ -645,7 +643,7 @@ function ChallengesManager:save( data )
 		end
 	end
 
-	local state = {	
+	local state = {
 		active = active,
 		completed = self._global.completed,
 		last_completed = self._global.last_completed
@@ -664,7 +662,7 @@ function ChallengesManager:load( data )
 			self:check_active_challenges()
 			self:check_still_active_available()
 		end
-		
+
 		managers.network.account:challenges_loaded()
 	end
 end
@@ -674,10 +672,6 @@ function ChallengesManager:debug_set_amount( name, amount )
 	if not self._global.active[ name ] then
 		return
 	end
-	
+
 	self._global.active[ name ].amount = amount
 end
-
-
-
-

@@ -80,14 +80,14 @@ function StatisticsManager:_bullet_challenges( data )
 				name_id = data.weapon_unit and data.weapon_unit:base().get_name_id and data.weapon_unit:base():get_name_id()
 			end
 		end
-		
+
 		local weapon_tweak_data
-		if data.weapon_unit:base().weapon_tweak_data and data.weapon_unit:base():weapon_tweak_data() then
+		if data.weapon_unit and data.weapon_unit:base().weapon_tweak_data and data.weapon_unit:base():weapon_tweak_data() then
 			weapon_tweak_data = data.weapon_unit:base():weapon_tweak_data()
 		else
 			weapon_tweak_data = tweak_data.weapon[name_id]
 		end
-        
+
         if name_id then
             managers.challenges:count_up( name_id .."_"..data.name.."_kill" )
 			managers.challenges:count_up( name_id .."_"..data.type.."_kill" )

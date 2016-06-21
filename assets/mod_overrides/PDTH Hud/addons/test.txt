@@ -1,0 +1,41 @@
+{
+    "portraits" : [
+        {
+            "name" : test,
+            "display_name" : "test",
+            "main_texture" : "guis/test/test",
+            "portraits" : [
+                {
+                    "character_id" : "jowi",
+                    "texture" : "USE THIS IF IT USES A DIFFERENT TEXTURE TO THE 'main_texture'",
+                    "texture_rects" : {
+                        "health" : [
+                            x,
+                            y,
+                            w,
+                            h
+                        ],
+                        "bg" : [
+                            x,
+                            y,
+                            w,
+                            h
+                        ],
+                        "armor" : [
+                            x,
+                            y,
+                            w,
+                            h
+                        ],
+                        "tm" : [
+                            x,
+                            y,
+                            w,
+                            h    
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

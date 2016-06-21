@@ -5,7 +5,7 @@ if not _G.pdth_hud then
 	--self.Options = {}
 
 	self.AddonPath = LuaModManager.Constants.mods_directory .. "PDTH HUD addons/"
-	self.LocalAddonPath = self.ModPath .. "addons/"
+	self.LocalAddonPath = nil
 	self.ClassPath = self.ModPath .. "Classes/"
 	self.HooksPath = self.ModPath .. "Hooks/"
     self.Classes = {
@@ -92,19 +92,24 @@ function pdth_hud:_init()
 	for p, d in pairs(pdth_hud.Classes) do
 		dofile(pdth_hud.ClassPath .. d)
 	end
+	local ret, err = pcall(function()
 	self:init_modules()
+end)
+	log(tostring(err))
 	--self:LoadOptions()
 	pdth_hud.textures:refresh_portrait_order()
     self:InitConstants()
 end
 
 function pdth_hud:LoadAddons()
+	self.LocalAddonPath = BeardLib.Utils.Path.Combine(self.asset_updates:GetMainInstallDir(), "addons")
+
 	local dirs = {self.AddonPath, self.LocalAddonPath}
 	for _, dir in pairs(dirs) do
 	    local addons = file.GetFiles(dir)
 	    for _, path in pairs(addons) do
 	        if string.ends(path, "json") then
-	            local file = io.open(dir .. path, "r")
+	            local file = io.open(BeardLib.Utils.Path.Combine(dir, path), "r")
 	            local file_contents = file:read("*all")
 	            local data = json.decode( file_contents )
 	            pdth_hud.textures:ProcessAddon(data, self.portrait_options)

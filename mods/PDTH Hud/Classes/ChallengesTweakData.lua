@@ -60,7 +60,7 @@ function ChallengesTweakData:init()
 	}
 
 	self.weapon = {}
-	
+
     self:weapon_challenges()
 end
 
@@ -68,12 +68,12 @@ function ChallengesTweakData:GetCategories()
     local categories = {}
     for id, weap in pairs(tweak_data.weapon) do
         local cat = tweak_data.gui.buy_weapon_category_groups[weap.category] and tweak_data.gui.buy_weapon_category_groups[weap.category] or weap.category
-        
+
         if not table.contains(categories, cat) then
             table.insert(categories, cat)
         end
     end
-    
+
     return categories
 end
 
@@ -87,7 +87,7 @@ function ChallengesTweakData:weapon_challenges()
             description_id = "ch_vs_desc",
             counter_id = id .. "_" .. eneType .. "_kill",
             unlock_level = 0,
-            count = count, 
+            count = count,
             xp = xp,
             depends_on = depends_on,
             weapName = id,
@@ -95,7 +95,7 @@ function ChallengesTweakData:weapon_challenges()
             ene = eneType
         }
     end
-    
+
     local createVSHS = function(i, id, eneType, count, xp)
         local name = id .. "_vs_head_shot_" .. eneType .. "_" .. i
         local challenges = { (i - 1) > 0 and id .. "_vs_head_shot_" .. eneType .. "_" .. (i - 1) or id .. "_vs_" .. eneType ..  "_3" or nil }
@@ -105,7 +105,7 @@ function ChallengesTweakData:weapon_challenges()
             description_id = "ch_vs_head_shots_desc",
             counter_id = id .. "_" .. eneType .. "_head_shot",
             unlock_level = 0,
-            count = count, 
+            count = count,
             xp = xp,
             depends_on = depends_on,
             weapName = id,
@@ -116,10 +116,10 @@ function ChallengesTweakData:weapon_challenges()
 
     local definition = {}
     definition.law = {}
-	definition.law.vs = { 	
-		{ count = 50, xp = tiny_xp }, 
+	definition.law.vs = {
+		{ count = 50, xp = tiny_xp },
 		{ count = 200, xp = small_xp },
-		{ count = 400, xp = mid_xp }, 
+		{ count = 400, xp = mid_xp },
 		{ count = 600, xp = large_xp },
 		{ count = 800, xp = large_xp },
 		{ count = 1000, xp = large_xp },
@@ -127,15 +127,15 @@ function ChallengesTweakData:weapon_challenges()
 		{ count = 5000, xp = large_xp },
 		{ count = 10000, xp = large_xp },
 	}
-	definition.law.head_shots = { 	
-		{ count = 75, xp = small_xp }, 
+	definition.law.head_shots = {
+		{ count = 75, xp = small_xp },
 		{ count = 200, xp = mid_xp },
-		{ count = 350, xp = large_xp }, 
+		{ count = 350, xp = large_xp },
 		{ count = 500, xp = large_xp },
 		{ count = 1000, xp = large_xp },
 		{ count = 5000, xp = large_xp },
 	}
-    
+
     for _, category in pairs(self:GetCategories()) do
         for ene, ch_groups in pairs(definition) do
             if ch_groups.vs then
@@ -164,24 +164,23 @@ function ChallengesTweakData:weapon_challenges()
             end
         end
     end
-    
-    local definition = {}
+
     definition.law = {}
-	definition.law.vs = { 	
-		{ count = 50, xp = tiny_xp }, 
+	definition.law.vs = {
+		{ count = 50, xp = tiny_xp },
 		{ count = 200, xp = small_xp },
-		{ count = 400, xp = mid_xp }, 
+		{ count = 400, xp = mid_xp },
 		{ count = 600, xp = large_xp },
 		{ count = 800, xp = large_xp },
 		{ count = 1000, xp = large_xp },
 	}
-	definition.law.head_shots = { 	
-		{ count = 75, xp = small_xp }, 
+	definition.law.head_shots = {
+		{ count = 75, xp = small_xp },
 		{ count = 200, xp = mid_xp },
-		{ count = 350, xp = large_xp }, 
+		{ count = 350, xp = large_xp },
 		{ count = 500, xp = large_xp },
 	}
-    
+
     for id, weap in pairs(tweak_data.weapon) do
         if weap.category then
             for ene, ch_groups in pairs(definition) do

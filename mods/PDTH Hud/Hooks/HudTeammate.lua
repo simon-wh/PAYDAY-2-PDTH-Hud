@@ -989,7 +989,12 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             local panel = special.panel
             if panel and panel:name() == equipment_id then
                 special.icon_data = {...}
-                local image, texture_rect = tweak_data.hud_icons:get_icon_data(...)
+                local image, texture_rect
+                if special.weapon then
+                    image, texture_rect = pdth_hud.textures:get_weapon_texture(...)
+                else
+                    image, texture_rect = tweak_data.hud_icons:get_icon_data(...)
+                end
                 panel:child("bitmap"):set_image(image, unpack(texture_rect))
                 return
             end

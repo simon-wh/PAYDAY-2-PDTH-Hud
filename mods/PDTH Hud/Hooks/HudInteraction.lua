@@ -1,6 +1,6 @@
 if pdth_hud.Options:GetValue("HUD/Interaction") then
-    local interact_tr = {0, 392, 360, 22}
-    local background_tr = {0, 414, 360, 22}
+    local interact_tr = pdth_hud.constants.interaction_main_texture_rect
+    local background_tr = pdth_hud.constants.interaction_bg_texture_rect
 
     local ValidColour = Color(1, 1, 0.7647058824, 0)
 
@@ -47,7 +47,6 @@ if pdth_hud.Options:GetValue("HUD/Interaction") then
 
         local interact_background = self._interact_panel:bitmap({
             name = "interact_background",
-            visible = true,
             blend_mode = "normal",
             layer = 1,
             texture = "guis/textures/hud_icons",
