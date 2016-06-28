@@ -26,6 +26,8 @@
             <repl file="gen_interactable_drill_large_thermic.xml" type="custom_xml" target_file="units/payday2/equipment/gen_interactable_lance_large/gen_interactable_lance_large" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
             <repl file="hlm_equipment_gas_can_shoot.xml" type="custom_xml" target_file="units/payday2/equipment/hlm_equipment_gas_can_shoot/hlm_equipment_gas_can_shoot" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
             <repl file="gen_equipment_shape_charge_plantable.xml" type="custom_xml" target_file="units/payday2/equipment/gen_equipment_shape_charge_plantable/gen_equipment_shape_charge_plantable" target_type="sequence_manager" merge_mode="script_merge" use_callback="$global$.callbacks:UseEquipment"/>
+            <repl file="start_menu.xml" type="custom_xml" target_file="gamedata/menus/start_menu" target_type="menu" merge_mode="script_merge"/>
+            <repl file="pause_menu.xml" type="custom_xml" target_file="gamedata/menus/pause_menu" target_type="menu" merge_mode="script_merge"/>
         </ScriptReplacementsModule>
         <OptionModule name="Options" auto_build_menu="false" auto_load="true" save_file="PDTHHudRebornoptions.txt">
             <options>
