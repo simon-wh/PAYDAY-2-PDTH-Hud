@@ -1,132 +1,73 @@
-if not _G.pdth_hud then
-	_G.pdth_hud = ModCore:new(ModPath .. "main_config.xml")
-	local self = pdth_hud
-
-	--self.Options = {}
-
-	self.AddonPath = LuaModManager.Constants.mods_directory .. "PDTH HUD addons/"
-	self.LocalAddonPath = nil
-	self.ClassPath = self.ModPath .. "Classes/"
-	self.HooksPath = self.ModPath .. "Hooks/"
-    self.Classes = {
-		"Definitions.lua",
-        "Constants.lua",
-        "PDTHTextures.lua",
-        --"PDTHEquipment.lua",
-		"Callbacks.lua",
-        --"DefaultOptions.lua",
-        --"Options.lua",
-        "ChallengesManager.lua",
-        "ChallengesTweakData.lua",
-		"Menu.lua",
-		"Hooks.lua",
-        "HudAmmoHandlers/Default.lua",
-        "HudAmmoHandlers/Saw.lua",
-        "HudAmmoHandlers/Flamethrower.lua",
-        "HudAmmo.lua"
-    }
-
-    self.Hooks = {
-        ["lib/units/weapons/newraycastweaponbase"] = "GadgetState.lua",
-        ["lib/managers/hud/hudhint"] = "HudHint.lua",
-        ["lib/managers/menu/items/menuitemchallenge"] = "CoreItemChallenges.lua",
-        ["lib/managers/hud/hudtemp"] = "HudTemp.lua",
-        ["lib/managers/hud/hudassaultcorner"] = "HudAssaultCorner.lua",
-        ["lib/managers/hud/hudinteraction"] = "HudInteraction.lua",
-        ["lib/managers/hudmanager"] = "HudManager.lua",
-        ["lib/managers/statisticsmanager"] = "StatsManager.lua",
-        ["lib/managers/hudmanagerpd2"] = "HudManagerPD2.lua",
-        ["lib/managers/hud/hudteammate"] = "HudTeammate.lua",
-        ["lib/managers/hud/hudpresenter"] = "HudPresenter.lua",
-		["lib/network/matchmaking/networkaccountsteam"] = "NetworkAccountSteam.lua",
-        ["lib/tweak_data/tweakdata"] = "TweakData.lua",
-		["lib/managers/menu/menucomponentmanager"] = "MenuComponentManager.lua",
-		["lib/managers/menu/textboxgui"] = "PortraitPreviewGUI.lua"
-    }
-
-	self._post_hooks_path = self.ClassPath .. "PostHooks.lua"
-
-    self.colour_gradings = {
-        "color_payday",
-        "color_heat",
-        "color_nice",
-        "color_sin",
-        "color_bhd",
-        "color_xgen",
-        "color_xxxgen",
-        "color_matrix",
-    }
-    self.heist_colour_gradings = {
-        "color_main",
-        "color_payday",
-        "color_heat",
-        "color_nice",
-        "color_sin",
-        "color_bhd",
-        "color_xgen",
-        "color_xxxgen",
-        "color_matrix"
-    }
-
-    self.portrait_options = {}
-
-	self.portrait_value_options = {}
-
-    self.bullet_style_options = {
-        "off",
-        "normal",
-        "coloured"
-    }
-
-	self.weapon_icon_style_options = {
-		"default",
-		"coloured"
-	}
+if not ModCore then
+	log("[ERROR] Unable to find ModCore from BeardLib! Is BeardLib installed correctly?")
+	return
 end
 
-function pdth_hud:_init()
+PDTHHudCore = PDTHHudCore or class(ModCore)
+PDTHHudCore.AddonPath = LuaModManager.Constants.mods_directory .. "PDTH HUD addons/"
+PDTHHudCore.LocalAddonPath = nil
+
+function PDTHHudCore:init()
+	log("init")
+	--[[local rel_path = Application:nice_path(path, true)
+	rel_path = string.sub(rel_path, string.len(Application:base_path()) + 1)
+	rel_path = string.gsub(rel_path, "\\", "/")
+	DB:create_entry(Idstring("texture"), Idstring("guis/textures/default_portrait"), rel_path.."/masks.texture")
+	DB:create_entry(Idstring("texture"), Idstring("units/menu/menu_scene/menu_cylinder_logo"), rel_path.."/masks.texture")]]--
+	--Application:reload_textures({Idstring("guis/textures/default_portrait")})
+
 	if not file.DirectoryExists(self.AddonPath) then
         os.execute("mkdir \"" .. self.AddonPath .. "\"")
     end
 
-	for p, d in pairs(pdth_hud.Classes) do
-		dofile(pdth_hud.ClassPath .. d)
-	end
-	local ret, err = pcall(function()
-	self:init_modules()
-end)
-	log(tostring(err))
-	--self:LoadOptions()
-	pdth_hud.textures:refresh_portrait_order()
-    self:InitConstants()
+	self.super.init(self, ModPath .. "main_config.xml", true, false)
+
+	self.utils = PDTHHudCoreUtils:new(self)
+	self.definitions = PDTHHudCoreDefinitions:new(self)
+	self.textures = PDTHHudCoreTextures:new(self)
+	self.callbacks = PDTHHudCoreCallbacks:new(self)
+
+	self:post_init({"Options"})
 end
 
-function pdth_hud:LoadAddons()
-	self.LocalAddonPath = BeardLib.Utils.Path.Combine(self.asset_updates:GetMainInstallDir(), "addons")
+function PDTHHudCore:InitConstants()
+	self.constants = PDTHHudCoreConstants:new(self)
+end
 
+function PDTHHudCore:LoadAddons()
+	self.LocalAddonPath = BeardLib.Utils.Path:Combine(self.asset_updates:GetMainInstallDir(), "addons")
+
+    local portraits = {}
 	local dirs = {self.AddonPath, self.LocalAddonPath}
 	for _, dir in pairs(dirs) do
 	    local addons = file.GetFiles(dir)
-	    for _, path in pairs(addons) do
-	        if string.ends(path, "json") then
-	            local file = io.open(BeardLib.Utils.Path.Combine(dir, path), "r")
-	            local file_contents = file:read("*all")
-	            local data = json.decode( file_contents )
-	            pdth_hud.textures:ProcessAddon(data, self.portrait_options)
-	            file:close()
-	        end
-	    end
+		if addons then
+		    for _, path in pairs(addons) do
+		        if string.ends(path, "json") then
+		            local file = io.open(BeardLib.Utils.Path:Combine(dir, path), "r")
+		            local file_contents = file:read("*all")
+	                file:close()
+		            local data = json.decode( file_contents )
+		            self.textures:ProcessAddon(data, portraits)
+		        end
+		    end
+		end
 	end
 
-    for i, portait in pairs(self.portrait_options) do
-        pdth_hud.portrait_value_options[i] = "portrait_value_" .. i
+    local portrait_tbl = {}
+
+    for i, char in pairs(tweak_data.criminals.characters) do
+        portrait_tbl[char.name] = { name = char.name, title_id = "menu_" .. char.name, default_value = 1, values = {}, hidden = true }
+	end
+    for _, portrait in pairs(portraits) do
+        for _, char in pairs(portrait.characters) do
+            if portrait_tbl[char] then
+                table.insert(portrait_tbl[char].values, portrait.name)
+            end
+        end
     end
-	local portrait_tbl = {}
-	for i, portrait in pairs(self.portrait_options) do
-		portrait_tbl[i] = { name = portrait, title_id = portrait .. "_title_id", default_value = i }
-	end
 
-	return portrait_tbl
+    return portrait_tbl
 end
 
 local level_blacklist = {
@@ -134,7 +75,7 @@ local level_blacklist = {
 	"driving_escapes_industry_day",
 	"driving_escapes_city_day"
 }
-function pdth_hud:GetLevels()
+function PDTHHudCore:GetLevels()
 	local level_tbl = {}
 	for _, level in pairs(tweak_data.levels._level_index) do
 		if tweak_data.levels[level] ~= nil and not table.contains(level_blacklist, level) then
@@ -162,17 +103,9 @@ function pdth_hud:GetLevels()
 	return level_tbl
 end
 
-if not pdth_hud.setup then
-	pdth_hud.post_hook_call = loadstring(io.open(pdth_hud._post_hooks_path, 'r'):read("*all"))
-	pdth_hud:_init()
-	pdth_hud.setup = true
-end
-
-if RequiredScript then
-	local requiredScript = RequiredScript:lower()
-	if pdth_hud.Hooks[requiredScript] then
-		dofile( pdth_hud.HooksPath .. pdth_hud.Hooks[requiredScript] )
+if not _G.pdth_hud then
+	local success, err = pcall(function() PDTHHudCore:new() end)
+	if not success then
+		log("[ERROR] An error occured on the initialization of PD:TH Hud. " .. tostring(err))
 	end
-
-	pdth_hud.post_hook_call()
 end

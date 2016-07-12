@@ -16,7 +16,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self._panel = teammate_panel
 
         self.health_h = is_player and const.main_health_h or (teammate_panel:h() - (const.tm_health_gap * 2))
-        self.health_w = is_player and const.main_health_w or ((self.health_h / (pdth_hud.Options:GetValue("HUD/OGTMHealth") and const.tm_health_h or const.main_health_h)) * (pdth_hud.Options:GetValue("HUD/OGTMHealth") and const.tm_health_w or const.main_health_w))
+        self.health_w = self.health_h * ((not is_player and pdth_hud.Options:GetValue("HUD/OGTMHealth")) and const.og_health_ratio or const.health_ratio)
 
         local gradient
         if not main_player then
@@ -163,7 +163,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         bmpPerkBar:set_h(bmpPerkBackground:h() - const.main_perk_gap)
         bmpPerkBar:set_top(bmpPerkBackground:top() + const.main_perk_gap / 2)
 
-        if pdth_hud.Options:GetValue("HUD/Coloured") then
+        if pdth_hud.Options:GetValue("HUD/portraits/Coloured") then
             radial_health:set_color(Color(0.5, 0.8, 0.4))
         end
 
@@ -345,7 +345,6 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
 
         self.health_amount = 1
         self.armor_amount = 1
-        self.health_colour = Color(0.5, 0.8, 0.4)
         self._current_primary = nil
         self._current_secondary = nil
         self._current_melee = nil
@@ -455,9 +454,8 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             self:_damage_taken()
         end
 
-        local color = amount < 0.33 and Color(1, 0, 0) or Color(0.5, 0.8, 0.4)
+        --local color = amount < 0.33 and pdth_hud.constants.health_main_colour_damaged or pdth_hud.constants.health_main_colour
         self.health_amount = amount
-        self.health_colour = color
 
         self:RefreshPortraits()
     end
@@ -592,6 +590,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
 
         self:teammate_progress(false, false, false, false)
         self:_set_weapon_selected(self._selected_weapon or 1)
+        self:RefreshPortraits()
     end
 
     function HUDTeammate:remove_panel()
@@ -631,6 +630,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         if not self._main_player then
             name:set_left((pdth_hud.Options:GetValue("HUD/OGTMHealth") and character_icon:right() or radial_health_panel:right() ) + const.tm_name_gap)
             name:set_top(character_icon:top())
+            self._character = nil
         end
         carry_panel:set_left(name:right())
         carry_panel:set_top(name:top())
@@ -638,7 +638,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         if not self._ai then
             self:get_weapon_info()
         end
-        self._character = nil
+        self:RefreshPortraits()
     end
 
     function HUDTeammate:get_weapon_info()
@@ -735,6 +735,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 self.health_amount = 1
                 self.armour_amount = 1
             end
+            self._character = nil
             self:RefreshPortraits()
         end
     end
@@ -1166,18 +1167,17 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     function HUDTeammate:set_carry_info(carry_id, value)
         local carry_panel = self._player_panel:child("carry_panel")
         carry_panel:set_visible(true)
+        log(tostring(value))
         local value_text = carry_panel:child("value")
     end
 
     function HUDTeammate:get_character_name()
-        if not self._character then
-            if self._main_player then
-                self._character = managers.network:session():local_peer():character()
-            elseif self._ai then
-                self._character = managers.criminals:character_name_by_panel_id(self._id)
-            else
-                self._character = managers.criminals:character_name_by_peer_id(self._peer_id)
-            end
+        if self._main_player then
+            self._character = managers.network:session():local_peer():character()
+        elseif self._ai then
+            self._character = managers.criminals:character_name_by_panel_id(self._id)
+        else
+            self._character = managers.criminals:character_name_by_peer_id(self._peer_id)
         end
     end
 
@@ -1190,52 +1190,64 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         local character_text = radial_health_panel:child("character_text")
         local character_icon = self._player_panel:child("character_icon")
 
-        self:get_character_name()
+        local prev_char = self._character
+        if not self._character then
+            self:get_character_name()
+        end
 
-        if self._main_player then
-            local character_name = string.upper(managers.localization:text("menu_" .. self._character))
-            character_text:set_text(character_name)
-            managers.hud:make_fine_text(character_text)
-            character_text:set_center_x(radial_health_panel:center_x())
-            character_text:set_bottom(radial_health_panel:h() - const.main_character_y_offset)
-        elseif pdth_hud.Options:GetValue("HUD/OGTMHealth") then
-            local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "tm")
-            if texture ~= character_icon:texture_name() then
-                character_icon:set_image(texture, unpack(rect))
+        if not self._character then
+            return
+        end
+
+        if prev_char ~= self._character then
+            if self._main_player then
+                local character_name = string.upper(managers.localization:text("menu_" .. self._character))
+                character_text:set_text(character_name)
+                managers.hud:make_fine_text(character_text)
+                character_text:set_center_x(radial_health_panel:center_x())
+                character_text:set_bottom(radial_health_panel:h() - const.main_character_y_offset)
+            elseif pdth_hud.Options:GetValue("HUD/OGTMHealth") then
+                local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "tm")
+                if texture then
+                    character_icon:set_image(texture, unpack(rect))
+                end
             end
         end
 
         local height = self.health_h
-
-        local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "health", self._main_player)
-        local y_offset = rect[4] * (1 - self.health_amount)
-        local h_offset = self.health_h * (1 - self.health_amount)
-        radial_health:set_color(pdth_hud.Options:GetValue("HUD/Coloured") and self.health_colour or Color.white)
-
-        radial_health:set_image(texture, rect[1], rect[2] + y_offset, rect[3], rect[4] - y_offset)
-        radial_health:set_h(height - h_offset)
-        radial_health:set_bottom(radial_bg:bottom())
-
-        local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "armor", self._main_player)
-        local y_offset = rect[4] * (1 - self.armor_amount)
-        local h_offset = self.health_h * (1 - self.armor_amount)
-        radial_shield:set_image(texture, rect[1], rect[2] + y_offset, rect[3], rect[4] - y_offset)
-        radial_shield:set_h(height - h_offset)
-        radial_shield:set_bottom(radial_bg:bottom())
-
-        local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "bg", self._main_player)
-        radial_bg:set_image(texture, unpack(rect))
-
         if not self._ai or not pdth_hud.Options:GetValue("HUD/OGTMHealth") then
-            radial_health_panel:set_visible(true)
+            local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "health", self._main_player)
+            if texture then
+                local y_offset = rect[4] * (1 - self.health_amount)
+                local h_offset = self.health_h * (1 - self.health_amount)
+
+                radial_health:set_color(self._ai and Color.white or pdth_hud.utils:GetPortraitColour(self.health_amount))
+
+                radial_health:set_image(texture, rect[1], rect[2] + y_offset, rect[3], rect[4] - y_offset)
+                radial_health:set_h(height - h_offset)
+                radial_health:set_bottom(radial_bg:bottom())
+            end
+
+            texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "armor", self._main_player)
+            if texture then
+                local y_offset = rect[4] * (1 - self.armor_amount)
+                local h_offset = self.health_h * (1 - self.armor_amount)
+                radial_shield:set_image(texture, rect[1], rect[2] + y_offset, rect[3], rect[4] - y_offset)
+                radial_shield:set_h(height - h_offset)
+                radial_shield:set_bottom(radial_bg:bottom())
+            end
+        end
+        if prev_char ~= self._character then
+            texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "bg", self._main_player)
+            if texture then
+                radial_bg:set_image(texture, unpack(rect))
+            end
         end
 
+        radial_health_panel:set_visible(not self._ai or not pdth_hud.Options:GetValue("HUD/OGTMHealth"))
         radial_bg:set_visible(not self._ai)
         radial_shield:set_visible(not self._ai)
         radial_health:set_blend_mode(self._ai and "normal" or "add")
-        if self._ai then
-            radial_health:set_color(Color.white)
-        end
     end
 
     function HUDTeammate:set_stored_health_max(stored_health_ratio)

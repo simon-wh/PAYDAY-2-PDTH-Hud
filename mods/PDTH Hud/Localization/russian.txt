@@ -96,5 +96,6 @@
     "PDTHHudRebornEquipmentTitleID" : "Включить снаряжение из PDTH",
     "PDTHHudRebornEquipmentDescID" : "Включить снаряжение из PDTH на объектах. (Например, дрель перед установкой будет гореть желтым)  (ТРЕБУЕТСЯ BeardLib)",
     "BLFXevent_Interaction" : "Взаимодействие",
+    
     "menu_assault" : "Штурм"
 }

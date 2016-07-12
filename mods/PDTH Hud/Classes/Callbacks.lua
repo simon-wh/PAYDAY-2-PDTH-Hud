@@ -1,13 +1,21 @@
-pdth_hud.callbacks = pdth_hud.callbacks or {}
+PDTHHudCoreCallbacks = PDTHHudCoreCallbacks or class()
 
-function pdth_hud.callbacks:ColourGradingChanged(key, value)
+function PDTHHudCoreCallbacks:init(parent)
+    self._parent = parent
+end
+
+function PDTHHudCoreCallbacks:ScaleConverter(option, value)
+    return value * self._parent.Options:GetValue("HUD/Scale")
+end
+
+function PDTHHudCoreCallbacks:ColourGradingChanged(key, value)
     if not managers.job:current_level_id() or pdth_hud.Options:GetValue("Gradings/" .. managers.job:current_level_id()) == 1 then
         managers.environment_controller:set_default_color_grading(pdth_hud.Options:GetValue("Grading", true))
         managers.environment_controller:refresh_render_settings()
     end
 end
 
-function pdth_hud.callbacks:HeistColourGradingChanged(key, value)
+function PDTHHudCoreCallbacks:HeistColourGradingChanged(key, value)
     if managers.job:current_level_id() == table.remove(string.split(key, "/")) then
         local colour_grading = value == 1 and pdth_hud.Options:GetValue("Grading", true) or pdth_hud.Options:GetValue(key, true)
         managers.environment_controller:set_default_color_grading(colour_grading)
@@ -15,15 +23,14 @@ function pdth_hud.callbacks:HeistColourGradingChanged(key, value)
     end
 end
 
-function pdth_hud.callbacks:PortraitColourChanged(key, value)
-    if managers.hud then
-        local tm = managers.hud._teammate_panels[HUDManager.PLAYER_PANEL]
-        tm._player_panel:child("radial_health_panel"):child("radial_health"):set_color(value and tm.health_colour or Color.white)
-        --Implement colour change of the teammate portraits when teammate icon style is disabled
+function PDTHHudCoreCallbacks:PortraitStyleChanged(key, value)
+    self:PortraitSelectionChanged(key, value)
+    if managers.menu_component._portrait_gui then
+        managers.menu_component._portrait_gui:refresh()
     end
 end
 
-function pdth_hud.callbacks:BulletStyleChanged(key, value)
+function PDTHHudCoreCallbacks:BulletStyleChanged(key, value)
     if managers.player and managers.hud then
         local player = managers.player:local_player()
         if player then
@@ -35,7 +42,7 @@ function pdth_hud.callbacks:BulletStyleChanged(key, value)
     end
 end
 
-function pdth_hud.callbacks:WeaponIconStyleChanged(key, value)
+function PDTHHudCoreCallbacks:WeaponIconStyleChanged(key, value)
     pdth_hud.textures:apply_tweak_data_icons()
     if managers.hud then
         for i = 1, HUDManager.PLAYER_PANEL do
@@ -47,32 +54,23 @@ function pdth_hud.callbacks:WeaponIconStyleChanged(key, value)
     end
 end
 
-function pdth_hud.callbacks:FiremodeEnabledChanged(key, value)
-    if managers.hud then
-        managers.hud._teammate_panels[HUDManager.PLAYER_PANEL]:recreate_weapon_firemode()
-    end
-end
-
-function pdth_hud.callbacks:PortraitSelectionChanged(key, value)
-    pdth_hud.textures:refresh_portrait_order()
-
+function PDTHHudCoreCallbacks:PortraitSelectionChanged(key, value)
     if managers.hud then
         for i = 1, HUDManager.PLAYER_PANEL do
             local tm = managers.hud._teammate_panels[i]
             tm:RefreshPortraits()
         end
     end
-    managers.menu_component:refresh_portrait_gui()
 end
 
-function pdth_hud.callbacks:HeistGradingChanged(key, value)
+function PDTHHudCoreCallbacks:HeistGradingChanged(key, value)
     if managers.job:current_level_id() == key then
         managers.environment_controller:set_default_color_grading(pdth_hud.Options:GetValue(key, true))
         managers.environment_controller:refresh_render_settings()
     end
 end
 
-function pdth_hud.callbacks:UseEquipment()
+function PDTHHudCoreCallbacks:UseEquipment()
     if LuaNetworking:IsHost() and Network:multiplayer() and not Global.game_settings.single_player then
         return false
     end

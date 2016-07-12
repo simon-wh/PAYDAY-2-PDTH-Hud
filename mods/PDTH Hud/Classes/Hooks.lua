@@ -1,4 +1,4 @@
-Hooks:Add("BeardLibCreateScriptDataMods", "PDTHHudCallBeardLibSequenceFuncs", function()
+--[[Hooks:Add("BeardLibCreateScriptDataMods", "PDTHHudCallBeardLibSequenceFuncs", function()
     if BeardLib.ScriptData then
         for name, mod_data in pairs(pdth_hud.PDTHEquipment) do
             BeardLib.ScriptData.Sequence:CreateMod(mod_data)
@@ -23,7 +23,7 @@ Hooks:Add("StatisticsManagerKilledByAnyone", "PDTHHudStatisticsManagerKilledByAn
             managers.challenges:set_flag( "bomb_man" )
         end
     end
-end)
+end)]]--
 
 Hooks:Add("BetterLightFXCreateEvents", "PDTHHudCreateBLFXEvents", function(blfx)
     if blfx then

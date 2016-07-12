@@ -1,8 +1,10 @@
+local success, err = pcall(function() pdth_hud.Options:post_init()
+
 for _, level in pairs(tweak_data.levels._level_index) do
     local val = pdth_hud.Options:GetValue("Gradings/"..level, true)
     if val and tweak_data.levels[level] ~= nil then
         tweak_data.levels[level].env_params = tweak_data.levels[level].env_params or {}
-        tweak_data.levels[level].env_params.color_grading = (val == pdth_hud.heist_colour_gradings[1] and pdth_hud.Options:GetValue("Grading", true) or val)
+        tweak_data.levels[level].env_params.color_grading = (val == pdth_hud.definitions.heist_colour_gradings[1] and pdth_hud.Options:GetValue("Grading", true) or val)
     end
 end
 
@@ -579,7 +581,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     self.wa2000.ammo = "rifle_762"
     self.mosin.ammo = "rifle_762"
     self.model70.ammo = "rifle_762"
-    self.r93.ammo = "rifle_762"
+    self.r93.ammo = "snp_44"
     self.msr.ammo = "rifle_762"
     self.winchester1874.ammo = "snp_44"
     self.m95.ammo = "snp_50"
@@ -946,3 +948,9 @@ self.mus_hold_open_display.icon = "develop"
 self.mus_take_diamond.icon = "develop"
 self.rewire_electric_box.icon = "interaction_powerbox"
 self.timelock_hack.icon = "equipment_hack_ipad"
+
+end)
+
+if not success then
+    log(tostring(err))
+end

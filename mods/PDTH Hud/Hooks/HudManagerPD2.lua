@@ -63,14 +63,14 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             name = "teammates_panel"
         })
 
-        local teammate_h = (const.main_health_h - (const.tm_gap * 2)) / 3
+        local teammate_h = (const.main_health_h - (const.tm_gap * 2)) / const.teammates_beside_main_health_count
         for i = 1, HUDManager.PLAYER_PANEL do
             local is_player = i == HUDManager.PLAYER_PANEL
             --[[self._hud.teammate_panels_data[i] = {
                 taken = true,
                 special_equipments = {}
             }]]--
-            self._hud.teammate_panels_data[i] = { taken = false and is_player, special_equipments = {} }
+            self._hud.teammate_panels_data[i] = { taken = false, special_equipments = {} }
 
             local teammate = HUDTeammate:new(i, teammates_panel, is_player, is_player and hud.panel:h() or teammate_h)
 
@@ -78,7 +78,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 teammate._panel:set_x(0)
                 teammate._panel:set_bottom(hud.panel:bottom())
             else
-                teammate._panel:set_x(const.main_health_w + const.tm_gap)
+                teammate._panel:set_x((const.main_health_h * const.health_ratio) + const.tm_gap)
                 teammate._panel:set_bottom(hud.panel:bottom() - (i - 1) * (teammate._panel:h() + const.tm_gap))
             end
 
