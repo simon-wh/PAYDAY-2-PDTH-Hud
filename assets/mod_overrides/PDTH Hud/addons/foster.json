@@ -3,7 +3,7 @@
         {
             "name" : "foster",
             "display_name" : "Foster",
-            "main_texture" : "guis/textures/pd2/mission_equipment",
+            "main_texture" : "guis/textures/pdth_hud/portraits/foster",
             "portraits" : [
                 {
                     "character_id" : "jowi",

@@ -125,27 +125,25 @@ local HUDManagerset_teammate_custom_radial = HUDManager.set_teammate_custom_radi
 
 function HUDManager:set_teammate_custom_radial(i, data)
 	local hud = managers.hud:script( PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
-	if pdth_hud.Options:GetValue("HUD/Swansong") then
-		if not hud.panel:child("swan_song_left") then
-			local swan_song_left = hud.panel:bitmap({
+	if pdth_hud.Options:GetValue("HUD/Swansong") and i == 4 then
+        local swan_song_left = hud.panel:child("swan_song_left")
+		if not swan_song_left then
+			swan_song_left = hud.panel:bitmap({
 				name = "swan_song_left",
 				visible = false,
-				texture = "guis/textures/alphawipe_test",
+				texture = "guis/textures/pdth_hud/swansong_effect",
 				layer = 0,
 				color = Color(0, 0.7, 1),
 				blend_mode = "add",
 				w = hud.panel:w(),
 				h = hud.panel:h(),
-				x = 0,
-				y = 0
 			})
 		end
-		local swan_song_left = hud.panel:child("swan_song_left")
-		if i == 4 and data.current < data.total and data.current > 0 and swan_song_left then
+		if data.current < data.total and data.current > 0 and swan_song_left then
 			swan_song_left:set_visible(true)
 			local hudinfo = managers.hud:script(PlayerBase.PLAYER_INFO_HUD_PD2)
 			swan_song_left:animate(hudinfo.flash_icon, 4000000000)
-		elseif hud.panel:child("swan_song_left") then
+		else
 			swan_song_left:stop()
 			swan_song_left:set_visible(false)
 		end
@@ -153,8 +151,8 @@ function HUDManager:set_teammate_custom_radial(i, data)
 			swan_song_left:set_visible(false)
 		end
 	else
-		if hud.panel:child("swan_song_left") then
-			local swan_song_left = hud.panel:child("swan_song_left")
+        local swan_song_left = hud.panel:child("swan_song_left")
+		if swan_song_left then
 			swan_song_left:stop()
 			swan_song_left:set_visible(false)
 		end

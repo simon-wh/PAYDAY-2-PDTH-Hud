@@ -50,10 +50,8 @@ function MenuComponentManager:mouse_moved(o, x, y)
         end
     end
 
-
     return orig_MenuComponentManagermouse_moved(self, o, x, y)
 end
-
 
 Hooks:PostHook(MenuComponentManager, "update", "PDTHHudUpdateComponents", function(self, t, dt)
     if self._portrait_gui then

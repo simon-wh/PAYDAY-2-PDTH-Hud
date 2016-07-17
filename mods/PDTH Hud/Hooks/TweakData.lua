@@ -1,5 +1,12 @@
 local success, err = pcall(function() pdth_hud.Options:post_init()
 
+--Experimenting
+
+
+
+--Experimenting End
+
+
 for _, level in pairs(tweak_data.levels._level_index) do
     local val = pdth_hud.Options:GetValue("Gradings/"..level, true)
     if val and tweak_data.levels[level] ~= nil then
@@ -51,7 +58,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.repair = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             48,
             48,
@@ -61,7 +68,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.grenade_pdth = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             416,
             384,
@@ -71,7 +78,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.agressor = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             0,
             48,
@@ -81,7 +88,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_drill = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             240,
             96,
@@ -91,7 +98,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_bank_manager_key = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             288,
             144,
@@ -100,7 +107,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_chavez_key = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             192,
             96,
@@ -110,7 +117,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_generic_key = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             192,
             96,
@@ -120,7 +127,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_planks = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             144,
             288,
@@ -130,7 +137,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_cable_ties = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             384,
             96,
@@ -140,7 +147,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_saw = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             336,
             144,
@@ -150,7 +157,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_thermite = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             560,
             49,
@@ -160,7 +167,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_sentry = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             320,
             288,
@@ -170,7 +177,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     --[[tweak_data.hud_icons.equipment_glasscutter = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             384,
             192,
@@ -180,7 +187,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }]]--
 
     tweak_data.hud_icons.equipment_harddrive = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             272,
             288,
@@ -190,7 +197,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_crowbar = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             192,
             240,
@@ -200,7 +207,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_c4 = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             336,
             96,
@@ -210,7 +217,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     --[[tweak_data.hud_icons.pd2_c4 = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             336,
             96,
@@ -220,7 +227,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }]]--
 
     --[[tweak_data.hud_icons.wp_c4 = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             336,
             96,
@@ -230,7 +237,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }]]--
 
     tweak_data.hud_icons.equipment_gasoline = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             288,
             96,
@@ -240,7 +247,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_muriatic_acid = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             512,
             1,
@@ -249,7 +256,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_hydrogen_chloride = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             560,
             1,
@@ -258,7 +265,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_caustic_soda = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             608,
             1,
@@ -268,7 +275,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_barcode = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             848,
             1,
@@ -278,7 +285,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_glasscutter = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             944,
             1,
@@ -288,7 +295,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_ticket = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             800,
             1,
@@ -298,7 +305,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_files = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             896,
             1,
@@ -308,7 +315,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_harddrive = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             752,
             1,
@@ -318,7 +325,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_evidence = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             656,
             1,
@@ -327,7 +334,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_chainsaw = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             704,
             1,
@@ -336,7 +343,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_manifest = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             432,
             192,
@@ -346,7 +353,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_drillfix = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             608,
             49,
@@ -357,7 +364,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
 
 
     tweak_data.hud_icons.equipment_fire_extinguisher = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             656,
             49,
@@ -367,7 +374,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_winch_hook = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             704,
             49,
@@ -376,7 +383,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_bottle = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             752,
             49,
@@ -385,7 +392,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_sleeping_gas = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             800,
             49,
@@ -394,7 +401,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_usb_with_data = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             896,
             49,
@@ -403,7 +410,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_usb_no_data = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             848,
             49,
@@ -412,7 +419,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     --[[tweak_data.hud_icons.equipment_empty_cooling_bottle = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             0,
             160,
@@ -421,7 +428,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_cooling_bottle = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             0,
             128,
@@ -430,7 +437,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }]]--
     tweak_data.hud_icons.equipment_bfd_tool = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             240,
             96,
@@ -439,7 +446,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
     tweak_data.hud_icons.equipment_elevator_key = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             192,
             96,
@@ -449,7 +456,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_blow_torch = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             944,
             49,
@@ -459,7 +466,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_saw = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             336,
             144,
@@ -469,7 +476,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_printer_ink = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             512,
             97,
@@ -479,7 +486,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_plates = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             560,
             97,
@@ -489,7 +496,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_paper_roll = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             608,
             97,
@@ -499,7 +506,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_stash_server = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             656,
             97,
@@ -509,7 +516,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_hand = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             704,
             97,
@@ -519,7 +526,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_briefcase = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             752,
             97,
@@ -529,7 +536,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_chrome_mask = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             800,
             97,
@@ -539,7 +546,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_soda = {
-        texture = "guis/textures/hud_icons",
+        texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
             848,
             97,
@@ -549,6 +556,18 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     }
 
     tweak_data.hud_icons.equipment_born_tool = tweak_data.hud_icons.equipment_drillfix
+
+    local conversion = {
+        ["guis/textures/hud_icons"] = "guis/textures/pdth_hud/hud_icons",
+        ["guis/textures/pd2/hud_swansong"] = "guis/textures/pdth_hud/hud_swansong",
+        ["guis/textures/pd2/pd2_waypoints"] = "guis/textures/pdth_hud/pd2_waypoints",
+    }
+
+    for k, icon in pairs(tweak_data.hud_icons) do
+        if conversion[icon.texture] then
+            icon.texture = conversion[icon.texture]
+        end
+    end
 
     local self = tweak_data.weapon
     self.ak74.ammo = "rifle_762"

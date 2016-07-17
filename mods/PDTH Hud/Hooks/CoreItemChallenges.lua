@@ -52,7 +52,7 @@ function MenuItemChallenge:setup_gui( node, row_item )
 			name = "background",
 			blend_mode = "normal",
 			layer = 0,
-			texture = "guis/textures/hud_icons",
+			texture = "guis/textures/pdth_hud/hud_icons",
 			texture_rect = pdth_hud.constants.interaction_bg_texture_rect,
 			w = row_item.progress_panel:w(),
 			h = row_item.progress_panel:h()
@@ -62,7 +62,7 @@ function MenuItemChallenge:setup_gui( node, row_item )
 			name = "foreground",
 			blend_mode = "normal",
 			layer = 1,
-			texture = "guis/textures/hud_icons",
+			texture = "guis/textures/pdth_hud/hud_icons",
 			color = Color.white:with_alpha(0.5),
 			texture_rect = pdth_hud.constants.interaction_main_texture_rect,
 			w = row_item.progress_panel:w(),

@@ -3,10 +3,11 @@
         {
             "name" : "default",
             "display_name" : "Default",
-            "main_texture" : "guis/textures/pd2/masks",
+            "main_texture" : "guis/textures/pdth_hud/portraits/default",
             "portraits_info" : {
                 "w" : 192,
                 "h" : 390,
+                "gap" : 1,
                 "included_characters" : [
                     "russian",
                     "german",
@@ -30,10 +31,11 @@
         {
             "name" : "default_begins",
             "display_name" : "Default (Begins)",
-            "main_texture" : "guis/textures/pd2/healthshield_divider",
+            "main_texture" : "guis/textures/pdth_hud/portraits/default_begins",
             "portraits_info" : {
                 "w" : 192,
                 "h" : 390,
+                "gap" : 1,
                 "included_characters" : [
                     "russian",
                     "german",
@@ -57,10 +59,11 @@
         {
             "name" : "default_unmasked",
             "display_name" : "Default (Unmasked)",
-            "main_texture" : "guis/textures/pd2/job_circles",
+            "main_texture" : "guis/textures/pdth_hud/portraits/default_unmasked",
             "portraits_info" : {
                 "w" : 192,
                 "h" : 390,
+                "gap" : 1,
                 "included_characters" : [
                     "russian",
                     "german",
@@ -84,10 +87,11 @@
         {
             "name" : "white",
             "display_name" : "White's",
-            "main_texture" : "guis/textures/pd2/healthshield",
+            "main_texture" : "guis/textures/pdth_hud/portraits/whites",
             "portraits_info" : {
                 "w" : 192,
                 "h" : 390,
+                "gap" : 1,
                 "included_characters" : [
                     "russian",
                     "german",

@@ -51,7 +51,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
 
             character_icon = self._player_panel:bitmap({
                 name = "character_icon",
-                texture = "guis/textures/hud_icons",
+                texture = "guis/textures/pdth_hud/hud_icons",
                 w = self.health_h,
                 h = self.health_h,
                 visible = pdth_hud.Options:GetValue("HUD/OGTMHealth"),
@@ -129,7 +129,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             visible = false,
             blend_mode = "normal",
             layer = 1,
-            texture = "guis/textures/hud_icons",
+            texture = "guis/textures/pdth_hud/hud_icons",
             texture_rect = {
                 0,
                 414,
@@ -148,7 +148,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             visible = false,
             blend_mode = "normal",
             color = Color.green,
-            texture = "guis/textures/hud_icons",
+            texture = "guis/textures/pdth_hud/hud_icons",
             texture_rect = {
                 0,
                 392,
@@ -546,21 +546,32 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         damage_indicator:set_alpha(0)
     end
 
-    function HUDTeammate:set_cable_tie(data)
-        if not self._player_panel:child("cable_ties_panel") and data.amount > 0 then
-            self:add_special_equipment({
-                id = "cable_ties_panel",
-                icon = tweak_data.equipments.specials.cable_tie.icon,
-                amount = data.amount,
-                no_flash = true
-            })
+    function HUDTeammate:check_cable_ties(data)
+        if not self._player_panel:child("cable_ties_panel") then
+            if data.amount > 0 then
+                self:add_special_equipment({
+                    id = "cable_ties_panel",
+                    icon = tweak_data.equipments.specials.cable_tie.icon,
+                    amount = data.amount,
+                    no_flash = true
+                })
+            else
+                return false
+            end
         end
+
+        return true
+    end
+
+    function HUDTeammate:set_cable_tie(data)
+        self:check_cable_ties(data)
 
         self:set_special_equipment_image("cable_ties_panel", "equipment_cable_ties")
         self:set_cable_ties_amount(data.amount)
     end
 
     function HUDTeammate:set_cable_ties_amount(amount)
+        self:check_cable_ties(data)
         self:set_special_equipment_amount("cable_ties_panel", amount)
     end
 
@@ -579,12 +590,11 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         teammate_panel:set_visible(true)
         self:set_condition("mugshot_normal")
 
+        self:clear_special_equipment()
+
         for i, special in pairs(self._special_equipment) do
             if special.weapon then
                 special.panel:set_visible(true)
-            else
-                teammate_panel:remove(special.panel)
-                table.remove(self._special_equipment, i)
             end
         end
 
@@ -596,11 +606,9 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     function HUDTeammate:remove_panel()
         local teammate_panel = self._panel
         teammate_panel:set_visible(false)
+        self:clear_special_equipment()
         for i, special in pairs(self._special_equipment) do
-            if not special.weapon then
-                teammate_panel:remove(special.panel)
-                table.remove(self._special_equipment, i)
-            else
+            if special.weapon then
                 special.panel:set_visible(false)
             end
         end
@@ -740,19 +748,27 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         end
     end
 
-    function HUDTeammate:set_deployable_equipment(data)
-        if not self._player_panel:child("deployable_equipment_panel") and data.amount > 0 then
-            self:add_special_equipment({
-                id = "deployable_equipment_panel",
-                icon = "equipment_doctor_bag",
-                amount = data.amount,
-                no_flash = true,
-                show_single_amount = true
-            })
-        elseif not self._player_panel:child("deployable_equipment_panel") then
-            return
+    function HUDTeammate:check_deployable_equipment(data)
+        if not self._player_panel:child("deployable_equipment_panel") then
+            if data.amount > 0 then
+                self:add_special_equipment({
+                    id = "deployable_equipment_panel",
+                    icon = self._deployable_icon or "equipment_doctor_bag",
+                    amount = data.amount,
+                    no_flash = true,
+                    show_single_amount = true
+                })
+            else
+                return false
+            end
         end
 
+        return false
+    end
+
+    function HUDTeammate:set_deployable_equipment(data)
+        self:check_deployable_equipment(data)
+        self._deployable_icon = data.icon
         self:set_special_equipment_image("deployable_equipment_panel", data.icon)
         self:set_deployable_equipment_amount(1, data)
     end
@@ -779,50 +795,62 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     end
 
     function HUDTeammate:set_deployable_equipment_from_string(data)
-        local visible = self:is_deployable_equipment_visible(data)
-        if not visible then
+        if not self:is_deployable_equipment_visible(data) then
+            self:set_special_equipment_amount("deployable_equipment_panel", data.amount_str)
             return
         end
 
+        self._deployable_icon = data.icon
         self:set_special_equipment_image("deployable_equipment_panel", data.icon)
         self:set_deployable_equipment_amount_from_string(1, data)
     end
 
     function HUDTeammate:set_deployable_equipment_amount_from_string(index, data)
-        local visible = self:is_deployable_equipment_visible(data)
-        if not visible then
+        if not self:is_deployable_equipment_visible(data) then
+            self:remove_special_equipment("deployable_equipment_panel")
             return
         end
 
         self:set_special_equipment_amount("deployable_equipment_panel", data.amount_str)
-
-        if not visible then
-            self:remove_special_equipment("deployable_equipment_panel")
-        end
     end
 
     function HUDTeammate:set_deployable_equipment_amount(index, data)
+        self:check_deployable_equipment(data)
         self:set_special_equipment_amount("deployable_equipment_panel", data.amount)
     end
 
+    function HUDTeammate:check_grenade(data)
+        if not self._player_panel:child("grenades_panel") then
+            if data.amount > 0 then
+                self:add_special_equipment({
+                    id = "grenades_panel",
+                    icon = self._grenade_icon or "",
+                    amount = data.amount,
+                    no_flash = true,
+                    show_single_amount = true
+                })
+            else
+                return false
+            end
+        end
+        return true
+    end
+
     function HUDTeammate:set_grenades(data)
-        if not self._player_panel:child("grenades_panel") and data.amount > 0 then
-            self:add_special_equipment({
-                id = "grenades_panel",
-                icon = "",
-                amount = data.amount,
-                no_flash = true,
-                show_single_amount = true
-            })
-        elseif not self._player_panel:child("grenades_panel") then
+        if not self:check_grenade(data) then
             return
         end
 
         self:set_grenades_amount(data)
+        self._grenade_icon = data.icon
         self:set_special_equipment_image("grenades_panel", data.icon)
     end
 
     function HUDTeammate:set_grenades_amount(data)
+        if not self:check_grenade(data) then
+            return
+        end
+
         self:set_special_equipment_amount("grenades_panel", data.amount)
     end
 
@@ -912,20 +940,31 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self:layout_special_equipments()
     end
 
+    function HUDTeammate:clear_special_equipment()
+        local teammate_panel = self._player_panel
+        for i, special in ipairs(self._special_equipment) do
+            local panel = special.panel
+            if not special.weapon then
+                teammate_panel:remove(panel)
+                table.remove(self._special_equipment, i)
+            end
+        end
+        self:layout_special_equipments()
+    end
+
     function HUDTeammate:remove_special_equipment(equipment)
         local teammate_panel = self._player_panel
-        local special_equipment = self._special_equipment
-        for i, special in ipairs(special_equipment) do
+        for i, special in ipairs(self._special_equipment) do
             local panel = special.panel
             if panel:name() == equipment then
                 teammate_panel:remove(panel)
-                table.remove(special_equipment, i)
+                table.remove(self._special_equipment, i)
                 self:layout_special_equipments()
                 return
             end
         end
 
-        for i, weap in ipairs(self._weapons) do
+        --[[for i, weap in ipairs(self._weapons) do
             local panel = weap.panel
             if panel:name() == equipment then
                 teammate_panel:remove(panel)
@@ -933,10 +972,10 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 self:layout_special_equipments()
                 return
             end
-        end
+        end]]--
     end
 
-    function HUDTeammate:equipment_flash_icon( o)
+    function HUDTeammate:equipment_flash_icon(o)
         local t = 4
         while t > 0 do
             local dt = coroutine.yield()
@@ -948,6 +987,11 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     end
 
     function HUDTeammate:set_special_equipment_amount(equipment_id, amount)
+        if not amount then return end
+
+        --pcall to try and actually get some error logs for errors
+        local success, err = pcall(function()
+
         local const = pdth_hud.constants
         local teammate_panel = self._player_panel
         local special_equipment = self._special_equipment
@@ -972,6 +1016,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             local panel = special.panel
             if panel and panel:name() == equipment_id then
                 apply_setting(i, special, panel)
+                return
             end
         end
 
@@ -979,14 +1024,21 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             local panel = weap.panel
             if panel and panel:name() == equipment_id then
                 apply_setting(i, weap, panel)
+                return
             end
         end
 
         self:layout_special_equipments()
+        end)
+        if not success then
+            log(tostring(err))
+        end
     end
 
     function HUDTeammate:set_special_equipment_image(equipment_id, ...)
-        for i, special in ipairs(self._special_equipment) do
+        --pcall to try and actually get some error logs for errors
+        local success, err = pcall(function(...)
+            for i, special in ipairs(self._special_equipment) do
             local panel = special.panel
             if panel and panel:name() == equipment_id then
                 special.icon_data = {...}
@@ -1009,6 +1061,10 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 panel:child("bitmap"):set_image(image, unpack(texture_rect))
                 return
             end
+        end
+        end, ...)
+        if not success then
+            log(tostring(err))
         end
     end
 
@@ -1206,11 +1262,6 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 managers.hud:make_fine_text(character_text)
                 character_text:set_center_x(radial_health_panel:center_x())
                 character_text:set_bottom(radial_health_panel:h() - const.main_character_y_offset)
-            elseif pdth_hud.Options:GetValue("HUD/OGTMHealth") then
-                local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "tm")
-                if texture then
-                    character_icon:set_image(texture, unpack(rect))
-                end
             end
         end
 
@@ -1237,10 +1288,16 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 radial_shield:set_bottom(radial_bg:bottom())
             end
         end
-        if prev_char ~= self._character then
-            texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "bg", self._main_player)
+
+        texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "bg", self._main_player)
+        if texture then
+            radial_bg:set_image(texture, unpack(rect))
+        end
+
+        if pdth_hud.Options:GetValue("HUD/OGTMHealth") and not self._main_player then
+            local texture, rect = pdth_hud.textures:get_portrait_texture(self._character, "tm")
             if texture then
-                radial_bg:set_image(texture, unpack(rect))
+                character_icon:set_image(texture, unpack(rect))
             end
         end
 

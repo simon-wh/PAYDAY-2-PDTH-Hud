@@ -1,0 +1,16 @@
+<table>
+    <texture path="guis/textures/pdth_hud/portraits/default"/>
+    <texture path="guis/textures/pdth_hud/portraits/default_begins"/>
+    <texture path="guis/textures/pdth_hud/portraits/default_unmasked"/>
+    <texture path="guis/textures/pdth_hud/portraits/whites"/>
+    <texture path="guis/textures/pdth_hud/portraits/pdth"/>
+    <texture path="guis/textures/pdth_hud/portraits/foster"/>
+    <texture path="guis/textures/pdth_hud/ammo_coloured"/>
+    <texture path="guis/textures/pdth_hud/ammo_white"/>
+    <texture path="guis/textures/pdth_hud/hud_swansong"/>
+    <texture path="guis/textures/pdth_hud/icons_black"/>
+    <texture path="guis/textures/pdth_hud/icons_coloured"/>
+    <texture path="guis/textures/pdth_hud/swansong_effect"/>
+    <texture path="guis/textures/pdth_hud/hud_icons"/>
+    <texture path="guis/textures/pdth_hud/pd2_waypoints"/>
+</table>

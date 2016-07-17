@@ -31,6 +31,8 @@
 	"PDTHHudRebornBulletDescID" : "Change the style of the Bullet counter",
 	"PDTHHudRebornWeaponIconTitleID" : "Icon Style",
 	"PDTHHudRebornWeaponIconDescID" : "Change the style of the Weapon and Deployable icons",
+	"PDTHHudRebornPDTHEquipmentIconsTitleID" : "Use PDTH Equipment Icons",
+	"PDTHHudRebornPDTHEquipmentIconsDescID" : "Use the original PDTH Equipment icons. Overrides the Icon Style",
 	"PDTHHudRebornGradingsOptionsButtonTitleID" : "Heist Specific Colour Grading",
 	"PDTHHudRebornGradingsOptionsButtonDescID" : "Select Colour gradings for individual heists",
 	"PDTHHudRebornspooky_ammoTitleID" : "Ammo acts properly",

@@ -9,6 +9,7 @@ PortraitPreviewGUI.focused_portrait_w = 64 * 2
 PortraitPreviewGUI.character_text_font_size = 15
 PortraitPreviewGUI.focus_time = 0.4
 PortraitPreviewGUI.main_y_offset = 58
+PortraitPreviewGUI.scroll_speed = 4
 
 function PortraitPreviewGUI:init(ws)
     self._ws = ws
@@ -207,9 +208,11 @@ function PortraitPreviewGUI:update(t, dt)
 end
 
 PortraitPreviewGUI.portrait_options_gap = 8
+PortraitPreviewGUI.portrait_scroll_gap = 4
 PortraitPreviewGUI.portrait_options_font_size = 24
 
 function PortraitPreviewGUI:create_portrait_options()
+    local success, err = pcall(function()
     if not self._portrait_options_panel then
         local h = self.focused_portrait_w * self.portrait_ratio
 
@@ -224,7 +227,6 @@ function PortraitPreviewGUI:create_portrait_options()
         })
         local slider_offset = 4
         self._health_slider:set_right(self._focused_portrait_panel:left() + slider_offset)
-        self._health_slider:set_world_center_y(self._focused_portrait_panel:world_y())
 
         self._armour_slider = self._main_panel:bitmap({
             texture = "guis/textures/pd2/hud_arrow",
@@ -234,38 +236,17 @@ function PortraitPreviewGUI:create_portrait_options()
             layer = 6
         })
         self._armour_slider:set_left(self._focused_portrait_panel:right() - slider_offset)
-        self._armour_slider:set_world_center_y(self._focused_portrait_panel:world_y())
 
         self._portrait_options_panel = self._main_panel:panel({
             layer = 6,
             h = h,
             w = h,
-            x = self._focused_portrait_panel:right(),
-            visible = false
+            x = self._focused_portrait_panel:right()
         })
         self._portrait_options_panel:set_center_y(self._main_panel:h() / 2)
 
-        local portrait_opt = pdth_hud.Options:GetOption("HUD/portraits/" .. tweak_data.criminals.characters[self._focused_portrait_i].name)
+        self._portrait_panel = self._portrait_options_panel:panel()
 
-        self._portrait_options = {}
-
-        for i, value in pairs(portrait_opt.values) do
-            local panel = self._portrait_options_panel:panel()
-            self._portrait_options[i] = panel
-
-            local portrait_text = panel:text({
-                name = "text",
-                text = managers.localization:text(value),
-                font_size = self.portrait_options_font_size,
-                font = tweak_data.menu.pd2_small_font,
-                color = (i == portrait_opt.value and Color.yellow or Color.white):with_alpha(0.75),
-                align = "right"
-            })
-            local _, _, _, h = portrait_text:text_rect()
-            portrait_text:set_h(h)
-            panel:set_h(h)
-            panel:set_y((i - 1) * h + ((i - 1) * self.portrait_options_gap))
-        end
         local back_text = managers.localization:text("menu_back")
         self._portrait_back = self._portrait_options_panel:text({
             text = string.sub(back_text, 0, string.len(back_text) - 6),
@@ -278,17 +259,75 @@ function PortraitPreviewGUI:create_portrait_options()
         self._portrait_back:set_h(h)
         --self:make_fine_text(self._portrait_back)
         self._portrait_back:set_world_rightbottom(self._portrait_options_panel:world_rightbottom())
+
+        self._portrait_panel:set_h(self._portrait_options_panel:h() - h)
+
+        self._portrait_scroll = self._portrait_panel:rect({
+            name = "scroll",
+            color = Color.white,
+            visible = false,
+            w=5
+        })
+        self._portrait_scroll:set_right(self._portrait_panel:w())
+
+        self._portrait_back:set_right(self._portrait_panel:w() - (self._portrait_scroll:w() + self.portrait_scroll_gap))
+    end
+    if self._portrait_panel:child("panel_options") then
+        self._portrait_panel:remove(self._portrait_panel:child("panel_options"))
+    end
+
+    local panel_options = self._portrait_panel:panel({
+        name="panel_options",
+        y = 0
+    })
+    self._portrait_options = {}
+
+    local portrait_opt = pdth_hud.Options:GetOption("HUD/portraits/" .. tweak_data.criminals.characters[self._focused_portrait_i].name)
+
+    for i, value in pairs(portrait_opt.values) do
+        local panel = panel_options:panel()
+        self._portrait_options[i] = panel
+
+        local portrait_text = panel:text({
+            name = "text",
+            text = managers.localization:text(value),
+            font_size = self.portrait_options_font_size,
+            font = tweak_data.menu.pd2_small_font,
+            color = (i == portrait_opt.value and Color.yellow or Color.white):with_alpha(0.75),
+            align = "right"
+        })
+        local _, _, _, h = portrait_text:text_rect()
+        portrait_text:set_h(h)
+        panel:set_h(h)
+        panel:set_y((i - 1) * h + ((i - 1) * self.portrait_options_gap))
+        panel:set_right(panel_options:w() - (self._portrait_scroll:w() + self.portrait_scroll_gap))
+    end
+
+    panel_options:set_h(self._portrait_options[#self._portrait_options]:bottom())
+
+    self._portrait_scroll:set_visible(panel_options:h() > self._portrait_panel:h())
+    self._portrait_scroll:set_h((self._portrait_panel:h() / panel_options:h()) * self._portrait_panel:h())
+    self._portrait_scroll:set_y(0)
+    self._health_slider:set_world_center_y(self._focused_portrait_panel:world_y())
+    self._armour_slider:set_world_center_y(self._focused_portrait_panel:world_y())
+    end)
+    if not success then
+        log(tostring(err))
     end
 end
 
 function PortraitPreviewGUI:show_portrait_options()
     self:create_portrait_options()
     self._portrait_options_panel:show()
-    self._main_menu:enable()
+    self._health_slider:show()
+    self._armour_slider:show()
 end
 
 function PortraitPreviewGUI:hide_portrait_options()
-    if self._portrait_options_panel then
+    self._portrait_options_panel:hide()
+    self._health_slider:hide()
+    self._armour_slider:hide()
+    --[[if self._portrait_options_panel then
         self._main_panel:remove(self._portrait_options_panel)
         self._portrait_options_panel = nil
         self._portrait_back = nil
@@ -297,7 +336,7 @@ function PortraitPreviewGUI:hide_portrait_options()
         self._main_panel:remove(self._armour_slider)
         self._health_slider = nil
         self._armour_slider = nil
-    end
+    end]]--
 end
 
 function PortraitPreviewGUI:portrait_move(o, to_start)
@@ -359,8 +398,16 @@ function PortraitPreviewGUI:focus_portrait(i, portrait_panel)
     end)
 end
 
+function PortraitPreviewGUI:update_scroll(y)
+    local h = self._portrait_scroll:h()
+    local panel_options = self._portrait_panel:child("panel_options")
+    self._portrait_scroll:set_world_center_y(math.clamp(self._portrait_scroll:world_center_y() + y, self._portrait_panel:world_top() + (h/2), self._portrait_panel:world_bottom() - (h/2)))
+    local scroll_dif = self._portrait_panel:h() - h
+    panel_options:set_y(-((self._portrait_scroll:y() / scroll_dif) * (panel_options:h() - self._portrait_panel:h())))
+end
+
 function PortraitPreviewGUI:mouse_moved(x, y)
-    --log(tostring(x) .. "|" .. tostring(y))
+    self._mouse_pos = {x,y}
     local inside = false
     if not self._focused_portrait_panel then
     	for _, portrait_panel in pairs(self._portraits) do
@@ -375,12 +422,17 @@ function PortraitPreviewGUI:mouse_moved(x, y)
     if not inside and self._portrait_options_panel and self._portrait_options_panel:visible() then
         if not inside then
             if self._dragging then
-                self._dragging:set_world_center_y(math.clamp(y, self._focused_portrait_panel:world_top(), self._focused_portrait_panel:world_bottom()))
-                self:display_portrait(self._focused_portrait_panel, tweak_data.criminals.characters[self._focused_portrait_i], true)
+                if self._dragging:name() == "scroll" then
+                    self:update_scroll(y-self._dragging_point[2])
+                    self._dragging_point = {x,y}
+                else
+                    self._dragging:set_world_center_y(math.clamp(y, self._focused_portrait_panel:world_top(), self._focused_portrait_panel:world_bottom()))
+                    self:display_portrait(self._focused_portrait_panel, tweak_data.criminals.characters[self._focused_portrait_i], true)
+                end
                 return true, "grab"
             else
-                for _, slider in pairs({self._health_slider, self._armour_slider}) do
-                    if slider:inside(x, y) then
+                for _, slider in pairs({self._health_slider, self._armour_slider, self._portrait_scroll}) do
+                    if slider:visible() and slider:inside(x, y) then
                         return true, "hand"
                     end
                 end
@@ -412,11 +464,16 @@ function PortraitPreviewGUI:mouse_moved(x, y)
 end
 
 function PortraitPreviewGUI:mouse_pressed(button, x, y)
+    if (button == Idstring("mouse wheel down") and self:scroll_down()) or (button == Idstring("mouse wheel up") and self:scroll_up()) then
+        return true
+    end
+
     if self._portrait_options_panel and self._portrait_options_panel:visible() and button == Idstring("0") then
         if not self._dragging then
-            for _, slider in pairs({self._health_slider, self._armour_slider}) do
-                if slider:inside(x, y) and button == Idstring("0") then
+            for _, slider in pairs({self._health_slider, self._armour_slider, self._portrait_scroll}) do
+                if slider:visible() and slider:inside(x, y) and button == Idstring("0") then
                     self._dragging = slider
+                    self._dragging_point = {x, y}
                     return true
                 end
             end
@@ -461,6 +518,23 @@ end
 function PortraitPreviewGUI:mouse_released(button, x, y)
     if button == Idstring("0") then
         self._dragging = nil
+    end
+
+    return false
+end
+
+function PortraitPreviewGUI:scroll_up()
+    if self._portrait_options_panel and self._portrait_panel:inside(unpack(self._mouse_pos)) and self._portrait_scroll:visible() then
+        self:update_scroll(-self.scroll_speed)
+        return true
+    end
+    return false
+end
+
+function PortraitPreviewGUI:scroll_down()
+    if self._portrait_options_panel and self._portrait_panel:inside(unpack(self._mouse_pos)) and self._portrait_scroll:visible() then
+        self:update_scroll(self.scroll_speed)
+        return true
     end
 
     return false

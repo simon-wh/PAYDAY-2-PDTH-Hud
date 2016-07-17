@@ -3,8 +3,8 @@ PDTHHudCoreDefinitions = PDTHHudCoreDefinitions or class()
 function PDTHHudCoreDefinitions:init()
     self.weapon_texture = {
         textures = {
-            "guis/textures/upgrade_images",
-            "guis/textures/trial_slaughterhouse"
+            "guis/textures/pdth_hud/icons_black",
+            "guis/textures/pdth_hud/icons_coloured"
         },
         icon_size = {w=160, h=160},
         texture_size = {w=1600, h=3200},
