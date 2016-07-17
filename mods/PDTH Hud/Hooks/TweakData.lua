@@ -6,12 +6,18 @@ local success, err = pcall(function() pdth_hud.Options:post_init()
 
 --Experimenting End
 
+if Global.level_data and Global.level_data.level_id then
+    local level_id = Global.level_data.level_id
+    local val = pdth_hud.Options:GetValue("Gradings/"..level_id, true)
+    if val and tweak_data.levels[level_id] ~= nil then
+        local colour_grading_val = (val == pdth_hud.definitions.heist_colour_gradings[1] and pdth_hud.Options:GetValue("Grading", true) or val)
+        if not table.contains(pdth_hud.definitions.colour_gradings, colour_grading_val) then
+            pdth_hud:log("[ERROR] Colour grading for heist, %s is invalid! (%s). Defaulting to PAYDAY+", level_id, colour_grading_val)
+            colour_grading_val = pdth_hud.definitions.colour_gradings[1]
+        end
 
-for _, level in pairs(tweak_data.levels._level_index) do
-    local val = pdth_hud.Options:GetValue("Gradings/"..level, true)
-    if val and tweak_data.levels[level] ~= nil then
-        tweak_data.levels[level].env_params = tweak_data.levels[level].env_params or {}
-        tweak_data.levels[level].env_params.color_grading = (val == pdth_hud.definitions.heist_colour_gradings[1] and pdth_hud.Options:GetValue("Grading", true) or val)
+        tweak_data.levels[level_id].env_params = tweak_data.levels[level_id].env_params or {}
+        tweak_data.levels[level_id].env_params.color_grading = colour_grading_val
     end
 end
 

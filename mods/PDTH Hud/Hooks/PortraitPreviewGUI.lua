@@ -212,7 +212,6 @@ PortraitPreviewGUI.portrait_scroll_gap = 4
 PortraitPreviewGUI.portrait_options_font_size = 24
 
 function PortraitPreviewGUI:create_portrait_options()
-    local success, err = pcall(function()
     if not self._portrait_options_panel then
         local h = self.focused_portrait_w * self.portrait_ratio
 
@@ -310,10 +309,6 @@ function PortraitPreviewGUI:create_portrait_options()
     self._portrait_scroll:set_y(0)
     self._health_slider:set_world_center_y(self._focused_portrait_panel:world_y())
     self._armour_slider:set_world_center_y(self._focused_portrait_panel:world_y())
-    end)
-    if not success then
-        log(tostring(err))
-    end
 end
 
 function PortraitPreviewGUI:show_portrait_options()
@@ -407,7 +402,6 @@ function PortraitPreviewGUI:update_scroll(y)
 end
 
 function PortraitPreviewGUI:mouse_moved(x, y)
-    self._mouse_pos = {x,y}
     local inside = false
     if not self._focused_portrait_panel then
     	for _, portrait_panel in pairs(self._portraits) do
@@ -464,7 +458,7 @@ function PortraitPreviewGUI:mouse_moved(x, y)
 end
 
 function PortraitPreviewGUI:mouse_pressed(button, x, y)
-    if (button == Idstring("mouse wheel down") and self:scroll_down()) or (button == Idstring("mouse wheel up") and self:scroll_up()) then
+    if (button == Idstring("mouse wheel down") and self:scroll_down(x,y)) or (button == Idstring("mouse wheel up") and self:scroll_up(x,y)) then
         return true
     end
 
@@ -523,16 +517,16 @@ function PortraitPreviewGUI:mouse_released(button, x, y)
     return false
 end
 
-function PortraitPreviewGUI:scroll_up()
-    if self._portrait_options_panel and self._portrait_panel:inside(unpack(self._mouse_pos)) and self._portrait_scroll:visible() then
+function PortraitPreviewGUI:scroll_up(x,y)
+    if self._portrait_options_panel and self._portrait_panel:inside(x,y) and self._portrait_scroll:visible() then
         self:update_scroll(-self.scroll_speed)
         return true
     end
     return false
 end
 
-function PortraitPreviewGUI:scroll_down()
-    if self._portrait_options_panel and self._portrait_panel:inside(unpack(self._mouse_pos)) and self._portrait_scroll:visible() then
+function PortraitPreviewGUI:scroll_down(x,y)
+    if self._portrait_options_panel and self._portrait_panel:inside(x,y) and self._portrait_scroll:visible() then
         self:update_scroll(self.scroll_speed)
         return true
     end
