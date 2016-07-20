@@ -235,7 +235,7 @@ function PDTHHudCoreTextures:init(parent)
 	            48
 	        }
 	    },
-	    equipment_sentry = {
+	    --[[equipment_sentry = {
 	        texture = "guis/textures/pdth_hud/hud_icons",
 	        texture_rect = {
 	            320,
@@ -243,7 +243,7 @@ function PDTHHudCoreTextures:init(parent)
 	            48,
 	            48
 	        }
-	    },
+	    },]]--
 	    equipment_trip_mine = {
 	        texture = "guis/textures/pdth_hud/hud_icons",
 	        texture_rect = {
