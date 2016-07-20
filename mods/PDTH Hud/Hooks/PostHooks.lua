@@ -51,7 +51,7 @@ end
 
 if HUDChat then
     Hooks:PostHook(HUDChat, "_layout_output_panel", "PDTHHudReposChat", function(self)
-        if pdth_hud.Options:GetValue("HUD/MainHud") then
+        if pdth_hud.Options:GetValue("HUD/MainHud") and self._hud_panel then
             if BigLobbyGlobals then
                 local const = pdth_hud.constants
                 self._panel:set_right(self._hud_panel:right())

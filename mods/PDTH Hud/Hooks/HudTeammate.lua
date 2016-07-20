@@ -547,6 +547,10 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     end
 
     function HUDTeammate:check_cable_ties(data)
+        if not data then
+            return false
+        end
+
         if not self._player_panel:child("cable_ties_panel") then
             if data.amount > 0 then
                 self:add_special_equipment({
@@ -564,14 +568,19 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     end
 
     function HUDTeammate:set_cable_tie(data)
-        self:check_cable_ties(data)
+        if not self:check_cable_ties(data) then
+            return
+        end
 
         self:set_special_equipment_image("cable_ties_panel", "equipment_cable_ties")
         self:set_cable_ties_amount(data.amount)
     end
 
     function HUDTeammate:set_cable_ties_amount(amount)
-        self:check_cable_ties(data)
+        if not self:check_cable_ties(data) then
+            return
+        end
+
         self:set_special_equipment_amount("cable_ties_panel", amount)
     end
 
@@ -698,9 +707,9 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             return
         end
 
-        self:set_special_equipment_image("primary_weapon", self._current_primary.id, self._current_primary.sub_category or self._current_primary.category)
-        self:set_special_equipment_image("secondary_weapon", self._current_secondary.id, self._current_secondary.sub_category or self._current_secondary.category)
-        self:set_special_equipment_image("melee_weapon", self._current_melee.id, self._current_melee.category)
+        self:set_special_equipment_image("primary_weapon", self._current_primary.id, self._current_primary.category, self._current_primary.sub_category)
+        self:set_special_equipment_image("secondary_weapon", self._current_secondary.id, self._current_secondary.category, self._current_secondary.sub_category)
+        self:set_special_equipment_image("melee_weapon", self._current_melee.id, self._current_melee.category, "")
     end
 
     function HUDTeammate:refresh_ammo()
@@ -749,6 +758,10 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     end
 
     function HUDTeammate:check_deployable_equipment(data)
+        if not data then
+            return false
+        end
+
         if not self._player_panel:child("deployable_equipment_panel") then
             if data.amount > 0 then
                 self:add_special_equipment({
@@ -763,11 +776,13 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             end
         end
 
-        return false
+        return true
     end
 
     function HUDTeammate:set_deployable_equipment(data)
-        self:check_deployable_equipment(data)
+        if not self:check_deployable_equipment(data) then
+            return
+        end
         self._deployable_icon = data.icon
         self:set_special_equipment_image("deployable_equipment_panel", data.icon)
         self:set_deployable_equipment_amount(1, data)
@@ -815,11 +830,16 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     end
 
     function HUDTeammate:set_deployable_equipment_amount(index, data)
-        self:check_deployable_equipment(data)
-        self:set_special_equipment_amount("deployable_equipment_panel", data.amount)
+        if self:check_deployable_equipment(data) then
+            self:set_special_equipment_amount("deployable_equipment_panel", data.amount)
+        end
     end
 
     function HUDTeammate:check_grenade(data)
+        if not data then
+            return false
+        end
+
         if not self._player_panel:child("grenades_panel") then
             if data.amount > 0 then
                 self:add_special_equipment({
@@ -1130,9 +1150,9 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     function HUDTeammate:teammate_progress(enabled, tweak_data_id, timer, success)
         local character_icon = self._player_panel:child("character_icon")
         if character_icon and pdth_hud.Options:GetValue("HUD/OGTMHealth") then
-            character_icon:set_alpha(enabled and 0.2 or 1)
+            character_icon:set_alpha(enabled and 0.5 or 1)
         else
-            self._player_panel:child("radial_health_panel"):set_alpha(enabled and 0.2 or 1)
+            self._player_panel:child("radial_health_panel"):set_alpha(enabled and 0.5 or 1)
         end
         self._player_panel:child("interact_panel"):stop()
         self._player_panel:child("interact_panel"):set_visible(enabled)

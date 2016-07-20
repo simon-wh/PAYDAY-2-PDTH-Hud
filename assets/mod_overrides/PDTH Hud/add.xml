@@ -2,6 +2,7 @@
     <texture path="guis/textures/pdth_hud/portraits/default"/>
     <texture path="guis/textures/pdth_hud/portraits/default_begins"/>
     <texture path="guis/textures/pdth_hud/portraits/default_unmasked"/>
+    <texture path="guis/textures/pdth_hud/portraits/hoxton_prison"/>
     <texture path="guis/textures/pdth_hud/portraits/whites"/>
     <texture path="guis/textures/pdth_hud/portraits/pdth"/>
     <texture path="guis/textures/pdth_hud/portraits/foster"/>

@@ -7,14 +7,16 @@ function HUDAmmoHandler:init(parent, panel)
 end
 
 function HUDAmmoHandler:update_ammo_icons(previous_current_clip)
-    if not self._parent._weapon_details then
+    if not self._parent._weapon_details or not self._parent._current_ammo then
         return
     end
 
     local const = pdth_hud.constants
-
-    if self._parent._current_ammo.max_clip > const.main_ammo_max then
-        self:destroy_ammo_icons()
+    local should_destory = (self._parent._current_ammo.max_clip > const.main_ammo_max or pdth_hud.Options:GetValue("HUD/Bullet") == 1)
+    if should_destory then
+        if self._parent._created_ammo then
+            self:destroy_ammo_icons()
+        end
         return
     end
 
@@ -31,7 +33,7 @@ function HUDAmmoHandler:update_ammo_icons(previous_current_clip)
         end
     end
 
-    if pdth_hud.Options:GetValue("HUD/BulletGradualColour") then
+    if pdth_hud.Options:GetValue("HUD/BulletGradualColour") and previous_current_clip then
         if self._parent._current_ammo.current_clip < previous_current_clip then
             self:refresh_ammo_colour(self._parent._current_ammo.current_clip + 1, previous_current_clip)
         elseif self._parent._current_ammo.current_clip > previous_current_clip then
@@ -77,6 +79,13 @@ function HUDAmmoHandler:refresh_ammo_colour(start, end_point)
 end
 
 function HUDAmmoHandler:refresh()
+    if pdth_hud.Options:GetValue("HUD/Bullet") == 1 then
+        self:destroy_ammo_icons()
+        return
+    else
+        self:update_ammo_icons()
+    end
+
     local icon, details = unpack(self._parent._weapon_ammo_details)
 
     for i = 1, self._ammo_panel:num_children() do
@@ -90,6 +99,10 @@ end
 
 function HUDAmmoHandler:create_ammo_icons()
     self:destroy_ammo_icons()
+
+    if pdth_hud.Options:GetValue("HUD/Bullet") == 1 then
+        return
+    end
 
     if not self._parent._weapon_ammo_details or not self._parent._current_ammo then
         return

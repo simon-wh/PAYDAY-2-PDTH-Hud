@@ -40,7 +40,7 @@ function PDTHHudCoreCallbacks:PortraitStyleChanged(key, value)
 end
 
 function PDTHHudCoreCallbacks:BulletStyleChanged(key, value)
-    if managers.player and managers.hud then
+    if managers.player and managers.hud and pdth_hud.Options:GetValue("HUD/MainHud") then
         local player = managers.player:local_player()
         if player then
             local inventory = player:inventory()
@@ -53,7 +53,7 @@ end
 
 function PDTHHudCoreCallbacks:WeaponIconStyleChanged(key, value)
     pdth_hud.textures:apply_tweak_data_icons()
-    if managers.hud then
+    if managers.hud and pdth_hud.Options:GetValue("HUD/MainHud") then
         for i = 1, HUDManager.PLAYER_PANEL do
             local tm = managers.hud._teammate_panels[i]
             if not tm._ai then
@@ -64,7 +64,7 @@ function PDTHHudCoreCallbacks:WeaponIconStyleChanged(key, value)
 end
 
 function PDTHHudCoreCallbacks:PortraitSelectionChanged(key, value)
-    if managers.hud then
+    if managers.hud and pdth_hud.Options:GetValue("HUD/MainHud") then
         for i = 1, HUDManager.PLAYER_PANEL do
             local tm = managers.hud._teammate_panels[i]
             tm:RefreshPortraits()

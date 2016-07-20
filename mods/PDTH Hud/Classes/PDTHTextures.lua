@@ -339,12 +339,12 @@ function PDTHHudCoreTextures:apply_tweak_data_icons()
 		if self._parent.Options:GetValue("HUD/PDTHEquipmentIcons") and self.pdth[icon] then
 			icons[icon] = self.pdth[icon]
 		else
-			icons[icon] = self:get_weapon_texture(icon, nil, true)
+			icons[icon] = self:get_weapon_texture(icon, nil, nil, true)
 		end
 	end
 end
 
-function PDTHHudCoreTextures:get_weapon_texture(weapon_id, category, ret_tbl)
+function PDTHHudCoreTextures:get_weapon_texture(weapon_id, category, sub_category, ret_tbl)
 	local def = self._parent.definitions.weapon_texture
 	local texture = def.textures[self._parent.Options:GetValue("HUD/WeaponIcon")]
 	local rectangle = {0,0,0,0}
@@ -353,8 +353,8 @@ function PDTHHudCoreTextures:get_weapon_texture(weapon_id, category, ret_tbl)
 		rectangle = self.weapons[weapon_id]
 	else
 		local weap_index = table.index_of(self._parent.definitions.weapon_texture.weapon_order, weapon_id)
-		if weap_index == -1 and self._parent.definitions.weapon_texture.category_conversion[category] then
-			weap_index = table.index_of(self._parent.definitions.weapon_texture.weapon_order, self._parent.definitions.weapon_texture.category_conversion[category])
+		if weap_index == -1 and (self._parent.definitions.weapon_texture.category_conversion[category] or self._parent.definitions.weapon_texture.category_conversion[sub_category]) then
+			weap_index = table.index_of(self._parent.definitions.weapon_texture.weapon_order, self._parent.definitions.weapon_texture.category_conversion[category] or self._parent.definitions.weapon_texture.category_conversion[sub_category])
 		end
 		if weap_index == -1 then
 			if ret_tbl then
