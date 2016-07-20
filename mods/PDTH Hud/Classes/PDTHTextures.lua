@@ -85,7 +85,8 @@ function PDTHHudCoreTextures:init(parent)
 			148
 		},
 		style = 1,
-		gap = 1
+		gap = 1,
+        h_multi = 0.8
 	}
 
 	self.bullets = {
@@ -112,7 +113,9 @@ function PDTHHudCoreTextures:init(parent)
 				32,
 				148
 			},
-			style = 1
+			style = 1,
+            h_multi = 0.75,
+            min_height = 100
 		},
 		rifle_762 = {
 			texture_rect = {
@@ -121,7 +124,9 @@ function PDTHHudCoreTextures:init(parent)
 				27,
 				148
 			},
-			style = 1
+			style = 1,
+            h_multi = 0.75,
+            max = 120
 		},
 		snp_44 = {
 			texture_rect = {

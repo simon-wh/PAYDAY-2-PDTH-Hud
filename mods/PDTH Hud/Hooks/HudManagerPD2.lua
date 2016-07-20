@@ -1,51 +1,42 @@
 if pdth_hud.Options:GetValue("HUD/MainHud") then
-    function HUDManager:hide_player_gear(panel_id)
+    function HUDManager:set_player_gear_visibility(panel_id, visible)
         if self._teammate_panels[panel_id] and self._teammate_panels[panel_id]:panel() and self._teammate_panels[panel_id]:panel():child("player") then
-            local player_panel = self._teammate_panels[panel_id]:panel():child("player")
+            local tm = self._teammate_panels[panel_id]
+            local player_panel = tm:panel():child("player")
             if player_panel:child("primary_weapon") then
-                player_panel:child("primary_weapon"):set_visible(false)
+                player_panel:child("primary_weapon"):set_visible(visible)
             end
 
             if player_panel:child("secondary_weapon") then
-                player_panel:child("secondary_weapon"):set_visible(false)
+                player_panel:child("secondary_weapon"):set_visible(visible)
             end
 
             if player_panel:child("deployable_equipment_panel") then
-                player_panel:child("deployable_equipment_panel"):set_visible(false)
+                player_panel:child("deployable_equipment_panel"):set_visible(visible)
             end
 
             if player_panel:child("cable_ties_panel") then
-                player_panel:child("cable_ties_panel"):set_visible(false)
+                player_panel:child("cable_ties_panel"):set_visible(visible)
             end
 
             if player_panel:child("grenades_panel") then
-                player_panel:child("grenades_panel"):set_visible(false)
+                player_panel:child("grenades_panel"):set_visible(visible)
+            end
+            if tm._primary_weapon_ammo then
+                tm._primary_weapon_ammo._panel:set_visible(visible)
+            end
+
+            if tm._secondary_weapon_ammo then
+                tm._secondary_weapon_ammo._panel:set_visible(visible)
             end
         end
     end
+
+    function HUDManager:hide_player_gear(panel_id)
+        self:set_player_gear_visibility(panel_id, false)
+    end
     function HUDManager:show_player_gear(panel_id)
-        if self._teammate_panels[panel_id] and self._teammate_panels[panel_id]:panel() and self._teammate_panels[panel_id]:panel():child("player") then
-            local player_panel = self._teammate_panels[panel_id]:panel():child("player")
-            if player_panel:child("primary_weapon") then
-                player_panel:child("primary_weapon"):set_visible(true)
-            end
-
-            if player_panel:child("secondary_weapon") then
-                player_panel:child("secondary_weapon"):set_visible(true)
-            end
-
-            if player_panel:child("deployable_equipment_panel") then
-                player_panel:child("deployable_equipment_panel"):set_visible(true)
-            end
-
-            if player_panel:child("cable_ties_panel") then
-                player_panel:child("cable_ties_panel"):set_visible(true)
-            end
-
-            if player_panel:child("grenades_panel") then
-                player_panel:child("grenades_panel"):set_visible(true)
-            end
-        end
+        self:set_player_gear_visibility(panel_id, true)
     end
 
     function HUDManager:_create_teammates_panel(hud)

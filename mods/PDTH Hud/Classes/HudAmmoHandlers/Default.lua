@@ -12,16 +12,9 @@ function HUDAmmoHandler:update_ammo_icons(previous_current_clip)
     end
 
     local const = pdth_hud.constants
-    local should_destory = (self._parent._current_ammo.max_clip > const.main_ammo_max or pdth_hud.Options:GetValue("HUD/Bullet") == 1)
-    if should_destory then
-        if self._parent._created_ammo then
-            self:destroy_ammo_icons()
-        end
-        return
-    end
 
     if not self._parent._created_ammo then
-        self:create_ammo_icons()
+        return
     end
 
     if self._ammo_panel:num_children() > self._parent._current_ammo.max_clip then
@@ -83,7 +76,10 @@ function HUDAmmoHandler:refresh()
         self:destroy_ammo_icons()
         return
     else
-        self:update_ammo_icons()
+        if not self._parent._created_ammo then
+            self:create_ammo_icons()
+            self:update_ammo_icons()
+        end
     end
 
     local icon, details = unpack(self._parent._weapon_ammo_details)
@@ -109,19 +105,34 @@ function HUDAmmoHandler:create_ammo_icons()
     end
     local const = pdth_hud.constants
 
-    if self._parent._current_ammo.max_clip > const.main_ammo_max then
-        return
-    end
+
 
     self._parent._created_ammo = true
-
     local icon, details = unpack(self._parent._weapon_ammo_details)
+    local dyn_bullets = pdth_hud.Options:GetValue("HUD/DynamicBullets")
+    self._max_ammo = (dyn_bullets and (details.dyn_max or const.main_ammo_max_dyn) or (details.max or const.main_ammo_max)) / pdth_hud.Options:GetValue("HUD/Scale")
+    if self._parent._current_ammo.max_clip > self._max_ammo then
+        return
+    end
+    local w, h
 
-    local h = self._ammo_panel:h() * (details.h_multi and details.h_multi or 1)
-    local w = (h / details.texture_rect[4]) * details.texture_rect[3]
+    local max_clip = self._parent._current_ammo.max_clip
+
+    if dyn_bullets then
+        local max_w = self._ammo_panel:right() - ((managers.hud:saferect_w() / 2) + const.hostages_font_size * 4)
+        w = (max_w - ((details.gap or 0) * (max_clip - 1))) / max_clip
+        h = math.min((w / details.texture_rect[3]) * details.texture_rect[4], self._ammo_panel:h())
+    else
+        h = self._ammo_panel:h() * (details.h_multi or 1)
+    end
+    w = (h / details.texture_rect[4]) * details.texture_rect[3]
+    if dyn_bullets and details.min_height then
+        local min_h = (details.min_height / details.texture_rect[4]) * self._ammo_panel:h()
+        h = math.max(min_h, h)
+    end
 
     local prev_bullet
-    for i = 1, self._parent._current_ammo.max_clip do
+    for i = 1, max_clip do
         bullet = self._ammo_panel:bitmap({
             name = tostring(i),
             layer = 1,
@@ -130,7 +141,6 @@ function HUDAmmoHandler:create_ammo_icons()
             h = h,
             alpha = const.main_ammo_alpha,
             color = const.main_ammo_colour:with_alpha(const.main_ammo_colour_alpha)
-            --rotation = details.rotation
         })
         bullet:set_right(prev_bullet and prev_bullet:left() - (details.gap and details.gap or 0) or self._ammo_panel:w())
         bullet:set_center_y(self._ammo_panel:h() / 2)

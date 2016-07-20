@@ -130,6 +130,10 @@ function HUDAmmo:set_ammo(max_clip, current_clip, current_left, max, force)
     end
     self._ammo:set_range_color(0, 3, Color(1, r, g, b))
 
+    if not self._created_ammo then
+        self._ammo_handler:create_ammo_icons()
+    end
+
     if current_clip ~= previous_current_clip then
         self._ammo_handler:update_ammo_icons(previous_current_clip)
     end

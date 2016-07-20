@@ -29,6 +29,8 @@
 	"PDTHHudRebornCameraGradingDescID" : "Toggles the Camera Grading when using a camera",
 	"PDTHHudRebornBulletTitleID" : "Bullet Counter Style",
 	"PDTHHudRebornBulletDescID" : "Change the style of the Bullet counter",
+	"PDTHHudRebornDynamicBulletsTitleID" : "Dynamic Bullet sizing",
+	"PDTHHudRebornDynamicBulletsDescID" : "The ammo icons will size dynamically to allow all the ammo icons to be shown at the greatest possible size",
 	"PDTHHudRebornWeaponIconTitleID" : "Icon Style",
 	"PDTHHudRebornWeaponIconDescID" : "Change the style of the Weapon and Deployable icons",
 	"PDTHHudRebornPDTHEquipmentIconsTitleID" : "Use PDTH Equipment Icons",
