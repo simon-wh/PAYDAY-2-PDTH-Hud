@@ -10,7 +10,12 @@ end
 
 function PDTHHudCoreCallbacks:ColourGradingChanged(key, value)
     if not managers.job:current_level_id() or pdth_hud.Options:GetValue("Gradings/" .. managers.job:current_level_id()) == 1 then
-        managers.environment_controller:set_default_color_grading(pdth_hud.Options:GetValue("Grading", true))
+        local colour_grading = pdth_hud.Options:GetValue("Grading", true)
+        if not table.contains(pdth_hud.definitions.colour_gradings, colour_grading) then
+            pdth_hud:log("[ERROR] Colour grading for heist, %s is invalid! (%s). Defaulting to PAYDAY+", managers.job:current_level_id(), colour_grading)
+            colour_grading = pdth_hud.definitions.colour_gradings[1]
+        end
+        managers.environment_controller:set_default_color_grading(colour_grading)
         managers.environment_controller:refresh_render_settings()
     end
 end
@@ -18,6 +23,10 @@ end
 function PDTHHudCoreCallbacks:HeistColourGradingChanged(key, value)
     if managers.job:current_level_id() == table.remove(string.split(key, "/")) then
         local colour_grading = value == 1 and pdth_hud.Options:GetValue("Grading", true) or pdth_hud.Options:GetValue(key, true)
+        if not table.contains(pdth_hud.definitions.colour_gradings, colour_grading) then
+            pdth_hud:log("[ERROR] Colour grading for heist, %s is invalid! (%s). Defaulting to PAYDAY+", managers.job:current_level_id(), colour_grading)
+            colour_grading = pdth_hud.definitions.colour_gradings[1]
+        end
         managers.environment_controller:set_default_color_grading(colour_grading)
         managers.environment_controller:refresh_render_settings()
     end
@@ -31,7 +40,7 @@ function PDTHHudCoreCallbacks:PortraitStyleChanged(key, value)
 end
 
 function PDTHHudCoreCallbacks:BulletStyleChanged(key, value)
-    if managers.player and managers.hud then
+    if managers.player and managers.hud and pdth_hud.Options:GetValue("HUD/MainHud") then
         local player = managers.player:local_player()
         if player then
             local inventory = player:inventory()
@@ -44,7 +53,7 @@ end
 
 function PDTHHudCoreCallbacks:WeaponIconStyleChanged(key, value)
     pdth_hud.textures:apply_tweak_data_icons()
-    if managers.hud then
+    if managers.hud and pdth_hud.Options:GetValue("HUD/MainHud") then
         for i = 1, HUDManager.PLAYER_PANEL do
             local tm = managers.hud._teammate_panels[i]
             if not tm._ai then
@@ -55,7 +64,7 @@ function PDTHHudCoreCallbacks:WeaponIconStyleChanged(key, value)
 end
 
 function PDTHHudCoreCallbacks:PortraitSelectionChanged(key, value)
-    if managers.hud then
+    if managers.hud and pdth_hud.Options:GetValue("HUD/MainHud") then
         for i = 1, HUDManager.PLAYER_PANEL do
             local tm = managers.hud._teammate_panels[i]
             tm:RefreshPortraits()

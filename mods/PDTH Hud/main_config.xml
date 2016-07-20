@@ -30,6 +30,7 @@
         <hook file="TweakData.lua" source_file="lib/tweak_data/tweakdata"/>
         <hook file="MenuComponentManager.lua" source_file="lib/managers/menu/menucomponentmanager"/>
         <hook file="PortraitPreviewGUI.lua" source_file="lib/managers/menu/textboxgui"/>
+        <hook file="PlayerSound.lua" source_file="lib/units/beings/player/playersound"/>
         <hook file="PostHooks.lua" source_file="lib/setups/setup"/>
         <hook file="PostHooks.lua" source_file="lib/setups/gamesetup"/>
         <hook file="PostHooks.lua" source_file="lib/setups/menusetup"/>
@@ -86,8 +87,7 @@
     </ScriptMods>
     <Options name="Options" auto_build_menu="false" auto_load="true" save_file="PDTHHudRebornoptions.txt" post_init_clbk="self:InitConstants">
         <options>
-            <merge_data area_bg="half">
-            </merge_data>
+            <merge_data area_bg="half"/>
             <option_group name="HUD">
                 <merge_data area_bg="half">
                 </merge_data>
@@ -102,15 +102,17 @@
                     <option type="bool" default_value="true" name="GradualColour" value_changed="self.callbacks:PortraitStyleChanged"/>
                     <merge_data menu_components="portrait">
                     </merge_data>
-                    <item_parameters type="multichoice" value_changed="self.callbacks:PortraitSelectionChanged">
+                    <item_parameters type="multichoice" value_changed="self.callbacks:PortraitSelectionChanged" save_value="true">
                         <merge_data localized_help="false" desc=""/>
                     </item_parameters>
                 </option_set>
                 <option type="number" default_value="1" name="Scale" min="0" max="2" step="0.05" show_value="true"/>
                 <option type="bool" default_value="true" name="OGTMHealth"/>
                 <option type="multichoice" default_value="2" name="Bullet" values_tbl="self.definitions.bullet_style_options" value_changed="self.callbacks:BulletStyleChanged"/>
+                <option type="bool" default_value="true" name="DynamicBullets"/>
                 <option type="bool" default_value="false" name="BulletGradualColour" value_changed="self.callbacks:BulletStyleChanged"/>
                 <option type="multichoice" default_value="1" name="WeaponIcon" values_tbl="self.definitions.weapon_icon_style_options" value_changed="self.callbacks:WeaponIconStyleChanged"/>
+                <option type="bool" default_value="false" name="PDTHEquipmentIcons" value_changed="self.callbacks:WeaponIconStyleChanged"/>
                 <divider name="hud_tweak_divider" size="20"/>
                 <option type="bool" default_value="false" name="spooky_ammo"/>
                 <option type="bool" default_value="true" name="CameraGrading"/>

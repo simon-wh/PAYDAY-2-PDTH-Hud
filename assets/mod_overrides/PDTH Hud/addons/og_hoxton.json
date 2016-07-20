@@ -3,34 +3,34 @@
         {
             "name" : "pdth_hoxton_reborn",
             "display_name" : "PDTH Hoxton",
-            "main_texture" : "guis/textures/pd2/gui_grade_badges",
+            "main_texture" : "guis/textures/pdth_hud/portraits/pdth",
             "portraits" : [
                 {
                     "character_id" : "old_hoxton",
                     "texture_rects" : {
                         "health" : [
-                            128, 
-                            1, 
+                            130, 
+                            0, 
                             64, 
-                            129
+                            130
                         ],
                         "armor" : [
-                            128, 
+                            130, 
                             131, 
                             64, 
-                            129
+                            130
                         ],
                         "bg" : [
-                            128, 
-                            261, 
+                            130, 
+                            262, 
                             64, 
-                            129
+                            130
                         ],
                         "tm" : [
-                            50,
-                            463,
-                            48,
-                            48
+                            130,
+                            393,
+                            64,
+                            64
                         ]
                     }
                 }

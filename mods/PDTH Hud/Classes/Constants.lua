@@ -44,7 +44,8 @@ function PDTHHudCoreConstants:init(parent)
     self.main_ammo_empty_colour = Color(1, 1, 0, 0)
     self.main_ammo_colour_empty_alpha = 0.3
     self.main_ammo_colour_alpha = 0.9
-    self.main_ammo_max = 93
+    self.main_ammo_max = 100
+    self.main_ammo_max_dyn = 250
     self.main_firemode_gap = 3 * scale
     self.main_ammo_panel_x_offset = 5
 

@@ -38,7 +38,7 @@ function HUDAssaultCorner:init(hud, full_hud)
 		blend_mode = "normal",
 		visible = true,
 		layer = 0,
-		texture = "guis/textures/hud_icons",
+		texture = "guis/textures/pdth_hud/hud_icons",
 		texture_rect = { 276, 192, 108, 96 },
 		w = assault_panel:w(),
 		h = assault_panel:h()

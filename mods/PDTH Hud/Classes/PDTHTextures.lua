@@ -6,7 +6,7 @@ function PDTHHudCoreTextures:init(parent)
 
 	self.portraits.fallback = {}
 	self.portraits.fallback.bg = {
-		texture = "guis/textures/pd2/masks",
+		texture = "guis/textures/pdth_hud/portraits/default",
 		texture_rect = {
 			0,
 	        780,
@@ -16,7 +16,7 @@ function PDTHHudCoreTextures:init(parent)
 	}
 
 	self.portraits.fallback.health = {
-		texture = "guis/textures/pd2/masks",
+		texture = "guis/textures/pdth_hud/portraits/default",
 		texture_rect = {
 			0,
 	        0,
@@ -26,7 +26,7 @@ function PDTHHudCoreTextures:init(parent)
 	}
 
 	self.portraits.fallback.armor = {
-		texture = "guis/textures/pd2/masks",
+		texture = "guis/textures/pdth_hud/portraits/default",
 		texture_rect = {
 			0,
 	        390,
@@ -36,7 +36,7 @@ function PDTHHudCoreTextures:init(parent)
 	}
 
 	self.portraits.fallback.tm = {
-		texture = "guis/textures/pd2/masks",
+		texture = "guis/textures/pdth_hud/portraits/default",
 		texture_rect = {
 			0,
 	        1170,
@@ -48,7 +48,7 @@ function PDTHHudCoreTextures:init(parent)
 	self.portraits.teammate = {}
 
 	self.portraits.teammate.health = {
-	    texture = "guis/textures/hud_icons",
+	    texture = "guis/textures/pdth_hud/hud_icons",
 		texture_rect = {
 			264,
 			240,
@@ -58,7 +58,7 @@ function PDTHHudCoreTextures:init(parent)
 	}
 
 	self.portraits.teammate.armor = {
-	    texture = "guis/textures/hud_icons",
+	    texture = "guis/textures/pdth_hud/hud_icons",
 		texture_rect = {
 			252,
 			240,
@@ -68,7 +68,7 @@ function PDTHHudCoreTextures:init(parent)
 	}
 
 	self.portraits.teammate.bg = {
-	    texture = "guis/textures/hud_icons",
+	    texture = "guis/textures/pdth_hud/hud_icons",
 		texture_rect = {
 			240,
 			240,
@@ -85,13 +85,14 @@ function PDTHHudCoreTextures:init(parent)
 			148
 		},
 		style = 1,
-		gap = 1
+		gap = 1,
+        h_multi = 0.8
 	}
 
 	self.bullets = {
 		textures = {
-			[2] = "guis/textures/ammocounter",
-			[3] = "guis/textures/pd2/weapons"
+			[2] = "guis/textures/pdth_hud/ammo_white",
+			[3] = "guis/textures/pdth_hud/ammo_coloured"
 		},
 		pistol_9mm = pistol,
 		pistol_45 = pistol,
@@ -112,7 +113,9 @@ function PDTHHudCoreTextures:init(parent)
 				32,
 				148
 			},
-			style = 1
+			style = 1,
+            h_multi = 0.75,
+            min_height = 100
 		},
 		rifle_762 = {
 			texture_rect = {
@@ -121,7 +124,9 @@ function PDTHHudCoreTextures:init(parent)
 				27,
 				148
 			},
-			style = 1
+			style = 1,
+            h_multi = 0.75,
+            max = 120
 		},
 		snp_44 = {
 			texture_rect = {
@@ -201,6 +206,90 @@ function PDTHHudCoreTextures:init(parent)
 
 	self.weapons = {}
 
+
+	self.pdth = {
+		equipment_body_bag = {
+	        texture = "guis/textures/pd2/equipment",
+	        texture_rect = {
+	            96,
+	            32,
+	            32,
+	            32
+	        }
+		},
+	    equipment_ammo_bag = {
+	        texture = "guis/textures/pdth_hud/hud_icons",
+	        texture_rect = {
+	            48,
+	            96,
+	            48,
+	            48
+	        }
+	    },
+	    equipment_doctor_bag = {
+	        texture = "guis/textures/pdth_hud/hud_icons",
+	        texture_rect = {
+	            96,
+	            96,
+	            48,
+	            48
+	        }
+	    },
+	    equipment_sentry = {
+	        texture = "guis/textures/pdth_hud/hud_icons",
+	        texture_rect = {
+	            320,
+	            288,
+	            48,
+	            48
+	        }
+	    },
+	    equipment_trip_mine = {
+	        texture = "guis/textures/pdth_hud/hud_icons",
+	        texture_rect = {
+	            0,
+	            96,
+	            48,
+	            48
+	        }
+	    },
+	    equipment_ecm_jammer = {
+	        texture = "guis/textures/pdth_hud/hud_icons",
+	        texture_rect = {
+	            143,
+	            464,
+	            48,
+	            48
+	        }
+	    },
+	    equipment_armor_kit = {
+	        texture = "guis/textures/pdth_hud/hud_icons",
+	        texture_rect = {
+	            95,
+	            464,
+	            48,
+	            48
+	        }
+	    },
+	    equipment_first_aid_kit = {
+	        texture = "guis/textures/pdth_hud/hud_icons",
+	        texture_rect = {
+	            1,
+	            464,
+	            47,
+	            48
+	        }
+	    },
+	    equipment_bodybags_bag = {
+	        texture = "guis/textures/pdth_hud/hud_icons",
+	        texture_rect = {
+	            48,
+	            464,
+	            48,
+	            48
+	        }
+	    }
+	}
 end
 
 function PDTHHudCoreTextures:get_icon_data(icon_id)
@@ -252,11 +341,15 @@ function PDTHHudCoreTextures:apply_tweak_data_icons()
 		"throwing_axe"
 	}
 	for _, icon in pairs(icon_replacement_tbl) do
-		icons[icon] = self:get_weapon_texture(icon, nil, true)
+		if self._parent.Options:GetValue("HUD/PDTHEquipmentIcons") and self.pdth[icon] then
+			icons[icon] = self.pdth[icon]
+		else
+			icons[icon] = self:get_weapon_texture(icon, nil, nil, true)
+		end
 	end
 end
 
-function PDTHHudCoreTextures:get_weapon_texture(weapon_id, category, ret_tbl)
+function PDTHHudCoreTextures:get_weapon_texture(weapon_id, category, sub_category, ret_tbl)
 	local def = self._parent.definitions.weapon_texture
 	local texture = def.textures[self._parent.Options:GetValue("HUD/WeaponIcon")]
 	local rectangle = {0,0,0,0}
@@ -265,8 +358,8 @@ function PDTHHudCoreTextures:get_weapon_texture(weapon_id, category, ret_tbl)
 		rectangle = self.weapons[weapon_id]
 	else
 		local weap_index = table.index_of(self._parent.definitions.weapon_texture.weapon_order, weapon_id)
-		if weap_index == -1 and self._parent.definitions.weapon_texture.category_conversion[category] then
-			weap_index = table.index_of(self._parent.definitions.weapon_texture.weapon_order, self._parent.definitions.weapon_texture.category_conversion[category])
+		if weap_index == -1 and (self._parent.definitions.weapon_texture.category_conversion[category] or self._parent.definitions.weapon_texture.category_conversion[sub_category]) then
+			weap_index = table.index_of(self._parent.definitions.weapon_texture.weapon_order, self._parent.definitions.weapon_texture.category_conversion[category] or self._parent.definitions.weapon_texture.category_conversion[sub_category])
 		end
 		if weap_index == -1 then
 			if ret_tbl then
@@ -365,9 +458,9 @@ function PDTHHudCoreTextures:ProcessAddon(data, portrait_tbl)
 								part == "tm" and w or h
 							}
 						}
-						current_y = current_y + h
+						current_y = current_y + h + (info.gap or 0)
 					end
-					current_x = current_x + w
+					current_x = current_x + w + (info.gap or 0)
 				end
 			end
 			table.insert(portrait_tbl, ret_tbl)

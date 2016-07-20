@@ -1,21 +1,19 @@
 if pdth_hud.Options:GetValue("HUD/MainHud") then
-    Hooks:PostHook(HUDManager, "set_mugshot_talk", "PDTHHudset_mugshot_talk", function(self, id, active)
-        local data = self:_get_mugshot_data(id)
-        if not data then
+    function HUDManager:set_mugshot_talk(id, active)
+        if not id or not managers.hud._teammate_panels[id] then
             return
         end
-        local i = managers.criminals:character_data_by_name(data.character_name_id).panel_id
-        managers.hud._teammate_panels[i]._panel:child("talk"):set_visible(active)
-    end)
+        managers.hud._teammate_panels[id]._panel:child("talk"):set_visible(active)
+        managers.hud._teammate_panels[id]._panel:child("talk"):set_color(Color.white)
+    end
 
-    Hooks:PostHook(HUDManager, "set_mugshot_voice", "PDTHHudset_mugshot_voice", function(self, id, active)
-        local data = self:_get_mugshot_data(id)
-        if not data then
+    function HUDManager:set_mugshot_voice(id, active)
+        if not id or not managers.hud._teammate_panels[id] then
             return
         end
-        local i = managers.criminals:character_data_by_name(data.character_name_id).panel_id
-        managers.hud._teammate_panels[i]._panel:child("talk"):set_visible(active)
-    end)
+        managers.hud._teammate_panels[id]._panel:child("talk"):set_visible(active)
+        managers.hud._teammate_panels[id]._panel:child("talk"):set_color(Color.yellow)
+    end
 
     Hooks:PostHook(HUDManager, "add_waypoint", "PDTHHudset_mugshot_talk", function(self, id, data)
         self._hud.waypoints[id].arrow:set_color(Color.white)

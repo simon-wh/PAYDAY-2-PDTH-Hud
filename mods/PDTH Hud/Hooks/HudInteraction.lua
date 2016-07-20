@@ -49,7 +49,7 @@ if pdth_hud.Options:GetValue("HUD/Interaction") then
             name = "interact_background",
             blend_mode = "normal",
             layer = 1,
-            texture = "guis/textures/hud_icons",
+            texture = "guis/textures/pdth_hud/hud_icons",
             texture_rect = background_tr,
             w = self._interaction_w,
             h = self._interaction_h
@@ -60,7 +60,7 @@ if pdth_hud.Options:GetValue("HUD/Interaction") then
             name = "interact_bar",
             visible = true,
             layer = 2,
-            texture = "guis/textures/hud_icons",
+            texture = "guis/textures/pdth_hud/hud_icons",
             texture_rect = interact_tr,
             color = ValidColour,
             w = self._interaction_w - (const.interact_border * 2),
@@ -141,7 +141,7 @@ if pdth_hud.Options:GetValue("HUD/Interaction") then
         local width = mul * self._interaction_w
         interact_bar:set_w(width)
         self._interact_panel:set_visible(true)
-        interact_bar:set_image("guis/textures/hud_icons", unpack(interact_tr))
+        interact_bar:set_image("guis/textures/pdth_hud/hud_icons", unpack(interact_tr))
 
         if BetterLightFX then
             BetterLightFX:StartEvent("Interaction")
@@ -178,7 +178,7 @@ if pdth_hud.Options:GetValue("HUD/Interaction") then
         local interact_bar = self._interact_panel:child("interact_bar")
         local interact_background = self._interact_panel:child("interact_background")
         if complete then
-            interact_bar:set_image("guis/textures/hud_icons", unpack(interact_tr))
+            interact_bar:set_image("guis/textures/pdth_hud/hud_icons", unpack(interact_tr))
         end
         interact_bar:set_w(0)
         self._interact_panel:set_visible(false)
@@ -193,7 +193,7 @@ if pdth_hud.Options:GetValue("HUD/Interaction") then
         local interact_bar = self._interact_panel:child("interact_bar")
         local interact_background = self._interact_panel:child("interact_background")
         self.valid = valid
-        interact_bar:set_image("guis/textures/hud_icons", unpack(interact_tr))
+        interact_bar:set_image("guis/textures/pdth_hud/hud_icons", unpack(interact_tr))
         local invalid_text = self._interact_panel:child("invalid_text")
         if text_id then
             invalid_text:set_text(managers.localization:to_upper_text(text_id))

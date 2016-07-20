@@ -8,14 +8,6 @@ PDTHHudCore.AddonPath = LuaModManager.Constants.mods_directory .. "PDTH HUD addo
 PDTHHudCore.LocalAddonPath = nil
 
 function PDTHHudCore:init()
-	log("init")
-	--[[local rel_path = Application:nice_path(path, true)
-	rel_path = string.sub(rel_path, string.len(Application:base_path()) + 1)
-	rel_path = string.gsub(rel_path, "\\", "/")
-	DB:create_entry(Idstring("texture"), Idstring("guis/textures/default_portrait"), rel_path.."/masks.texture")
-	DB:create_entry(Idstring("texture"), Idstring("units/menu/menu_scene/menu_cylinder_logo"), rel_path.."/masks.texture")]]--
-	--Application:reload_textures({Idstring("guis/textures/default_portrait")})
-
 	if not file.DirectoryExists(self.AddonPath) then
         os.execute("mkdir \"" .. self.AddonPath .. "\"")
     end
@@ -91,7 +83,7 @@ function PDTHHudCore:GetLevels()
 			table.insert(level_tbl, {
 				name = level,
 				title_id = function() return managers.localization:exists(tweak_data.levels[level].name_id) and managers.localization:text(tweak_data.levels[level].name_id) .. suffix or level end,
-				default_value = 1,
+				default_value = 2,
 				merge_data = is_current_level and {
 					row_item_color = Color.yellow,
                     hightlight_color = Color.yellow,

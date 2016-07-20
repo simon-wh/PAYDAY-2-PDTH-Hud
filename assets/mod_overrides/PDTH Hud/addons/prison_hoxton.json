@@ -1,0 +1,112 @@
+{
+    "portraits" : [
+        {
+            "name" : "hoxton_prison_unmasked",
+            "display_name" : "Prison Unmasked",
+            "main_texture" : "guis/textures/pdth_hud/portraits/hoxton_prison",
+            "portraits" : [
+                {
+                    "character_id" : "old_hoxton",
+                    "texture_rects" : {
+                        "health" : [
+                            0, 
+                            0, 
+                            192, 
+                            390
+                        ],
+                        "armor" : [
+                            0, 
+                            391, 
+                            192, 
+                            390
+                        ],
+                        "bg" : [
+                            0, 
+                            782, 
+                            192, 
+                            390
+                        ],
+                        "tm" : [
+                            0,
+                            1173,
+                            192,
+                            192
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name" : "hoxton_prison",
+            "display_name" : "Prison",
+            "main_texture" : "guis/textures/pdth_hud/portraits/hoxton_prison",
+            "portraits" : [
+                {
+                    "character_id" : "old_hoxton",
+                    "texture_rects" : {
+                        "health" : [
+                            193, 
+                            0, 
+                            192, 
+                            390
+                        ],
+                        "armor" : [
+                            193, 
+                            391, 
+                            192, 
+                            390
+                        ],
+                        "bg" : [
+                            193, 
+                            782, 
+                            192, 
+                            390
+                        ],
+                        "tm" : [
+                            193,
+                            1173,
+                            192,
+                            192
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name" : "hoxton_prison_begins",
+            "display_name" : "Prison Begins",
+            "main_texture" : "guis/textures/pdth_hud/portraits/hoxton_prison",
+            "portraits" : [
+                {
+                    "character_id" : "old_hoxton",
+                    "texture_rects" : {
+                        "health" : [
+                            386, 
+                            0, 
+                            192, 
+                            390
+                        ],
+                        "armor" : [
+                            386, 
+                            391, 
+                            192, 
+                            390
+                        ],
+                        "bg" : [
+                            386, 
+                            782, 
+                            192, 
+                            390
+                        ],
+                        "tm" : [
+                            386,
+                            1173,
+                            192,
+                            192
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

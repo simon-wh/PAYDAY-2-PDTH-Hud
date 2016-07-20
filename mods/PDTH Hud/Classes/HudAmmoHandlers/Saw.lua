@@ -1,7 +1,15 @@
 HUDAmmoHandlerSaw = HUDAmmoHandlerSaw or class(HUDAmmoHandler)
 
 function HUDAmmoHandlerSaw:update_ammo_icons(previous_current_clip)
-    if not self._parent._weapon_details then
+    if not self._parent._weapon_details or not self._parent._current_ammo then
+        return
+    end
+
+    local should_destory = pdth_hud.Options:GetValue("HUD/Bullet") == 1
+    if should_destory then
+        if self._parent._created_ammo then
+            self:destroy_ammo_icons()
+        end
         return
     end
 
@@ -17,6 +25,10 @@ end
 
 function HUDAmmoHandlerSaw:create_ammo_icons()
     self:destroy_ammo_icons()
+
+    if pdth_hud.Options:GetValue("HUD/Bullet") == 1 then
+        return
+    end
 
     if not self._parent._weapon_ammo_details or not self._parent._current_ammo then
         return
@@ -58,6 +70,13 @@ function HUDAmmoHandlerSaw:create_ammo_icons()
 end
 
 function HUDAmmoHandlerSaw:refresh()
+    if pdth_hud.Options:GetValue("HUD/Bullet") == 1 then
+        self:destroy_ammo_icons()
+        return
+    else
+        self:update_ammo_icons()
+    end
+
     local bullet = self._ammo_panel:child("bullet")
     local bullet_bg = self._ammo_panel:child("bg")
     local icon, details = unpack(self._parent._weapon_ammo_details)
