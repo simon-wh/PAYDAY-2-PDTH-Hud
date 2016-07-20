@@ -572,15 +572,14 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             return
         end
 
-        self:set_special_equipment_image("cable_ties_panel", "equipment_cable_ties")
+        --self:set_special_equipment_image("cable_ties_panel", "equipment_cable_ties")
         self:set_cable_ties_amount(data.amount)
     end
 
     function HUDTeammate:set_cable_ties_amount(amount)
-        if not self:check_cable_ties(data) then
+        if not self:check_cable_ties({amount = amount}) then
             return
         end
-
         self:set_special_equipment_amount("cable_ties_panel", amount)
     end
 
