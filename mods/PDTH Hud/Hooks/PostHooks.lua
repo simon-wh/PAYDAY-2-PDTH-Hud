@@ -31,12 +31,14 @@ if MenuManager then
         managers.challenges:reset_challenges()
     end)
 end
+local override_environments = {
+    "standard"
+}
+
 if MenuSceneManager then
     Hooks:PostHook(MenuSceneManager, "_set_up_environments", "PDTHHudApplyMenuCGrade", function(self)
-        for env, data in pairs(self._environments) do
-            if data.color_grading then
-                data.color_grading = pdth_hud.Options:GetValue("Grading", true)
-            end
+        for i, data in pairs(override_environments) do
+            self._environments[data].color_grading = pdth_hud.Options:GetValue("Grading", true)
         end
     end)
 end

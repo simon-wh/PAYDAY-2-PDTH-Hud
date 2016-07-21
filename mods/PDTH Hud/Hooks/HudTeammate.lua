@@ -598,7 +598,9 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         teammate_panel:set_visible(true)
         self:set_condition("mugshot_normal")
 
-        self:clear_special_equipment()
+        if not self._main_player then
+            self:clear_special_equipment()
+        end
 
         for i, special in pairs(self._special_equipment) do
             if special.weapon then
@@ -614,7 +616,11 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     function HUDTeammate:remove_panel()
         local teammate_panel = self._panel
         teammate_panel:set_visible(false)
-        self:clear_special_equipment()
+
+        if not self._main_player then
+            self:clear_special_equipment()
+        end
+        
         for i, special in pairs(self._special_equipment) do
             if special.weapon then
                 special.panel:set_visible(false)

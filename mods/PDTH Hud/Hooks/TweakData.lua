@@ -172,16 +172,6 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         }
     }
 
-    tweak_data.hud_icons.equipment_sentry = {
-        texture = "guis/textures/pdth_hud/hud_icons",
-        texture_rect = {
-            320,
-            288,
-            48,
-            48
-        }
-    }
-
     --[[tweak_data.hud_icons.equipment_glasscutter = {
         texture = "guis/textures/pdth_hud/hud_icons",
         texture_rect = {
