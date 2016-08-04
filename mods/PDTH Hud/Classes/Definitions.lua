@@ -197,7 +197,7 @@ function PDTHHudCoreDefinitions:init()
             "equipment_sentry_silent",
             "equipment_trip_mine",
             "equipment_armor_kit",
-            "equipment_body_bag",
+            "equipment_bodybags_bag",
             "weapon",
             "boot",
             "hajk",
@@ -218,7 +218,8 @@ function PDTHHudCoreDefinitions:init()
             --minigun = "m134",
             flamethrower = "flamethrower_mk2",
             bow = "plainsrider",
-            crossbow = "hunter"
+            crossbow = "hunter",
+            melee = "weapon"
         }
     }
 

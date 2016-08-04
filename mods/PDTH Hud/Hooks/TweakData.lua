@@ -1,4 +1,6 @@
-local success, err = pcall(function() pdth_hud.Options:post_init()
+local success, err = pcall(function()
+
+pdth_hud.Options:post_init()
 
 --Experimenting
 

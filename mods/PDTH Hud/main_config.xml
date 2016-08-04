@@ -36,7 +36,6 @@
         <hook file="PostHooks.lua" source_file="lib/setups/menusetup"/>
         <!--<hook file="" source_file=""/>-->
     </Hooks>
-
     <Localization directory="Localization" default="english.txt">
         <localization language="russian" file="russian.txt"/>
         <localization language="german" file="german.txt"/>
@@ -134,8 +133,7 @@
     </Options>
     <!--<Options name="Constants" auto_build_menu="false" auto_load="true">
         <options>
-            <merge_data area_bg="half">
-            </merge_data>
+            <merge_data area_bg="half"/>
             <option type="number" default_value="130" name="main_health_h" min="1" max="260" step="1" show_value="true" converter="self.callbacks:ScaleConverter"/>
             <option type="number" default_value="64" name="main_health_w" min="1" max="260" step="1" show_value="true" converter="self.callbacks:ScaleConverter"/>
         </options>

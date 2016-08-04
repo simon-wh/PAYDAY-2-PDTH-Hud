@@ -321,7 +321,6 @@ end
 function PDTHHudCoreTextures:apply_tweak_data_icons()
 	local icons = tweak_data.hud_icons
 	local icon_replacement_tbl = {
-		"equipment_body_bag",
 		"equipment_ammo_bag",
 		"equipment_doctor_bag",
 		"equipment_sentry",

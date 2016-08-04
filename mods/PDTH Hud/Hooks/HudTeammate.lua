@@ -714,7 +714,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
 
         self:set_special_equipment_image("primary_weapon", self._current_primary.id, self._current_primary.category, self._current_primary.sub_category)
         self:set_special_equipment_image("secondary_weapon", self._current_secondary.id, self._current_secondary.category, self._current_secondary.sub_category)
-        self:set_special_equipment_image("melee_weapon", self._current_melee.id, self._current_melee.category, "")
+        self:set_special_equipment_image("melee_weapon", self._current_melee.id, self._current_melee.category, "melee")
     end
 
     function HUDTeammate:refresh_ammo()
@@ -1014,50 +1014,45 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     function HUDTeammate:set_special_equipment_amount(equipment_id, amount)
         if not amount then return end
 
-        --pcall to try and actually get some error logs for errors
-        local success, err = pcall(function()
-
         local const = pdth_hud.constants
         local teammate_panel = self._player_panel
         local special_equipment = self._special_equipment
 
-        local function apply_setting(i, special, panel)
+        local function apply_setting(i, special)
+            local panel = special.panel
             local txtAmount = panel:child("amount")
-            panel:set_visible(true)
             txtAmount:set_text(tostring(amount))
             managers.hud:make_fine_text(txtAmount)
-            local amx, amy, amw, amh = txtAmount:text_rect()
-            panel:set_w(panel:child("bitmap"):w() + (special.num_on_right and amw + const.num_on_right_inflation or 0))
+            local _, _, amw, _ = txtAmount:text_rect()
+            --panel:set_w(panel:child("bitmap"):w() + (special.num_on_right and amw + const.num_on_right_inflation or 0))
             txtAmount:set_right(panel:w())
-            if not special.weapon and not special.show_single_amount and type(amount) == "number" then
-                txtAmount:set_visible(amount > 1)
-            end
-            if type(amount) == "number" and amount < 1 and not special.weapon then
-                self:remove_special_equipment(equipment_id)
+            if not special.weapon and type(amount) == "number" then
+                if not special.show_single_amount then
+                    txtAmount:set_visible(amount > 1)
+                end
+                if amount < 1 then
+                    self:remove_special_equipment(equipment_id)
+                end
+            else
+                txtAmount:set_visible(true)
             end
         end
 
         for i, special in ipairs(special_equipment) do
-            local panel = special.panel
-            if panel and panel:name() == equipment_id then
-                apply_setting(i, special, panel)
+            if special.panel and special.panel:name() == equipment_id then
+                apply_setting(i, special)
                 return
             end
         end
 
         for i, weap in ipairs(self._weapons) do
-            local panel = weap.panel
-            if panel and panel:name() == equipment_id then
-                apply_setting(i, weap, panel)
+            if weap.panel and weap.panel:name() == equipment_id then
+                apply_setting(i, weap)
                 return
             end
         end
 
         self:layout_special_equipments()
-        end)
-        if not success then
-            log(tostring(err))
-        end
     end
 
     function HUDTeammate:set_special_equipment_image(equipment_id, ...)
@@ -1167,7 +1162,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             local panel = self._player_panel
             local bitmap = panel:bitmap({
                 rotation = 360,
-                texture = "guis/textures/pd2/job_circles",
+                texture = "guis/textures/pd2/hud_progress_active",
                 blend_mode = "add",
                 align = "center",
                 valign = "center",
