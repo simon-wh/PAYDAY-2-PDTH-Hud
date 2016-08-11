@@ -15,7 +15,6 @@
     	<class file="Utils.lua"/>
     </Classes>
     <Hooks directory="Hooks">
-        <hook file="GadgetState.lua" source_file="lib/units/weapons/newraycastweaponbase"/>
         <hook file="HudHint.lua" source_file="lib/managers/hud/hudhint"/>
         <hook file="CoreItemChallenges.lua" source_file="lib/managers/menu/items/menuitemchallenge"/>
         <hook file="HudTemp.lua" source_file="lib/managers/hud/hudtemp"/>
@@ -127,7 +126,6 @@
                 </item_parameters>
             </option_set>
             <divider name="grading_divider" size="20"/>
-            <option type="bool" default_value="true" name="Gadget"/>
             <option type="bool" default_value="true" name="Equipment"/>
         </options>
     </Options>
