@@ -207,7 +207,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
 
         local radial_custom = radial_health_panel:bitmap({
             name = "radial_custom",
-            texture = "guis/textures/trial_diamondheist",
+            texture = "guis/textures/pdth_hud/hud_swansong",
             visible = false,
             texture_rect = {
                 0,
@@ -620,7 +620,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         if not self._main_player then
             self:clear_special_equipment()
         end
-        
+
         for i, special in pairs(self._special_equipment) do
             if special.weapon then
                 special.panel:set_visible(false)

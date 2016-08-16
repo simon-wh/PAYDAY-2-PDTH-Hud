@@ -116,7 +116,7 @@ local HUDManagerset_teammate_custom_radial = HUDManager.set_teammate_custom_radi
 
 function HUDManager:set_teammate_custom_radial(i, data)
 	local hud = managers.hud:script( PlayerBase.PLAYER_INFO_HUD_FULLSCREEN_PD2)
-	if pdth_hud.Options:GetValue("HUD/Swansong") and i == 4 then
+	if pdth_hud.Options:GetValue("HUD/Swansong") and i == HUDManager.PLAYER_PANEL then
         local swan_song_left = hud.panel:child("swan_song_left")
 		if not swan_song_left then
 			swan_song_left = hud.panel:bitmap({
