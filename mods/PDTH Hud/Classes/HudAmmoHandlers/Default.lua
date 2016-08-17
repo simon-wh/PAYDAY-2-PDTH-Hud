@@ -121,7 +121,7 @@ function HUDAmmoHandler:create_ammo_icons()
     if dyn_bullets then
         local max_w = self._ammo_panel:right() - ((managers.hud:saferect_w() / 2) + const.hostages_font_size * 4)
         w = (max_w - ((details.gap or 0) * (max_clip - 1))) / max_clip
-        h = math.min((w / details.texture_rect[3]) * details.texture_rect[4], self._ammo_panel:h())
+        h = math.min((w / details.texture_rect[3]) * details.texture_rect[4], self._ammo_panel:h()) * (details.h_multi or 1)
     else
         h = self._ammo_panel:h() * (details.h_multi or 1)
     end
