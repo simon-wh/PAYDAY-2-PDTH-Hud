@@ -307,7 +307,7 @@ function PDTHHudCoreTextures:get_bullet_details(weapon_id, category)
     local option = self._parent.Options:GetValue("HUD/Bullet")
 
     local texture = self.bullets.textures[option]
-	local details
+	local details = self.bullets.pistol_9mm
 
     if tweak_data.weapon[weapon_id].ammo then
 		details = self.bullets[tweak_data.weapon[weapon_id].ammo]

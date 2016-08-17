@@ -108,6 +108,9 @@ function HUDAmmo:create_ammo_handler()
     end
 
     local icon, details = unpack(self._weapon_ammo_details)
+    if not details then
+        return
+    end
     local ammo_class = ammo_styles[details.style or 1]
     self._ammo_handler = ammo_class:new(self, self._ammo_panel)
 end
