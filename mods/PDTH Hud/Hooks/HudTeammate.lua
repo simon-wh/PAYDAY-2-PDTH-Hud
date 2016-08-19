@@ -209,12 +209,6 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             name = "radial_custom",
             texture = "guis/textures/pdth_hud/hud_swansong",
             visible = false,
-            texture_rect = {
-                0,
-                0,
-                64,
-                130
-            },
             blend_mode = "add",
             w = radial_health_panel:w(),
             h = radial_health_panel:h(),
@@ -478,14 +472,15 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         local radial_health_panel = teammate_panel:child("radial_health_panel")
         local radial_custom = radial_health_panel:child("radial_custom")
         local radial_bg = radial_health_panel:child("radial_bg")
-
+        
         local amount = data.current / data.total
         local y_offset = 130 * (1 - amount)
-        radial_custom:set_texture_rect(0, 0 + y_offset, 64, 130 - y_offset)
-        radial_custom:set_h(self.health_h - y_offset)
+        local h_offset = self.health_h * (1 - amount)
+        radial_custom:set_texture_rect(0, y_offset, 64, 130 - y_offset)
+        radial_custom:set_h(self.health_h - h_offset)
         radial_custom:set_bottom(radial_bg:bottom())
         radial_custom:show()
-        if amount == 0 then
+        if amount <= 0 then
             radial_custom:hide()
         end
     end
