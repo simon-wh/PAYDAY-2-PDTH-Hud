@@ -1,5 +1,5 @@
 if pdth_hud.Options:GetValue("HUD/Assault") and not (Restoration and Restoration.options.restoration_assault_global) then
-function HUDAssaultCorner:init(hud, full_hud)
+function HUDAssaultCorner:init(hud, full_hud, tweak_hud)
     local const = pdth_hud.constants
 
 	self._hud_panel = hud.panel
@@ -22,7 +22,9 @@ function HUDAssaultCorner:init(hud, full_hud)
 		font = tweak_data.menu.small_font_noshadow
 	})
     self:reposition_hostages()
-
+    if tweak_hud.no_hostages then
+		num_hostages:hide()
+	end
 	local assault_panel = self._hud_panel:panel({
 		visible = false,
 		name = "assault_panel",
@@ -163,7 +165,24 @@ function HUDAssaultCorner:sync_set_assault_mode(mode)
         self._fx_color = self._vip_assault_color_fx
 	end
 	self._current_assault_color = color
-	local assault_panel = self._hud_panel:child("assault_panel")
+
+end
+
+function HUDAssaultCorner:sync_set_assault_mode(mode)
+	if self._assault_mode == mode then
+		return
+	end
+	self._assault_mode = mode
+	local color = self._assault_color
+    self._fx_color = self._assault_color_fx
+	if mode == "phalanx" then
+		color = self._vip_assault_color
+        self._fx_color = self._vip_assault_color_fx
+	end
+	self:_update_assault_hud_color(color)
+end
+function HUDAssaultCorner:_update_assault_hud_color(color)
+    local assault_panel = self._hud_panel:child("assault_panel")
 	local control_assault_title = assault_panel:child("control_assault_title")
 	local icon_assaultbox = assault_panel:child("icon_assaultbox")
 	icon_assaultbox:set_color(color)
@@ -188,7 +207,6 @@ function HUDAssaultCorner:_end_assault()
 	assault_panel:set_visible(false)
 	assault_panel:stop()
 end
-
 function HUDAssaultCorner:set_control_info(data)
 	local hostages_panel = self._hud_panel:child("hostages_panel")
 	local num_hostages = self._hud_panel:child("num_hostages")
