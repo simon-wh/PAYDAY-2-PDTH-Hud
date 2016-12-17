@@ -209,7 +209,7 @@ function PDTHHudCoreDefinitions:init()
             "desertfox",
             "brick",
             "cs",
-            "wpn_prj_target",
+            "hobby_knife",
             "schakal",
             "packrat",
             "ray",
