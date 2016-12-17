@@ -26,6 +26,11 @@ function HUDAmmoHandler:update_ammo_icons(previous_current_clip)
         end
     end
 
+    if self._parent._current_ammo.max_clip > self._ammo_panel:num_children() then
+        self:create_ammo_icons()
+        self:update_ammo_icons()
+    end
+
     if pdth_hud.Options:GetValue("HUD/BulletGradualColour") and previous_current_clip then
         if self._parent._current_ammo.current_clip < previous_current_clip then
             self:refresh_ammo_colour(self._parent._current_ammo.current_clip + 1, previous_current_clip)
@@ -112,7 +117,7 @@ function HUDAmmoHandler:create_ammo_icons()
     local dyn_bullets = pdth_hud.Options:GetValue("HUD/DynamicBullets")
     self._max_ammo = (dyn_bullets and (details.dyn_max or const.main_ammo_max_dyn) or (details.max or const.main_ammo_max)) / pdth_hud.Options:GetValue("HUD/Scale")
     if self._parent._current_ammo.max_clip > self._max_ammo then
-        return
+        --return
     end
     local w, h
 

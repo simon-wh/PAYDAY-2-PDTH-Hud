@@ -215,13 +215,23 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
             layer = 3
         })
 
+        local radial_ability = radial_health_panel:bitmap({
+            name = "radial_ability",
+            texture = "guis/textures/pdth_hud/hud_fearless",
+            visible = false,
+            blend_mode = "add",
+            w = radial_health_panel:w(),
+            h = radial_health_panel:h(),
+            layer = 4
+        })
+
         local character_text
         if main_player then
             character_text = radial_health_panel:text({
                 name = "character_text",
                 visible = true,
                 text = "",
-                layer = 4,
+                layer = 5,
                 color = Color.white,
                 blend_mode = "normal",
                 font_size = const.main_character_font_size,
@@ -874,6 +884,14 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self:set_special_equipment_amount("grenades_panel", data.amount)
     end
 
+    function HUDTeammate:set_ability_cooldown(data)
+    	if not PlayerBase.USE_GRENADES then
+    		return
+    	end
+    	data.cooldown = data.cooldown and math.ceil(data.cooldown) or 0
+        self:set_grenades_amount({amount = data.cooldown})
+    end
+
     local icon_conversion = {
         pd2_c4 = "equipment_c4",
         pd2_generic_saw = "equipment_saw"
@@ -1457,5 +1475,58 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 bmpPerkBar:set_visible(c > 0)
             end)
         end)
+    end
+
+    function HUDTeammate:set_custom_radial(data)
+        local teammate_panel = self._panel:child("player")
+        local radial_health_panel = teammate_panel:child("radial_health_panel")
+        local radial_custom = radial_health_panel:child("radial_custom")
+        local radial_bg = radial_health_panel:child("radial_bg")
+
+        local amount = data.current / data.total
+        local y_offset = 130 * (1 - amount)
+        local h_offset = self.health_h * (1 - amount)
+        radial_custom:set_texture_rect(0, y_offset, 64, 130 - y_offset)
+        radial_custom:set_h(self.health_h - h_offset)
+        radial_custom:set_bottom(radial_bg:bottom())
+        radial_custom:show()
+        if amount <= 0 then
+            radial_custom:hide()
+        end
+    end
+
+    function HUDTeammate:set_ability_radial(data)
+        local teammate_panel = self._panel:child("player")
+        local radial_health_panel = teammate_panel:child("radial_health_panel")
+        local radial_ability = radial_health_panel:child("radial_ability")
+        local radial_bg = radial_health_panel:child("radial_bg")
+
+        local amount = data.current / data.total
+        local y_offset = 130 * (1 - amount)
+        local h_offset = self.health_h * (1 - amount)
+        radial_ability:set_texture_rect(0, y_offset, 64, 130 - y_offset)
+        radial_ability:set_h(self.health_h - h_offset)
+        radial_ability:set_bottom(radial_bg:bottom())
+        radial_ability:set_visible(amount > 0)
+    end
+
+    function HUDTeammate:activate_ability_radial(time)
+    	local teammate_panel = self._panel:child("player")
+    	local radial_health_panel = teammate_panel:child("radial_health_panel")
+    	local radial_ability = radial_health_panel:child("radial_ability")
+        local radial_bg = radial_health_panel:child("radial_bg")
+    	local function anim(o)
+    		radial_ability:set_visible(true)
+    		over(time, function(p)
+    			local amount = math.lerp(1, 0, p)
+                local y_offset = 130 * (1 - amount)
+                local h_offset = self.health_h * (1 - amount)
+                radial_ability:set_texture_rect(0, y_offset, 64, 130 - y_offset)
+                radial_ability:set_h(self.health_h - h_offset)
+                radial_ability:set_bottom(radial_bg:bottom())
+    		end)
+    		radial_ability:set_visible(false)
+    	end
+    	radial_ability:animate(anim)
     end
 end

@@ -204,7 +204,16 @@ function PDTHHudCoreDefinitions:init()
             "equipment_sentry",
             "com_frag_grenade",
             "road",
-            "throwing_axe"
+            "throwing_axe",
+            "contraband",
+            "desertfox",
+            "brick",
+            "cs",
+            "wpn_prj_target",
+            "schakal",
+            "packrat",
+            "ray",
+            "rota"
         },
         category_conversion = {
             pistol = "glock_17",

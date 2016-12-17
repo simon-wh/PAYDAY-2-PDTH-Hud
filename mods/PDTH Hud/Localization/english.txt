@@ -19,8 +19,6 @@
 	"PDTHHudRebornInteractionDescID" : "Toggles the Interaction Bar from PDTH",
 	"PDTHHudRebornObjectivesTitleID" : "PDTH Objectives",
 	"PDTHHudRebornObjectivesDescID" : "Toggles the Objective bar from PDTH",
-	"PDTHHudRebornGadgetTitleID" : "Remember Gadget state",
-	"PDTHHudRebornGadgetDescID" : "Enables the Gadgets to remember its state",
 	"PDTHHudRebornSwansongTitleID" : "Swan Song effect",
 	"PDTHHudRebornSwansongTextID" : "Toggle the additional Swan Song effect",
 	"PDTHHudRebornGradingTitleID" : "Colour Grading",
@@ -91,10 +89,6 @@
 	"ch_vs_head_shots_desc" : "Using the $weapon, defeat $count $eneType with Headshots.",
 	"ch_vs" : "$weapon VS. $eneType $no",
 	"ch_vs_head_shots" : "$weapon VS. $eneType HEADSHOTS $no",
-    "ene_law" : "THE LAW",
-    "ene_law_desc" : "law enforcers",
-
-    "menu_me" : "YOU",
 
 	"pdth_hud_hostages" : "HOSTAGES:",
 	"pdth_hud_semi" : "SEMI",
