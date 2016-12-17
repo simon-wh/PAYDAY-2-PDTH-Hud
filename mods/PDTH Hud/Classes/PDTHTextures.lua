@@ -337,7 +337,9 @@ function PDTHHudCoreTextures:apply_tweak_data_icons()
 		"four_projectile",
 		"ace_projectile",
 		"jav_projectile",
-		"throwing_axe"
+		"throwing_axe",
+		"chico_injector",
+		"concussion_grenade"
 	}
 	for _, icon in pairs(icon_replacement_tbl) do
 		if self._parent.Options:GetValue("HUD/PDTHEquipmentIcons") and self.pdth[icon] then
