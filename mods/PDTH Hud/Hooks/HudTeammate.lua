@@ -482,7 +482,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         local radial_health_panel = teammate_panel:child("radial_health_panel")
         local radial_custom = radial_health_panel:child("radial_custom")
         local radial_bg = radial_health_panel:child("radial_bg")
-        
+
         local amount = data.current / data.total
         local y_offset = 130 * (1 - amount)
         local h_offset = self.health_h * (1 - amount)
@@ -876,12 +876,12 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         self:set_special_equipment_image("grenades_panel", data.icon)
     end
 
-    function HUDTeammate:set_grenades_amount(data)
+    function HUDTeammate:set_grenades_amount(data, ignore_checks)
         if not self:check_grenade(data) then
             return
         end
 
-        self:set_special_equipment_amount("grenades_panel", data.amount)
+        self:set_special_equipment_amount("grenades_panel", data.amount, ignore_checks)
     end
 
     function HUDTeammate:set_ability_cooldown(data)
@@ -889,7 +889,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
     		return
     	end
     	data.cooldown = data.cooldown and math.ceil(data.cooldown) or 0
-        self:set_grenades_amount({amount = data.cooldown})
+        self:set_grenades_amount({amount = data.cooldown}, true)
     end
 
     local icon_conversion = {
@@ -1024,7 +1024,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
         o:set_color(Color.white)
     end
 
-    function HUDTeammate:set_special_equipment_amount(equipment_id, amount)
+    function HUDTeammate:set_special_equipment_amount(equipment_id, amount, ignore_checks)
         if not amount then return end
 
         local const = pdth_hud.constants
@@ -1043,7 +1043,7 @@ if pdth_hud.Options:GetValue("HUD/MainHud") then
                 if not special.show_single_amount then
                     txtAmount:set_visible(amount > 1)
                 end
-                if amount < 1 then
+                if amount < 1 and not ignore_checks then
                     self:remove_special_equipment(equipment_id)
                 end
             else
