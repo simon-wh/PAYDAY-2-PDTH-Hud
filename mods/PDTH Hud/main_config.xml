@@ -40,6 +40,7 @@
         <localization language="german" file="german.txt"/>
         <localization language="french" file="french.txt"/>
         <localization language="dutch" file="dutch.txt"/>
+        <localization language="italian" file="italian.txt"/>
     </Localization>
     <AssetUpdates name="asset_updates" id="16438" folder_name="PDTH Hud" provider="lastbullet"/>
     <ScriptMods directory="ScriptData">

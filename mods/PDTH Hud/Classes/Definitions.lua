@@ -216,7 +216,11 @@ function PDTHHudCoreDefinitions:init()
             "rota",
             "x_packrat",
             "concussion_grenade",
-            "chico_injector"
+            "chico_injector",
+            "arbiter",
+            "catch",
+            "tti",
+            "ostry"
         },
         category_conversion = {
             pistol = "glock_17",
